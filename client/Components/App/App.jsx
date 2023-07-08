@@ -6,6 +6,12 @@ import NavBar from "../NavBar/NavBar.jsx";
 export const App = () => {
 
   return (
-    <div>Hello World</div>
+    <div>
+      <h1 className="text-3xl font-bold underline">
+        hello
+      </h1>
+      <LoginPage/>
+    </div>
+
   )
 };
