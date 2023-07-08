@@ -6,7 +6,7 @@ export default function LoginPage() {
     let user = document.getElementById('loginUsername').value
     let pass = document.getElementById('loginPassword').value
 
-    console.log(user, pass )
+    console.log(user, pass)
   }
   return (
     <div>
