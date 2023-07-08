@@ -26,7 +26,8 @@ router.get('/metrics', async (req, res) => {
                     cpuCurrentUsage: node.CPU.RequestTotal.toString(),
                     cpuTotal: node.CPU.Capacity.toString(),
                     memoryCurrentUsage: node.Memory.RequestTotal.toString(),
-                    memoryTotal: node.Memory.Capacity.toString()
+                    memoryTotal: node.Memory.Capacity.toString(),
+                    timestamp: Date.now(),
                 });
             });
         });
@@ -34,12 +35,12 @@ router.get('/metrics', async (req, res) => {
     await k8s.topPods(k8sApi, metricsClient, namespace)
         .then((pods) => {
             pods.map((pod) => {
-                // const cpu = pod.CPU.RequestTotal === 0 ? 0 : BigInt(pod.CPU.CurrentUsage / pod.CPU.RequestTotal).toString();
-                // const memory = pod.Memory.RequestTotal === 0 ? 0 : BigInt((pod.Memory.CurrentUsage) / (pod.Memory.RequestTotal)).toString()
+                console.log(pod);
                 topPods.push({
                     pod: pod.Pod.metadata.name,
                     cpuCurrentUsage: pod.CPU.CurrentUsage.toString(),
                     memoryCurrentUsage: pod.Memory.CurrentUsage.toString(),
+                    timestamp: Date.now(),
                 });
             });
         });
@@ -51,15 +52,15 @@ router.get('/metrics', async (req, res) => {
             }
         });
     
-    console.log({
-        namespaces,
-        topNodes,
-        topPods,
-    });
+    // console.log({
+    //     namespaces,
+    //     topNodes,
+    //     topPods,
+    // });
 
     return res.status(200).json({
-        namespaces: namespaces,
-        nodes: topNodes,
+        // namespaces: namespaces,
+        // nodes: topNodes,
         pods: topPods,    
     });
 });
