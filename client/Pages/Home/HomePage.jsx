@@ -2,9 +2,13 @@ import React from 'react'
 import LogDashboard from '../../Components/Dashboard/LogDashboard.jsx'
 import MetricsDashboard from '../../Components/Dashboard/MetricsDashboard.jsx'
 import Stats from '../../Components/TotalStats/Stats.jsx'
+import ChartTest from '../../Components/LineChart/FakeDataChart.jsx'
 
 export default function HomePage() {
   return (
-    <h1>HomePage</h1>
+    <div>
+      {/* <h1>HomePage</h1> */}
+      <ChartTest />
+    </div>
   )
 }
