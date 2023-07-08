@@ -5,6 +5,6 @@ import Stats from '../../Components/TotalStats/Stats.jsx'
 
 export default function HomePage() {
   return (
-    <div>HomePage</div>
+    <h1>HomePage</h1>
   )
 }
