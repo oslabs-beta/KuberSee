@@ -24,20 +24,20 @@ app.get('/api', (req, res) => {
         .then((nodes) => {
             console.log("Nodes", nodes);
         });
-    
+
     k8s.topPods(k8sApi, metricsClient, namespace)
         .then((pods) => {
             const podsColumns = pods.map((pod) => {
                 return {
                     "POD": pod.Pod.metadata.name,
-                    "CPU": pod.CPU.RequestTotal===0 ? 0: pod.CPU.CurrentUsage/pod.CPU.RequestTotal,
-                    "MEMORY(bytes)":  pod.Memory.RequestTotal===0 ? 0 : Number(pod.Memory.CurrentUsage)/Number(pod.Memory.RequestTotal),
+                    "CPU": pod.CPU.RequestTotal === 0 && pod.CPU.CurrentUsage != 0 ? 100 : pod.CPU.CurrentUsage / pod.CPU.RequestTotal * 100,
+                    "MEMORY(bytes)": pod.Memory.RequestTotal === 0 ? 0 : Number(pod.Memory.CurrentUsage) / Number(pod.Memory.RequestTotal),
                 }
             });
             console.log("TOP PODS");
             console.log(podsColumns);
         });
-    
+
     k8sApi.listNamespace()
         .then((res) => {
             for (let i in res.body.items) {
@@ -47,7 +47,7 @@ app.get('/api', (req, res) => {
 
     k8sApi.listNamespacedPod('default')
         .then((res) => {
-            console.log("this is what we want" , res.body);
+            console.log("this is what we want", res.body);
         });
 
     return res.sendStatus(200);
