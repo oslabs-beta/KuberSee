@@ -1,6 +1,6 @@
 import React from 'react'
 
-import StatButton from './StatButton/StatButton.jsx';
+import StatButton from '../StatButton/StatButton.jsx';
 export default function Stats() {
 
     return (
