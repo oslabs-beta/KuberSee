@@ -51,16 +51,10 @@ router.get('/metrics', async (req, res) => {
                 namespaces.push(res.body.items[i].metadata.name);
             }
         });
-    
-    // console.log({
-    //     namespaces,
-    //     topNodes,
-    //     topPods,
-    // });
 
     return res.status(200).json({
-        // namespaces: namespaces,
-        // nodes: topNodes,
+        namespaces: namespaces,
+        nodes: topNodes,
         pods: topPods,    
     });
 });
