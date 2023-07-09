@@ -1,28 +1,32 @@
 import React, { useEffect } from "react";
+import {nest} from 'd3-collection';
 import * as d3 from "d3";
 import fakeCPUData from '../../sampleData.js';
 
 
-const createGraph = async () => {
-  console.log('JHELLO');
-  // read data from csv and format variables
-  let data = fakeCPUData;
+const createGraph =  (data) => {
+  // read data from fake data object and format variables
+  // let data = fakeCPUData;
   var parseTime = d3.timeParse('%Y-%m-%dT%H:%M:%S.%LZ');
 
   data.forEach((d) => {
     d.Date = parseTime(d.Date);
     d.cpuPercent = +d.cpuPercent;
-    console.log(d);
+    // console.log(d);
   });
 
-  console.log(data)
+  let sumStat = nest()
+    .key(function (d) { return d.Date })
+    .entries(data);
+
+  console.log(sumStat)
 
   // set the dimensions and margins of the graph
   var margin = { top: 20, right: 20, bottom: 50, left: 70 },
     width = 960 - margin.left - margin.right,
     height = 500 - margin.top - margin.bottom;
 
-  // append the svg object to the body of the page
+  // append the svg object to the graph id of the page
   var svg = d3.select("#graph").append("svg")
     .attr("width", width + margin.left + margin.right)
     .attr("height", height + margin.top + margin.bottom)
@@ -60,11 +64,11 @@ const createGraph = async () => {
 
 function ChartTest() {
   useEffect(() => {
-    createGraph();
+    createGraph(fakeCPUData);
   }, []);
 
   return (
-    <div id="graph"> WHY??????
+    <div id="graph"> 
     </div>
   );
 }

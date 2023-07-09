@@ -29,6 +29,7 @@ const fakeCPUData = [
         Date: "2023-07-08T20:27:23.919Z"
 
     },
+    
 ]
 
 
