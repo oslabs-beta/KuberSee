@@ -29,6 +29,36 @@ const fakeCPUData = [
         Date: "2023-07-08T20:27:23.919Z"
 
     },
+    {
+        podName: 'pod2-787d4945fb-7r5zr',
+        cpuPercent: 5.005346, // this value is a percentage
+        Date: "2023-07-08T19:12:12.568Z"
+
+    },
+    {
+        podName: 'pod2-787d4945fb-7r5zr',
+        cpuPercent: 2.005346, // this value is a percentage
+        Date: "2023-07-08T19:13:38.987Z"
+
+    },
+    {
+        podName: 'pod2-787d4945fb-7r5zr',
+        cpuPercent: 10, // this value is a percentage
+        Date: "2023-07-08T20:26:42.649Z"
+
+    },
+    {
+        podName: 'pod2-787d4945fb-7r5zr',
+        cpuPercent: 5, // this value is a percentage
+        Date: "2023-07-08T20:27:03.940Z"
+
+    },
+    {
+        podName: 'pod2-787d4945fb-7r5zr',
+        cpuPercent: 40, // this value is a percentage
+        Date: "2023-07-08T20:27:23.919Z"
+
+    }
     
 ]
 
