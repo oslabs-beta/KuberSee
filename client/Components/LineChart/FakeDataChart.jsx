@@ -1,10 +1,10 @@
-import React, { useEffect } from "react";
-import {nest} from 'd3-collection';
+import React, { useEffect, useState } from "react";
+import { nest } from 'd3-collection';
 import * as d3 from "d3";
 import fakeCPUData from '../../sampleData.js';
 
 
-const createGraph =  (data) => {
+const createGraph = (data) => {
   // read data from fake data object and format variables
   // let data = fakeCPUData;
   var parseTime = d3.timeParse('%Y-%m-%dT%H:%M:%S.%LZ');
@@ -37,7 +37,7 @@ const createGraph =  (data) => {
   var x = d3.scaleTime().range([0, width]);
   var y = d3.scaleLinear().range([height, 0]);
   var color = d3.scaleOrdinal(d3.schemeCategory10);
-  
+
   x.domain(d3.extent(data, (d) => { return d.Date; }));
   y.domain([0, d3.max(data, (d) => { return d.cpuPercent; })]);
 
@@ -52,7 +52,7 @@ const createGraph =  (data) => {
   var valueLine = d3.line()
     .x((d) => { return x(d.Date); })
     .y((d) => { return y(d.cpuPercent); });
-  
+
   //append circle for each datapoint 
   svg.selectAll("circle")
     .data(data)
@@ -61,22 +61,22 @@ const createGraph =  (data) => {
     .attr('fill', 'pink')
     .attr('class', 'circle')
     .attr('r', 3)
-    .attr('cx', function(d) {return x(d.Date)})
+    .attr('cx', function (d) { return x(d.Date) })
     .attr('cy', function (d) { return y(d.cpuPercent) })
-  
+
   svg.selectAll('.temp-path')
     .data(sumStat)
     .enter()
     .append('path')
     .attr('d', function (d) {
-        return valueLine(d.values)
+      return valueLine(d.values)
     })
     .attr("fill", "none")
     .attr("stroke", function (d, i) {
-      return(color(d.key));
+      return (color(d.key));
     })
     .attr("stroke-width", 1.5)
-  
+
   svg.selectAll('.podName-label')
     .data(sumStat)
     .enter()
@@ -85,29 +85,39 @@ const createGraph =  (data) => {
     .text(function (d) {
       return d.key
     })
-    .style('fill', function(d,i) {
-      return(color(d.key))
+    .style('fill', function (d, i) {
+      return (color(d.key))
     })
     .attr('x', width)
     .attr('y', function (d) {
-      return y(d.values[d.values.length-1].cpuPercent)
+      return y(d.values[d.values.length - 1].cpuPercent)
     })
     .attr('alignment-baseline', 'middle')
     .attr('dx', 5)
     .attr('font-size', 12)
 
-    
-  
+
+
 }
 
 
 function ChartTest() {
+  const [fakeData, setFakeData] = useState(fakeCPUData);
+  setInterval(() => {
+    const newArray = [...fakeCPUData];
+    newArray.push({
+      podName: 'pod2-787d4945fb-7r5zr',
+      cpuPercent: 20, // this value is a percentage
+      Date: new Date()
+    })
+    setFakeData(newArray);
+  }, 300);
   useEffect(() => {
-    createGraph(fakeCPUData);
-  }, []);
+    createGraph(fakeData);
+  }, [fakeData]);
 
   return (
-    <div id="graph"> 
+    <div id="graph">
     </div>
   );
 }

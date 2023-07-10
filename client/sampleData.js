@@ -59,8 +59,16 @@ const fakeCPUData = [
         Date: "2023-07-08T20:27:23.919Z"
 
     }
-    
+
 ]
+
+setInterval(() =>
+    fakeCPUData.push({
+        podName: 'pod2-787d4945fb-7r5zr',
+        cpuPercent: 20, // this value is a percentage
+        Date: new Date()
+
+    }), 300)
 
 
 const testCPUData = [
@@ -125,43 +133,43 @@ const data = {
             pod: "alertmanager-prometheus-kube-prometheus-alertmanager-0",
             cpuCurrentUsage: "0.001004433",
             memoryCurrentUsage: "37122048",
-            timestamp: 1688849973907
+            timestamp: 1688849973942
         },
         {
             pod: "hello-node-7b87cd5f68-mzh6z",
             cpuCurrentUsage: "0.000157015",
             memoryCurrentUsage: "6475776",
-            timestamp: 1688849973907
+            timestamp: 1688849973944
         },
         {
             pod: "prometheus-grafana-5f9c846f48-lqzc6",
             cpuCurrentUsage: "0.004995819",
             memoryCurrentUsage: "247865344",
-            timestamp: 1688849973907
+            timestamp: 1688849973946
         },
         {
             pod: "prometheus-kube-prometheus-operator-5ccb5bd-ngttv",
             cpuCurrentUsage: "0.001289666",
             memoryCurrentUsage: "25960448",
-            timestamp: 1688849973907
+            timestamp: 1688849973952
         },
         {
             pod: "prometheus-kube-state-metrics-799f44d4db-wvm2t",
             cpuCurrentUsage: "0.001241719",
             memoryCurrentUsage: "12636160",
-            timestamp: 1688849973907
+            timestamp: 1688849973965
         },
         {
             pod: "prometheus-prometheus-kube-prometheus-prometheus-0",
             cpuCurrentUsage: "0.024168207",
             memoryCurrentUsage: "398917632",
-            timestamp: 1688849973907
+            timestamp: 1688849973969
         },
         {
             pod: "prometheus-prometheus-node-exporter-vpss5",
             cpuCurrentUsage: "0.001056165",
             memoryCurrentUsage: "9924608",
-            timestamp: 1688849973907
+            timestamp: 1688849973974
         }
     ]
 }
