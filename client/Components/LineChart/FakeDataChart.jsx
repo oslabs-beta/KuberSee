@@ -16,13 +16,13 @@ const createGraph =  (data) => {
   });
 
   let sumStat = nest()
-    .key(function (d) { return d.Date })
+    .key(function (d) { return d.podName })
     .entries(data);
 
   console.log(sumStat)
 
   // set the dimensions and margins of the graph
-  var margin = { top: 20, right: 20, bottom: 50, left: 70 },
+  var margin = { top: 20, right: 100, bottom: 50, left: 70 },
     width = 960 - margin.left - margin.right,
     height = 500 - margin.top - margin.bottom;
 
@@ -36,7 +36,8 @@ const createGraph =  (data) => {
   // add X axis and Y axis
   var x = d3.scaleTime().range([0, width]);
   var y = d3.scaleLinear().range([height, 0]);
-
+  var color = d3.scaleOrdinal(d3.schemeCategory10);
+  
   x.domain(d3.extent(data, (d) => { return d.Date; }));
   y.domain([0, d3.max(data, (d) => { return d.cpuPercent; })]);
 
@@ -51,16 +52,54 @@ const createGraph =  (data) => {
   var valueLine = d3.line()
     .x((d) => { return x(d.Date); })
     .y((d) => { return y(d.cpuPercent); });
-
-  svg.append("path")
-    .data([data])
-    .attr("class", "line")
+  
+  //append circle for each datapoint 
+  svg.selectAll("circle")
+    .data(data)
+    .enter()
+    .append('circle')
+    .attr('fill', 'pink')
+    .attr('class', 'circle')
+    .attr('r', 3)
+    .attr('cx', function(d) {return x(d.Date)})
+    .attr('cy', function (d) { return y(d.cpuPercent) })
+  
+  svg.selectAll('.temp-path')
+    .data(sumStat)
+    .enter()
+    .append('path')
+    .attr('d', function (d) {
+        return valueLine(d.values)
+    })
     .attr("fill", "none")
-    .attr("stroke", "steelblue")
+    .attr("stroke", function (d, i) {
+      return(color(d.key));
+    })
     .attr("stroke-width", 1.5)
-    .attr("d", valueLine);
+  
+  svg.selectAll('.podName-label')
+    .data(sumStat)
+    .enter()
+    .append('text')
+    .attr('class', 'pod-name')
+    .text(function (d) {
+      return d.key
+    })
+    .style('fill', function(d,i) {
+      return(color(d.key))
+    })
+    .attr('x', width)
+    .attr('y', function (d) {
+      return y(d.values[d.values.length-1].cpuPercent)
+    })
+    .attr('alignment-baseline', 'middle')
+    .attr('dx', 5)
+    .attr('font-size', 12)
 
+    
+  
 }
+
 
 function ChartTest() {
   useEffect(() => {
