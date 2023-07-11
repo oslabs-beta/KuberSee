@@ -13,7 +13,7 @@ apiController.getMetrics = async (req, res, next)=> {
     res.locals.topNodes = [];
     res.locals.topPods = [];
     res.locals.namespaces = [];
-    const currentTime = Date.now();
+    const currentTime = new Date();
     await k8s.topNodes(k8sApi, metricsClient, namespace)
         .then((nodes) => {
             nodes.map((node) => {
