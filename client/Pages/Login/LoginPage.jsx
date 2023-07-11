@@ -27,7 +27,7 @@ export default function LoginPage() {
           <button class="btn btn-block btn-primary" onClick={login}>Login</button>
         </div>
         <span>Don't have an account ?
-          <a href="#" class="text-blue-600 hover:text-blue-800 hover:underline">Signup</a></span>
+          <a href="signup" class="text-blue-600 hover:text-blue-800 hover:underline">Signup</a></span>
       </form>
     </div>
   )
