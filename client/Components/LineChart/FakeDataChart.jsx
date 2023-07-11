@@ -1,9 +1,24 @@
-import React, { useEffect, useState } from "react";
+import React, { useRef, useEffect, useState } from "react";
 import { nest } from 'd3-collection';
-import * as d3 from "d3";
+// import * as d3 from "d3";
+// import { select, Selection } from 'd3-selection';
+import {
+  select,
+  line,
+  curveCardinal,
+  scaleLinear,
+  axisBottom,
+  axisLeft,
+} from "d3";
 import fakeCPUData from '../../sampleData.js';
 
 const createGraph = (data) => {
+
+  const svgRef = useRef(); //similiar to document.querySelector. React uses the virtual dom, so we can't expect an element to persist. So instead, react recommends using useRef (aka escape hatch at last ditch effort) to give you a reference to an element. 
+
+  //draws chart
+  const svg = select(svgRef.current); // svgRef.current is getting the svg element. select method is d3's way to use querySelector. 
+
   console.log("create")
   // read data from fake data object and format variables
   // let data = fakeCPUData;
@@ -27,11 +42,11 @@ const createGraph = (data) => {
     height = 500 - margin.top - margin.bottom;
 
   // append the svg object to the graph id of the page
-  var svg = d3.select("#graph").append("svg")
-    .attr("width", width + margin.left + margin.right)
-    .attr("height", height + margin.top + margin.bottom)
-    .append("g") // grouping
-    .attr("transform", `translate(${margin.left}, ${margin.top})`);
+  // var svg = d3.select("#graph").append("svg")
+  //   .attr("width", width + margin.left + margin.right)
+  //   .attr("height", height + margin.top + margin.bottom)
+  //   .append("g") // grouping
+  //   .attr("transform", `translate(${margin.left}, ${margin.top})`);
 
   // add X axis and Y axis
   var x = d3.scaleTime().range([0, width]);
@@ -96,6 +111,7 @@ const createGraph = (data) => {
     .attr('dx', 5)
     .attr('font-size', 12)
   return svg
+
 }
 
 const updateGraph = (svg, data) => {
@@ -208,8 +224,10 @@ function ChartTest() {
   }, [fakeData]);
 
   return (
-    <div id="graph">
-    </div>
+    // <div id="graph">
+    // </div>
+    <svg ref={svgRef}>
+    </svg>
   );
 }
 

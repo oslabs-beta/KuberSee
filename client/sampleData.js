@@ -52,14 +52,6 @@ const fakeCPUData = [
 
 ]
 
-setInterval(() =>
-    fakeCPUData.push({
-        podName: 'pod2-787d4945fb-7r5zr',
-        cpuPercent: 20, // this value is a percentage
-        Date: new Date()
-
-    }), 300)
-
 
 const testCPUData = [
     {
