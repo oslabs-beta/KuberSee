@@ -14,6 +14,8 @@ export default function SignupPage() {
     };
     return [value, onChange];
   };
+  //instantiate usenavigate
+  const navigate = useNavigate();
 
   //stae for our input fields;
   const [userName, setUserName] = useInput('');
@@ -48,7 +50,7 @@ export default function SignupPage() {
       .then((data) => {
         console.log(data);
         // Redirect to the home page after successful signup
-        Navigate('/home');
+        navigate('/home');
       })
       .catch((err) => console.log('saveUser fetch /api/signup: ERROR: ', err));
   };
