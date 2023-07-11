@@ -1,11 +1,25 @@
 import React from 'react'
+
 export default function LoginPage() {
-  const login = (e) => {
+  const login = async (e) => {
     e.preventDefault();
     let user = document.getElementById('loginUsername').value
     let pass = document.getElementById('loginPassword').value
 
     console.log(user, pass)
+    const info = {
+      username: user,
+      password: pass
+    }
+    const res = await fetch('/api/auth/signin',{
+      method: "POST",
+      body: JSON.stringify(info),
+      headers: {
+        "Content-Type": "application/json",
+
+      },
+    })
+
   }
   return (
     <div>
