@@ -11,6 +11,12 @@ pool.on("connect", (client) => {
   client.query("SET DATESTYLE = iso, mdy");
 });
 
+if (pool) {
+  // mysql is started && connected successfully.
+  console.log("Connection Success");
+} else {
+  console.log("Cant connect to db, Check ur db connection");
+}
 module.exports = {
   query: (text, params, callback) => {
     // console.log("executed query", text);
