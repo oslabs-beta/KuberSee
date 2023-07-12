@@ -20,45 +20,50 @@ export default function LoginPage() {
     });
   };
   return (
-    <div class='h-screen flex items-center justify-center'>
-      <form class='space-y-4'>
-        <div>
-          <label class='label'>
-            <span class='text-base label-text'>Username</span>
-          </label>
-          <input
-            type='text'
-            id='loginUsername'
-            placeholder='Username'
-            class='w-full input input-bordered input-primary'
-          />
-        </div>
-        <div>
-          <label class='label'>
-            <span class='text-base label-text'>Password</span>
-          </label>
-          <input
-            type='password'
-            id='loginPassword'
-            placeholder='Enter Password'
-            class='w-full input input-bordered input-primary'
-          />
-        </div>
-        <div>
-          <button class='btn btn-block btn-primary' onClick={login}>
-            Login
-          </button>
-        </div>
-        <span>
-          Don't have an account ?
-          <a
-            href='signup'
-            class='text-blue-600 hover:text-blue-800 hover:underline'
-          >
-            Signup
-          </a>
-        </span>
-      </form>
-    </div>
+    <html data-theme='night'>
+      <div class='h-screen flex items-center justify-center'>
+        <h1 class='mb-4 text-4xl font-extrabold leading-none tracking-tight text-gray-900 md:text-5xl lg:text-6xl dark:text-white'>
+          Sign in.
+        </h1>
+        <form class='space-y-4'>
+          <div>
+            <label class='label'>
+              <span class='text-base label-text'>Username</span>
+            </label>
+            <input
+              type='text'
+              id='loginUsername'
+              placeholder='Username'
+              class='w-full input input-bordered input-primary'
+            />
+          </div>
+          <div>
+            <label class='label'>
+              <span class='text-base label-text'>Password</span>
+            </label>
+            <input
+              type='password'
+              id='loginPassword'
+              placeholder='Enter Password'
+              class='w-full input input-bordered input-primary'
+            />
+          </div>
+          <div>
+            <button class='btn btn-block btn-primary' onClick={login}>
+              Login
+            </button>
+          </div>
+          <span>
+            Don't have an account ?
+            <a
+              href='signup'
+              class='text-blue-600 hover:text-blue-800 hover:underline'
+            >
+              Signup
+            </a>
+          </span>
+        </form>
+      </div>
+    </html>
   );
 }
