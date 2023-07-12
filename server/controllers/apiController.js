@@ -1,5 +1,6 @@
 const apiController = {};
 const k8s = require('@kubernetes/client-node');
+const { cp } = require('fs');
 
 
 apiController.getMetrics = async (req, res, next)=> {
@@ -32,16 +33,25 @@ apiController.getMetrics = async (req, res, next)=> {
     await k8s.topPods(k8sApi, metricsClient, namespace)
         .then((pods) => {
             pods.map((pod) => {
+
                 // console.log(pod);
+
+                let cpuPercentage = ((pod.CPU.CurrentUsage / pod.CPU.LimitTotal) * 100);
+
+                if (cpuPercentage === Infinity || typeof cpuPercentage === 'undefined') {
+                    cpuPercentage = 0;
+                }
+//                 console.log(pod.Memory);
+
                 res.locals.topPods.push({
                     pod: pod.Pod.metadata.name,
-                    cpuCurrentUsage: pod.CPU.CurrentUsage.toString(),
+                    cpuCurrentUsage: cpuPercentage,
                     memoryCurrentUsage: pod.Memory.CurrentUsage.toString(),
                     timestamp: currentTime,
                 });
             });
         });
-    
+
     await k8sApi.listNamespace()
         .then((data) => {
             for (let i in data.body.items) {
