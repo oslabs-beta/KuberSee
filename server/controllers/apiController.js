@@ -18,7 +18,7 @@ apiController.getMetrics = async (req, res, next)=> {
     await k8s.topNodes(k8sApi, metricsClient, namespace)
         .then((nodes) => {
             nodes.map((node) => {
-                console.log(node);
+                // console.log(node);
                 res.locals.topNodes.push({
                     node: node.Node.metadata.name,
                     cpuCurrentUsage: node.CPU.RequestTotal.toString(),
@@ -33,12 +33,16 @@ apiController.getMetrics = async (req, res, next)=> {
     await k8s.topPods(k8sApi, metricsClient, namespace)
         .then((pods) => {
             pods.map((pod) => {
+
+                // console.log(pod);
+
                 let cpuPercentage = ((pod.CPU.CurrentUsage / pod.CPU.LimitTotal) * 100);
 
                 if (cpuPercentage === Infinity || typeof cpuPercentage === 'undefined') {
                     cpuPercentage = 0;
                 }
-                console.log(pod.Memory);
+//                 console.log(pod.Memory);
+
                 res.locals.topPods.push({
                     pod: pod.Pod.metadata.name,
                     cpuCurrentUsage: cpuPercentage,
