@@ -5,9 +5,8 @@ const { Pool } = require('pg');
 
 const pool = new Pool({
   connectionString:
-    "DB_URL",
+    'postgres://hmachemu:djK2F6WfEulBLS9WqON5GSumTIkDCz28@snuffleupagus.db.elephantsql.com/hmachemu',
 });
-
 pool.on('connect', (client) => {
   client.query('SET DATESTYLE = iso, mdy');
 });

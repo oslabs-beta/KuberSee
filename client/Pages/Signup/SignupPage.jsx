@@ -1,8 +1,9 @@
 import React, { useState } from 'react';
 import { Link, Navigate, useNavigate } from 'react-router-dom';
-// import { Express } from 'express';
-// import { Component } from 'react';
-// import { BrowserRouter, Routes, Route } from 'react-router-dom';
+
+
+//Creating a SALT when signing up
+// const salt = bcrypt.genSaltSync(10)
 
 export default function SignupPage() {
   //hook to handle input boxes
