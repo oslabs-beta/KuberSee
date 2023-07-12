@@ -18,41 +18,47 @@ export default function SignupPage() {
   const navigate = useNavigate();
 
   //stae for our input fields;
-  const [userName, setUserName] = useInput('');
+  const [username, setUserName] = useInput('');
   const [password, setPassword] = useInput('');
 
   //state for checking any errors
   const [submitted, setSubmitted] = useState(false);
   const [error, setError] = useState(false);
   //to handle when the form is being submitted
-  const saveUser = (e) => {
+  const  saveUser =  async(e) => {
     e.preventDefault();
-    if (userName === '' || password === '') SetError(true);
+    if (username === '' || password === '') SetError(true);
     else {
       setSubmitted(true);
       setError(false);
     }
     const body = {
-      userName,
+      username,
       password,
     };
-    fetch('api/auth/signup', {
+    
+    try {
+      const res = await fetch('http://localhost:3000/auth/signup', {
       method: 'POST',
       headers: {
         'content-type': 'Application/JSON',
       },
       body: JSON.stringify(body),
-    })
-      .then((resp) => resp.json())
-      .then((data) => {
-        console.log(data);
-      })
-      .then((data) => {
-        console.log(data);
-        // Redirect to the home page after successful signup
-        navigate('/home');
-      })
-      .catch((err) => console.log('saveUser fetch /api/signup: ERROR: ', err));
+    }) 
+      const data = await data.json(); 
+      navigate('/');
+    } catch (error) {
+      console.log('saveUser fetch /api/signup: ERROR: ', error);
+    }
+      // .then((resp) => resp.json())
+      // .then((data) => {
+      //   console.log(data);
+      // })
+      // .then((data) => {
+      //   console.log(data);
+      //   // Redirect to the home page after successful signup
+      //  
+      // })
   };
   //message when form is properly submitted
   const success = () => {
@@ -63,7 +69,7 @@ export default function SignupPage() {
           display: submitted ? '' : 'none',
         }}
       >
-        <h1>user {userName} successfully registered!</h1>
+        <h1>user {username} successfully registered!</h1>
       </div>
     );
   };
@@ -104,7 +110,7 @@ export default function SignupPage() {
             class='shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline'
             name='user'
             placeholder='username'
-            value={userName}
+            value={username}
             onChange={setUserName}
           />
           <label
@@ -116,6 +122,7 @@ export default function SignupPage() {
           </label>
         </div>
         <input
+          type='password'
           class='shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline'
           name='userPassword'
           placeholder='password'
