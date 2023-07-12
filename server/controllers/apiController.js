@@ -17,7 +17,7 @@ apiController.getMetrics = async (req, res, next)=> {
     await k8s.topNodes(k8sApi, metricsClient, namespace)
         .then((nodes) => {
             nodes.map((node) => {
-                console.log(node);
+                // console.log(node);
                 res.locals.topNodes.push({
                     node: node.Node.metadata.name,
                     cpuCurrentUsage: node.CPU.RequestTotal.toString(),
@@ -32,7 +32,7 @@ apiController.getMetrics = async (req, res, next)=> {
     await k8s.topPods(k8sApi, metricsClient, namespace)
         .then((pods) => {
             pods.map((pod) => {
-                console.log(pod);
+                // console.log(pod);
                 res.locals.topPods.push({
                     pod: pod.Pod.metadata.name,
                     cpuCurrentUsage: pod.CPU.CurrentUsage.toString(),

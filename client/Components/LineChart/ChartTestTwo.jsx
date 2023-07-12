@@ -5,6 +5,7 @@ const ChartTestTwo = () => {
   const svgRef = useRef(); //creating a variable to connect the ref prop that we 
 
   function initialize(width, height) {
+
     var graph = d3.select(svgRef.current) //select the svg element from the virtual DOM. 
       .attr("width", width)
       .attr("height", height);
@@ -14,6 +15,27 @@ const ChartTestTwo = () => {
     var xScaleGroup = graph.append("g");
 
     var yScaleGroup = graph.append("g");
+
+    graph.append("clipPath")       // define a clip path
+    .attr("id", "rectangle-clip") // give the clipPath an ID
+    .append("rect")          // shape it as an ellipse
+    .attr("x", 41)         // position the x-centre
+    .attr("y", 0)         // position the y-centre
+    .attr("width", width*2 + 300)
+    .attr("height", height);
+    
+    //I used this to make the clipping mask to visualize what the size of the graph of was
+    // graph.append("rect")
+    // .attr("x", 0)         // position the x-centre
+    // .attr("y", 0)  
+    // .attr("width", width*2 )
+    // .attr("height", height*2)
+    //   .style('fill', 'red')
+    //   .style("opacity", .10)
+    // .attr("clip-path", "url(#rectangle-clip)") // clip the rectangle
+
+    
+    
 
     return [graph, barGroup, xScaleGroup, yScaleGroup]; // returns an array of the variables, giving you the reference to the variable.  
   }
@@ -28,6 +50,9 @@ const ChartTestTwo = () => {
    
 
     const radius = graph.attr('width') / 200.0; // for the circle 
+
+
+        
 
     // const xValues = data.map(a => a.Date);
     const yValues = data.map(a => a.cpuCurrentUsage);
@@ -70,7 +95,8 @@ const ChartTestTwo = () => {
       .data([data])
       .join('path')
     .attr('d', valueLine)
-    .attr("fill", "none")
+        .attr("fill", "none")
+        .attr("clip-path", "url(#rectangle-clip)") // clip the rectangle
     .attr("stroke", "steelblue")
       .attr("stroke-width", 1.5)
    
@@ -94,6 +120,7 @@ const ChartTestTwo = () => {
         return yScale(d.cpuCurrentUsage); // tells us where on the graph that the plot should be relative to chart's height. 
       })
       .attr("r", radius)
+      .attr("clip-path", "url(#rectangle-clip)") // clip the rectangle
       .attr("fill", function (d) { return colorScale(d.timestamp) });
 
 
@@ -149,7 +176,7 @@ const ChartTestTwo = () => {
 
     render(data, now, lookback, graphVars); // invoke to show first graph 
 
-    const updateIntervalMs = 2000;
+    const updateIntervalMs = 200;
     const intervalID = setInterval(async function () {
       const response = await fetch('/api/metrics');
       const metrics = await response.json();
