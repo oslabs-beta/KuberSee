@@ -82,25 +82,56 @@ export default function SignupPage() {
   };
 
   return (
-    <div className='signUpForm'>
-      <h1>Register</h1>
-      <form>
-        <label className='label'> UserName</label>
+    <div
+      className='signUpForm'
+      class='h-screen flex items-center justify-center'
+    >
+      <h1 class='mb-4 text-4xl font-extrabold leading-none tracking-tight text-gray-900 md:text-5xl lg:text-6xl dark:text-white'>
+        Create an account.
+      </h1>
+      <form class='bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4'>
+        <div class='mb-4'>
+          <label
+            className='label'
+            class='block text-gray-700 text-sm font-bold mb-2'
+          >
+            {' '}
+            Create a username:
+          </label>
+        </div>
+        <div class='mb-6'>
+          <input
+            class='shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline'
+            name='user'
+            placeholder='username'
+            value={userName}
+            onChange={setUserName}
+          />
+          <label
+            className='label'
+            class='block text-gray-700 text-sm font-bold mb-2'
+          >
+            {' '}
+            Create a password:
+          </label>
+        </div>
         <input
-          name='user'
-          placeholder='username'
-          value={userName}
-          onChange={setUserName}
-        />
-        <input
+          class='shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline'
           name='userPassword'
           placeholder='password'
           value={password}
           onChange={setPassword}
         />
-        <button onClick={saveUser} type='button' className='signUpBtn'>
-          Sign Up
-        </button>
+        <div class='flex items-center justify-between'>
+          <button
+            class='bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline'
+            onClick={saveUser}
+            type='button'
+            className='signUpBtn'
+          >
+            Sign Up
+          </button>
+        </div>
       </form>
     </div>
   );
