@@ -115,7 +115,7 @@ const ChartTestTwo = () => {
       const mapArray = metrics.topPods.map((el) => {
         return {
           podName: el.pod,
-          cpuCurrentUsage: el.cpuCurrentUsage * 1000,
+          cpuCurrentUsage: el.cpuCurrentUsage,
           timestamp: strictIsoParse(new Date().toISOString())
         }
       })
