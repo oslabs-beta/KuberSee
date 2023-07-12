@@ -5,7 +5,7 @@ const { Pool } = require('pg');
 
 const pool = new Pool({
   connectionString:
-    'postgres://hmachemu:djK2F6WfEulBLS9WqON5GSumTIkDCz28@snuffleupagus.db.elephantsql.com/hmachemu',
+    "DB_URL",
 });
 
 pool.on('connect', (client) => {
