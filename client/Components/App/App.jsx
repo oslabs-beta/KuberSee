@@ -3,7 +3,7 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import NotFound from "../../Pages/NotFound/NotFound.jsx";
 import HomePage from "../../Pages/Home/Homepage.jsx";
 import LoginPage from '../../Pages/Login/LoginPage.jsx';
-import SignupPage from "../../Pages/Signup/Signuppage.jsx";
+import SignupPage from '../../Pages/Signup/SignupPage.jsx'
 import NavBar from "../NavBar/NavBar.jsx";
 
 const App = () => {
