@@ -27,7 +27,7 @@ const ChartTestTwo = () => {
     const radius = graph.attr('width') / 200.0; // for the circle 
 
     // const xValues = data.map(a => a.Date);
-    const yValues = data.map(a => a.cpuPercent);
+    const yValues = data.map(a => a.cpuCurrentUsage);
 
     const xScale = d3.scaleTime() //accepts a date as a value and helps us compare the time
       .domain([lookback, now]) // min time vs max time of the pods 
@@ -44,14 +44,14 @@ const ChartTestTwo = () => {
       .range(['blue', 'red']);
 
     // species what date from the plot that is older than the lookback. 
-    const to_remove = data.filter(a => a.Date < lookback);
+    const to_remove = data.filter(a => a.timestamp < lookback);
     barGroup.selectAll("circle")
       .data(to_remove)
       .exit()
       .remove();
 
     // returning a filtered array 'data' of data that is newer than the lookback and append the points to barGroup. 
-    data = data.filter(a => a.Date > lookback);
+    data = data.filter(a => a.timestamp > lookback);
     barGroup.selectAll("g")
       .data(data)
       .enter()
@@ -59,13 +59,13 @@ const ChartTestTwo = () => {
 
     barGroup.selectAll("circle")
       .attr('cx', function (d) { // cx = circle's x position (specific svg attribute)
-        return xScale(d.Date); //tells us where on the graph that the plot should be relative to the chart's width. 
+        return xScale(d.timestamp); //tells us where on the graph that the plot should be relative to the chart's width. 
       })
       .attr("cy", function (d) {
-        return yScale(d.cpuPercent); // tells us where on the graph that the plot should be relative to chart's height. 
+        return yScale(d.cpuCurrentUsage); // tells us where on the graph that the plot should be relative to chart's height. 
       })
       .attr("r", radius)
-      .attr("fill", function (d) { return colorScale(d.Date) });
+      .attr("fill", function (d) { return colorScale(d.timestamp) });
 
     var x_axis = d3.axisBottom().scale(xScale);
     xScaleGroup.attr('transform', 'translate(0,' + (graph.attr('height') - room_for_axis) + ')')
@@ -106,13 +106,29 @@ const ChartTestTwo = () => {
 
     render(data, now, lookback, graphVars); // invoke to show first graph 
 
-    const updateIntervalMs = 200;
-    const intervalID = setInterval(function () {
-      data.push({
-        podName: 'pod2-787d4945fb-7r5zr',
-        cpuPercent: Math.random() * 100, // this value is a percentage
-        Date: strictIsoParse(new Date().toISOString()) // convert the date to string and then use the parse method for D3 
+    const updateIntervalMs = 2000;
+    const intervalID = setInterval(async function () {
+      const response = await fetch('/api/metrics');
+      const metrics = await response.json();
+      const pod = metrics.topPods[0];
+      console.log(pod);
+      const mapArray = metrics.topPods.map((el) => {
+        return {
+          podName: el.pod,
+          cpuCurrentUsage: el.cpuCurrentUsage * 1000,
+          timestamp: strictIsoParse(new Date().toISOString())
+        }
       })
+      // console.log(mapArray);
+      data.push(...mapArray);
+
+      console.log(pod);
+
+      // data.push({
+      //   podName: pod.pod,
+      //   cpuCurrentUsage: pod.cpuCurrentUsage * 100000, // this value is a percentage
+      //   timestamp: strictIsoParse(new Date().toISOString()) // convert the date to string and then use the parse method for D3 
+      // })
 
       // Move time forward
       now = new Date()
