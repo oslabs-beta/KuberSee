@@ -4,6 +4,7 @@ import MetricsDashboard from '../../Components/Dashboard/MetricsDashboard.jsx'
 import Stats from '../../Components/TotalStats/Stats.jsx'
 import ChartTest from '../../Components/LineChart/FakeDataChart.jsx'
 import ChartTestTwo from '../../Components/LineChart/ChartTestTwo.jsx'
+import Dashboard from '../../Components/Dashboard/Dashboard.jsx'
 
 export default function HomePage() {
   return (
@@ -11,6 +12,7 @@ export default function HomePage() {
       {/* <h1>HomePage</h1> */}
       {/* <ChartTest /> */}
       <ChartTestTwo />
+      <Dashboard />
     </div>
   )
 }
