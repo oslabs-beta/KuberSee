@@ -64,6 +64,10 @@ apiController.getMetrics = async (req, res, next) => {
       });
     });
   });
+  
+    await k8sApi.listPodForAllNamespaces().then(data =>
+    res.locals.totalPods = data.body.items.length
+);
 
   await k8sApi.listNamespace().then((data) => {
     for (let i in data.body.items) {
