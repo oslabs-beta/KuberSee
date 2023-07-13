@@ -15,14 +15,14 @@ app.use(express.json());
 app.use(cors());
 
 const oneDay = 1000 * 60 * 60 * 24;
-app.use(
-  sessions({
-    secret: process.env.SECRET,
-    saveUninitialized: true,
-    cookie: { maxAge: oneDay },
-    resave: false,
-  })
-);
+// app.use(
+//   sessions({
+//     secret: process.env.SECRET,
+//     saveUninitialized: true,
+//     cookie: { maxAge: oneDay },
+//     resave: false,
+//   })
+// );
 
 app.use("/", express.static(path.resolve(__dirname, "../build")));
 app.use("/api", apiRoute);
