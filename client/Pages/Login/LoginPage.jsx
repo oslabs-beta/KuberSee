@@ -1,27 +1,37 @@
 import React from 'react';
+import { useNavigate, redirect } from 'react-router-dom';
 
 export default function LoginPage() {
+  const navigate = useNavigate()
   const login = async (e) => {
     e.preventDefault();
     let user = document.getElementById('loginUsername').value;
     let pass = document.getElementById('loginPassword').value;
 
-    console.log(user, pass);
+    console.log('fetch',user, pass);
     const info = {
       username: user,
       password: pass,
     };
-    const res = await fetch('/api/auth/signin', {
+
+    const res = await fetch('http://localhost:3000/auth/signin', {
       method: 'POST',
       body: JSON.stringify(info),
       headers: {
         'Content-Type': 'application/json',
       },
     });
+    // console.log(res.json)
+    let answers = await res.json()
+    if(answers==='wrong'){
+      alert('no user found retry')
+    }else{
+      navigate('/home')
+    }
   };
   return (
     <html data-theme='night'>
-      <div class='h-screen flex items-center justify-center'>
+      <div class='h-screen flex items-center justify-around mx-10'>
         <h1 class='mb-4 text-4xl font-extrabold leading-none tracking-tight text-gray-900 md:text-5xl lg:text-6xl dark:text-white'>
           Sign in.
         </h1>

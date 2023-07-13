@@ -63,7 +63,7 @@ const ChartTestTwo = () => {
       .range([room_for_axis + 5, graph.attr('width')]);
 
     const yScale = d3.scaleLinear()
-      .domain([0, 100])
+      .domain([0, d3.max(data, (d) => { return d.cpuCurrentUsage * 2})])
       .range([graph.attr('height') - room_for_axis, 0]); // range deals with the position of where things get plotted (area)
 
     
@@ -185,7 +185,7 @@ const ChartTestTwo = () => {
       const mapArray = metrics.topPods.map((el) => {
         return {
           podName: el.pod,
-          cpuCurrentUsage: el.cpuCurrentUsage,
+          cpuCurrentUsage: el.cpuCurrentUsage ,
           timestamp: strictIsoParse(new Date().toISOString())
         }
       })
