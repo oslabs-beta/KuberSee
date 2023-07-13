@@ -33,9 +33,6 @@ apiController.getMetrics = async (req, res, next) => {
     await k8s.topPods(k8sApi, metricsClient, namespace)
         .then((pods) => {
             pods.map((pod) => {
-
-                // console.log(pod);
-
                 let cpuPercentage = ((pod.CPU.CurrentUsage / pod.CPU.LimitTotal) * 100);
                 // console.log(pod.CPU.LimitTotal);
                 if (cpuPercentage === Infinity || typeof cpuPercentage === 'undefined') {
@@ -51,7 +48,9 @@ apiController.getMetrics = async (req, res, next) => {
                 });
             });
         });
-
+    await k8sApi.listPodForAllNamespaces().then(data =>
+        res.locals.totalPods = data.body.items.length
+    );
     await k8sApi.listNamespace()
         .then((data) => {
             for (let i in data.body.items) {

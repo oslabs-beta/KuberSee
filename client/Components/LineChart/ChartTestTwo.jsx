@@ -98,7 +98,7 @@ const ChartTestTwo = () => {
       .attr("fill", "none")
       .attr("clip-path", "url(#rectangle-clip)") // clip the rectangle
       .attr("stroke", "steelblue")
-      .attr("stroke-width", 1.5)
+      .attr("stroke-width", 4.5)
 
 
 

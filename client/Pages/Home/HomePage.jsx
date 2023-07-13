@@ -7,11 +7,12 @@ import ChartTestTwo from '../../Components/LineChart/ChartTestTwo.jsx'
 
 export default function HomePage() {
   return (
-    <div>
+    <div className='flex flex-col justify-center content-center	items-center'>
+      KUBERSEE
       {/* <h1>HomePage</h1> */}
       {/* <ChartTest /> */}
       <ChartTestTwo />
-      <LogDashboard />
+       <LogDashboard /> 
     </div>
   )
 }
