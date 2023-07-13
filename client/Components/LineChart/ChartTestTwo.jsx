@@ -63,7 +63,7 @@ const ChartTestTwo = () => {
       .range([room_for_axis + 5, graph.attr('width')]);
 
     const yScale = d3.scaleLinear()
-      .domain([0, .00001])
+      .domain([0, d3.max(data, (d) => { return d.cpuCurrentUsage * 2})])
       .range([graph.attr('height') - room_for_axis, 0]); // range deals with the position of where things get plotted (area)
 
     

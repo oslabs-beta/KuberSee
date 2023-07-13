@@ -37,7 +37,7 @@ apiController.getMetrics = async (req, res, next) => {
                 // console.log(pod);
 
                 let cpuPercentage = ((pod.CPU.CurrentUsage / pod.CPU.LimitTotal) * 100);
-                console.log(pod.CPU.LimitTotal);
+                // console.log(pod.CPU.LimitTotal);
                 if (cpuPercentage === Infinity || typeof cpuPercentage === 'undefined') {
                     cpuPercentage = 0;
                 }
