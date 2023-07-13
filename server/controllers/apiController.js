@@ -80,20 +80,21 @@ apiController.getLogs = async (req, res, next) => {
         res.locals.logsKey = `${namespace}=${podName}`;
         //write logic to parse res.locals.log
         const newArray = [];
-        logs.forEach((el) => {
+        logs.forEach((el, i) => {
             const splitLog = el.split(/\]/);
             if (splitLog[1] && splitLog[1].length) {
                 splitLog[1] = splitLog[1].trim()
             }
             const log = {
-                "header": splitLog[0],
-                "message": splitLog[1]
+                id: i,
+                header: splitLog[0],
+                message: splitLog[1]
             };
             newArray.push(log);
         }
         );
         res.locals.logs = newArray;
-        console.log("new Array", newArray);
+        // console.log("new Array", newArray);
         return next();
     } catch (error) {
         console.error("Error fetching logs:", error);

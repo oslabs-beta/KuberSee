@@ -4,6 +4,8 @@ import LogTable from '../Charts/LogTable.jsx'
 
 export default function LogDashboard() {
   return (
-    <div>LogDashboard</div>
+    <div>
+      <LogTable />
+    </div>
   )
 }
