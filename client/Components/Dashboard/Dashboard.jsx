@@ -1,26 +1,6 @@
-import React, { useEffect } from 'react';
-import socketIoClient from 'socket.io-client';
+import React, { useState, useEffect } from 'react';
 
-export default function Dashboard() {
-  useEffect(() => {
-    const newSocket = socketIoClient('http://localhost:3000/api/metrics', {
-      autoConnect: false,
-    });
-    newSocket.on('event', (event) => {
-      console.log(event);
-    });
-
-    return () => {
-      newSocket.off('event', handleNewEvent);
-      newSocket.disconnect();
-    };
-  }, []);
-  const stats = [
-    { id: 1, name: 'Namespace', value: '' },
-    { id: 2, name: 'Nodes', value: '' },
-    { id: 3, name: 'Pods', value: '' },
-  ];
-
+export default function Dashboard({ stats = [] }) {
   return (
     <html data-theme='night'>
       <div className='bg-night py-24 sm:py-32'>
@@ -34,7 +14,7 @@ export default function Dashboard() {
                 <dt class='mb-4 text-2xl font-extrabold leading-none tracking-tight text-gray-900 md:text-3xl lg:text-4xl dark:text-white'>
                   {stat.name}
                 </dt>
-                <dd className='order-first text-3xl font-semibold tracking-tight text-gray-900 sm:text-5xl'>
+                <dd className='order-first text-3xl font-semibold tracking-tight text-gray-900 sm:text-5xl dark:text-white'>
                   {stat.value}
                 </dd>
               </div>

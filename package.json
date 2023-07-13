@@ -39,6 +39,8 @@
     "@emotion/styled": "^11.11.0",
     "@kubernetes/client-node": "^0.18.1",
     "@mui/material": "^5.14.0",
+    "@mui/x-data-grid": "^6.10.0",
+    "@mui/x-data-grid-generator": "^6.10.0",
     "@prisma/client": "^4.16.2",
     "bcrypt": "^5.1.0",
     "bcryptjs": "^2.4.3",

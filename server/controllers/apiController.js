@@ -71,11 +71,11 @@ apiController.getMetrics = async (req, res, next) => {
     }
   });
 
-//   req.io.emit("event", {
-//         namespace: res.locals.namespaces,
-//         topPods: res.locals.topPods,
-//         todNodes: res.locals.topNodes,
-//   });
+  //   req.io.emit("event", {
+  //         namespace: res.locals.namespaces,
+  //         topPods: res.locals.topPods,
+  //         todNodes: res.locals.topNodes,
+  //   });
   return next();
 };
 
@@ -104,12 +104,13 @@ apiController.getLogs = async (req, res, next) => {
     res.locals.logsKey = `${namespace}=${podName}`;
     //write logic to parse res.locals.log
     const newArray = [];
-    logs.forEach((el) => {
+    logs.forEach((el, i) => {
       const splitLog = el.split(/\]/);
       if (splitLog[1] && splitLog[1].length) {
         splitLog[1] = splitLog[1].trim();
       }
       const log = {
+        id: i,
         header: splitLog[0],
         message: splitLog[1],
       };
