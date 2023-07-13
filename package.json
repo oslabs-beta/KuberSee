@@ -35,7 +35,10 @@
     "webpack-dev-server": "^4.15.1"
   },
   "dependencies": {
+    "@emotion/react": "^11.11.1",
+    "@emotion/styled": "^11.11.0",
     "@kubernetes/client-node": "^0.18.1",
+    "@mui/material": "^5.14.0",
     "@prisma/client": "^4.16.2",
     "cors": "^2.8.5",
     "d3": "^7.8.5",
