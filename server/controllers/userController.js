@@ -1,13 +1,15 @@
 const db = require("../model/userModels");
-const userController = {};
 const bcrypt = require("bcryptjs");
+const userController = {};
 
 userController.signup = async (req, res, next) => {
   console.log("singingup");
   try {
     const addUser = 'INSERT INTO "User" (username, password) VALUES ($1, $2)';
     const { username, password } = req.body;
-    const values = [username, password];
+    const saltRounds = 10;
+    const hashedPassword = await bcrypt.hash(password, saltRounds);
+    const values = [username, hashedPassword];
     console.log(values);
 
     // console.log(query);

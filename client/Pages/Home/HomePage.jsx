@@ -10,7 +10,6 @@ export default function HomePage() {
     <div>
       {/* <h1>HomePage</h1> */}
       {/* <ChartTest /> */}
-      {/* <p>homepages</p> */}
       <ChartTestTwo />
     </div>
   )
