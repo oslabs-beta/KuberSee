@@ -38,7 +38,7 @@ export default function LogTable() {
   // );
 
   return (
-    <Box sx={{ height: 400, width: '70%', backgroundColor: '#D3D3D3' }}>
+    <Box sx={{ height: 900, width: '70%', backgroundColor: '#D3D3D3' }}>
 
       <DataGrid
         disableColumnFilter
