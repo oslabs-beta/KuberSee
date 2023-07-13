@@ -1,7 +1,7 @@
-import React, { useEffect } from 'react'
+import React, { useEffect } from 'react';
 import Box from '@mui/material/Box';
 import { DataGrid, GridToolbar } from '@mui/x-data-grid';
-import { useState } from 'react'
+import { useState } from 'react';
 
 // const VISIBLE_FIELDS = ['headers', 'message'];
 
@@ -18,19 +18,18 @@ export default function LogTable() {
       field: 'message',
       headerName: 'Message',
       width: 1500,
-    }];
+    },
+  ];
 
   useEffect(() => {
-    console.log("Log Table UseEffect");
+    console.log('Log Table UseEffect');
     fetch('/api/logs')
-      .then(data => data.json())
+      .then((data) => data.json())
       .then((res) => {
-        setRows(res["kube-system=kube-controller-manager-minikube"])
+        setRows(res['kube-system=kube-controller-manager-minikube']);
       })
-      .catch(err => console.log(err))
-
+      .catch((err) => console.log(err));
   }, []);
-
 
   // Otherwise filter will be applied on fields such as the hidden column id
   // const columns = React.useMemo(
@@ -38,9 +37,8 @@ export default function LogTable() {
   //   [data.columns],
   // );
 
-
   return (
-    <Box sx={{ height: 400, width: '100%', backgroundColor: 'white' }}>
+    <Box sx={{ height: 400, width: '70%', backgroundColor: '#D3D3D3' }}>
       <DataGrid
         disableColumnFilter
         disableColumnSelector
@@ -52,7 +50,7 @@ export default function LogTable() {
           boxShadow: 2,
           border: 2,
           color: 'black',
-          borderColor: 'primary.light',
+          // borderColor: 'primary.light',
           '& .MuiDataGrid-cell:hover': {
             color: 'primary.light',
           },

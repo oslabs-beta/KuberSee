@@ -8,7 +8,7 @@ import { useState } from 'react';
 
 export default function HomePage() {
   const [stats, setStats] = useState([
-    { id: 1, name: 'Namespace', value: 0 },
+    { id: 1, name: 'Namespaces', value: 0 },
     { id: 2, name: 'Nodes', value: 0 },
     { id: 3, name: 'Pods', value: 0 },
   ]);

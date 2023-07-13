@@ -1,5 +1,5 @@
 import React from 'react';
-import { useNavigate, redirect } from 'react-router-dom';
+import { Link, useNavigate, redirect } from 'react-router-dom';
 
 export default function LoginPage() {
   const navigate = useNavigate();
@@ -65,12 +65,15 @@ export default function LoginPage() {
           </div>
           <span>
             Don't have an account ?
-            <a
+            <Link to='/signup' className='text-blue-600 hover:underline'>
+              Sign up
+            </Link>
+            {/* <a
               href='signup'
               class='text-blue-600 hover:text-blue-800 hover:underline'
             >
               Signup
-            </a>
+            </a> */}
           </span>
         </form>
       </div>
