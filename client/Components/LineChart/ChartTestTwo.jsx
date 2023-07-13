@@ -173,7 +173,7 @@ const ChartTestTwo = ({ changeStats = [] }) => {
       // console.log('nodes', metrics.topNodes);
       // console.log('pods', metrics.topPods);
       changeStats([
-        { id: 1, name: 'Namespace', value: metrics.namespace.length },
+        { id: 1, name: 'Namespaces', value: metrics.namespace.length },
         { id: 2, name: 'Nodes', value: metrics.topNodes.length },
         { id: 3, name: 'Pods', value: metrics.totalPods },
       ]);
