@@ -5,6 +5,7 @@ const ChartTestTwo = () => {
   const svgRef = useRef(); //creating a variable to connect the ref prop that we 
 
   function initialize(width, height) {
+
     var graph = d3.select(svgRef.current) //select the svg element from the virtual DOM. 
       .attr("width", width)
       .attr("height", height);
@@ -15,16 +16,43 @@ const ChartTestTwo = () => {
 
     var yScaleGroup = graph.append("g");
 
+    graph.append("clipPath")       // define a clip path
+    .attr("id", "rectangle-clip") // give the clipPath an ID
+    .append("rect")          // shape it as an ellipse
+    .attr("x", 41)         // position the x-centre
+    .attr("y", 0)         // position the y-centre
+    .attr("width", width*2 + 300)
+    .attr("height", height);
+    
+    //I used this to make the clipping mask to visualize what the size of the graph of was
+    // graph.append("rect")
+    // .attr("x", 0)         // position the x-centre
+    // .attr("y", 0)  
+    // .attr("width", width*2 )
+    // .attr("height", height*2)
+    //   .style('fill', 'red')
+    //   .style("opacity", .10)
+    // .attr("clip-path", "url(#rectangle-clip)") // clip the rectangle
+
+    
+    
+
     return [graph, barGroup, xScaleGroup, yScaleGroup]; // returns an array of the variables, giving you the reference to the variable.  
   }
 
   // updates the graph. data is our data, now is the end time, and lookback is the start time, graph vars is the array of reference of what we returned in initialize. 
   function render(data, now, lookback, graphVars) {
+   
     const room_for_axis = 40; // padding for axis 
 
     const [graph, barGroup, xScaleGroup, yScaleGroup] = graphVars;
 
+   
+
     const radius = graph.attr('width') / 200.0; // for the circle 
+
+
+        
 
     // const xValues = data.map(a => a.Date);
     const yValues = data.map(a => a.cpuCurrentUsage);
@@ -34,21 +62,45 @@ const ChartTestTwo = () => {
       // Add a little extra room for y axis
       .range([room_for_axis + 5, graph.attr('width')]);
 
-
     const yScale = d3.scaleLinear()
       .domain([0, 100])
       .range([graph.attr('height') - room_for_axis, 0]); // range deals with the position of where things get plotted (area)
 
+    
     const colorScale = d3.scaleTime()
       .domain([lookback, now])
       .range(['blue', 'red']);
+    
+      barGroup.selectAll('path')
+      .data([data])
+      .exit()
+      .remove();
+   
 
-    // species what date from the plot that is older than the lookback. 
+    // specifes what date from the plot that is older than the lookback. 
     const to_remove = data.filter(a => a.timestamp < lookback);
     barGroup.selectAll("circle")
       .data(to_remove)
       .exit()
       .remove();
+    
+      var valueLine = d3.line()
+      .x((d) => {
+        return xScale(d.timestamp)
+      })
+      .y((d) => {
+        return yScale(d.cpuCurrentUsage);
+      });
+      barGroup.selectAll('.temp-path')
+      .data([data])
+      .join('path')
+    .attr('d', valueLine)
+        .attr("fill", "none")
+        .attr("clip-path", "url(#rectangle-clip)") // clip the rectangle
+    .attr("stroke", "steelblue")
+      .attr("stroke-width", 1.5)
+   
+    
 
     // returning a filtered array 'data' of data that is newer than the lookback and append the points to barGroup. 
     data = data.filter(a => a.timestamp > lookback);
@@ -56,6 +108,9 @@ const ChartTestTwo = () => {
       .data(data)
       .enter()
       .append("circle");
+    
+     
+
 
     barGroup.selectAll("circle")
       .attr('cx', function (d) { // cx = circle's x position (specific svg attribute)
@@ -65,15 +120,30 @@ const ChartTestTwo = () => {
         return yScale(d.cpuCurrentUsage); // tells us where on the graph that the plot should be relative to chart's height. 
       })
       .attr("r", radius)
+      .attr("clip-path", "url(#rectangle-clip)") // clip the rectangle
       .attr("fill", function (d) { return colorScale(d.timestamp) });
 
+
+    
+   
+    // data.forEach((d) => {
+    //   d.Date = d.timestamp;
+    //   d.cpuPercent = +d.cpuCurrentUsage;
+    // });
+    
     var x_axis = d3.axisBottom().scale(xScale);
     xScaleGroup.attr('transform', 'translate(0,' + (graph.attr('height') - room_for_axis) + ')')
       .call(x_axis);
 
-    var y_axis = d3.axisLeft().scale(yScale)
+  
+    
+  
+   
+  
+      var y_axis = d3.axisLeft().scale(yScale)
     yScaleGroup.attr('transform', 'translate(' + room_for_axis + ',0)').call(y_axis);
-
+    
+  
     return data; // return the updated filter data. 
   }
 
@@ -106,7 +176,7 @@ const ChartTestTwo = () => {
 
     render(data, now, lookback, graphVars); // invoke to show first graph 
 
-    const updateIntervalMs = 2000;
+    const updateIntervalMs = 200;
     const intervalID = setInterval(async function () {
       const response = await fetch('/api/metrics');
       const metrics = await response.json();
@@ -115,13 +185,13 @@ const ChartTestTwo = () => {
       const mapArray = metrics.topPods.map((el) => {
         return {
           podName: el.pod,
-          cpuCurrentUsage: el.cpuCurrentUsage * 1000,
+          cpuCurrentUsage: el.cpuCurrentUsage,
           timestamp: strictIsoParse(new Date().toISOString())
         }
       })
       // console.log(mapArray);
       data.push(...mapArray);
-
+      console.log(mapArray)
       console.log(pod);
 
       // data.push({
