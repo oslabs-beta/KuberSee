@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 import { Link, Navigate, useNavigate } from 'react-router-dom';
 
-
 //Creating a SALT when signing up
 // const salt = bcrypt.genSaltSync(10)
 
@@ -24,7 +23,7 @@ export default function SignupPage() {
 
   //state for checking any errors
   const [submitted, setSubmitted] = useState(false);
-  const [error, setError] = useState(false);
+  const [error, setError] = useState({});
   //to handle when the form is being submitted
   const saveUser = async (e) => {
     e.preventDefault();
@@ -46,55 +45,21 @@ export default function SignupPage() {
         },
         body: JSON.stringify(body),
       });
-      const data = await data.json();
       navigate('/');
+      const data = await data.json();
+      console.log(data, 'success');
     } catch (error) {
       console.log('saveUser fetch /api/signup: ERROR: ', error);
     }
-    // .then((resp) => resp.json())
-    // .then((data) => {
-    //   console.log(data);
-    // })
-    // .then((data) => {
-    //   console.log(data);
-    //   // Redirect to the home page after successful signup
-    //
-    // })
   };
   //message when form is properly submitted
-  const success = () => {
-    return (
-      <div
-        className='success'
-        style={{
-          display: submitted ? '' : 'none',
-        }}
-      >
-        <h1>user {username} successfully registered!</h1>
-      </div>
-    );
-  };
-  //message when form is incorrect.
-  const errorMessage = () => {
-    return (
-      <div
-        className='error'
-        style={{
-          display: submitted ? '' : 'none',
-        }}
-      >
-        <h1>Please enter all the fields</h1>
-      </div>
-    );
-  };
-
   return (
     <html data-theme='night'>
       <div
         className='signUpForm'
-        class='h-screen flex items-center justify-center'
+        class='h-screen flex items-center justify-around mx-10'
       >
-        <h1 class='mb-4 text-4xl font-extrabold leading-none tracking-tight text-gray-900 md:text-5xl lg:text-6xl dark:text-white'>
+        <h1 class=' mb-4 text-4xl font-extrabold leading-none tracking-tight text-gray-900 md:text-5xl lg:text-6xl dark:text-white '>
           Create an account.
         </h1>
         <form class='space-y-4'>
