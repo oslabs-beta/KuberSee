@@ -45,7 +45,7 @@ export default function SignupPage() {
         },
         body: JSON.stringify(body),
       });
-      navigate('/');
+      navigate('/home');
       const data = await data.json();
       console.log(data, 'success');
     } catch (error) {
