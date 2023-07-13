@@ -3,14 +3,14 @@ const k8s = require('@kubernetes/client-node');
 const { cp } = require('fs');
 
 
-apiController.getMetrics = async (req, res, next)=> {
+apiController.getMetrics = async (req, res, next) => {
     const kc = new k8s.KubeConfig();
     kc.loadFromDefault();
-    
+
     const k8sApi = kc.makeApiClient(k8s.CoreV1Api);
     const metricsClient = new k8s.Metrics(kc);
     const namespace = "default";
-    
+
     res.locals.topNodes = [];
     res.locals.topPods = [];
     res.locals.namespaces = [];
@@ -29,7 +29,7 @@ apiController.getMetrics = async (req, res, next)=> {
                 });
             });
         });
-    
+
     await k8s.topPods(k8sApi, metricsClient, namespace)
         .then((pods) => {
             pods.map((pod) => {
@@ -41,7 +41,7 @@ apiController.getMetrics = async (req, res, next)=> {
                 if (cpuPercentage === Infinity || typeof cpuPercentage === 'undefined') {
                     cpuPercentage = 0;
                 }
-//                 console.log(pod.Memory);
+                //                 console.log(pod.Memory);
 
                 res.locals.topPods.push({
                     pod: pod.Pod.metadata.name,
@@ -58,7 +58,7 @@ apiController.getMetrics = async (req, res, next)=> {
                 res.locals.namespaces.push(data.body.items[i].metadata.name);
             }
         });
-    
+
     return next();
 }
 
@@ -67,22 +67,37 @@ apiController.getLogs = async (req, res, next) => {
     try {
         const kc = new k8s.KubeConfig();
         kc.loadFromDefault();
-        
+
         const k8sApi = kc.makeApiClient(k8s.CoreV1Api);
         const namespace = "kube-system";
         const podName = 'kube-controller-manager-minikube';
         const containerName = "";
         const tailLines = 100; // Number of lines to fetch
-  
+
         const logsResponse = await k8sApi.readNamespacedPodLog(podName, namespace, containerName, undefined, undefined, undefined, tailLines);
         const data = logsResponse.body;
-  
-        res.locals.logs = data.split('\n');
+        const logs = data.split('\n');
         res.locals.logsKey = `${namespace}=${podName}`;
+        //write logic to parse res.locals.log
+        const newArray = [];
+        logs.forEach((el) => {
+            const splitLog = el.split(/\]/);
+            if (splitLog[1] && splitLog[1].length) {
+                splitLog[1] = splitLog[1].trim()
+            }
+            const log = {
+                "header": splitLog[0],
+                "message": splitLog[1]
+            };
+            newArray.push(log);
+        }
+        );
+        res.locals.logs = newArray;
+        console.log("new Array", newArray);
         return next();
     } catch (error) {
-      console.error("Error fetching logs:", error);
-      return res.status(500).send("Error fetching logs");
+        console.error("Error fetching logs:", error);
+        return res.status(500).send("Error fetching logs");
     }
 }
 
