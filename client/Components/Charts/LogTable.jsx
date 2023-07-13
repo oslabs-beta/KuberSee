@@ -39,6 +39,7 @@ export default function LogTable() {
 
   return (
     <Box sx={{ height: 400, width: '70%', backgroundColor: '#D3D3D3' }}>
+
       <DataGrid
         disableColumnFilter
         disableColumnSelector
@@ -48,9 +49,10 @@ export default function LogTable() {
         slots={{ toolbar: GridToolbar }}
         sx={{
           boxShadow: 2,
-          border: 2,
+          border: 0,
           color: 'black',
           // borderColor: 'primary.light',
+
           '& .MuiDataGrid-cell:hover': {
             color: 'primary.light',
           },

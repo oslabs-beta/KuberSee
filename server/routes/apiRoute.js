@@ -12,6 +12,7 @@ router.get('/metrics', apiController.getMetrics, (req, res) => {
     namespace: res.locals.namespaces,
     topPods: res.locals.topPods,
     topNodes: res.locals.topNodes,
+    totalPods: res.locals.totalPods
   });
 });
 

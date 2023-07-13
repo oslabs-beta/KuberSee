@@ -89,10 +89,10 @@ const ChartTestTwo = ({ changeStats = [] }) => {
       .data([data])
       .join('path')
       .attr('d', valueLine)
-      .attr('fill', 'none')
-      .attr('clip-path', 'url(#rectangle-clip)') // clip the rectangle
-      .attr('stroke', 'steelblue')
-      .attr('stroke-width', 1.5);
+      .attr("fill", "none")
+      .attr("clip-path", "url(#rectangle-clip)") // clip the rectangle
+      .attr("stroke", "steelblue")
+      .attr("stroke-width", 4.5)
 
     // returning a filtered array 'data' of data that is newer than the lookback and append the points to barGroup.
     data = data.filter((a) => a.timestamp > lookback);
@@ -175,7 +175,7 @@ const ChartTestTwo = ({ changeStats = [] }) => {
       changeStats([
         { id: 1, name: 'Namespaces', value: metrics.namespace.length },
         { id: 2, name: 'Nodes', value: metrics.topNodes.length },
-        { id: 3, name: 'Pods', value: metrics.topPods.length },
+        { id: 3, name: 'Pods', value: metrics.totalPods },
       ]);
       const mapArray = metrics.topPods.map((el) => {
         return {
