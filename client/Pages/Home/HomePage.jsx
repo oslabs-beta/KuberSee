@@ -2,7 +2,6 @@ import React from 'react';
 import LogDashboard from '../../Components/Dashboard/LogDashboard.jsx';
 import MetricsDashboard from '../../Components/Dashboard/MetricsDashboard.jsx';
 import Stats from '../../Components/TotalStats/Stats.jsx';
-import ChartTestTwo from '../../Components/LineChart/CPULineChart.jsx';
 import Dashboard from '../../Components/Dashboard/Dashboard.jsx';
 import { useState } from 'react';
 import CPULineChart from '../../Components/LineChart/CPULineChart.jsx';
