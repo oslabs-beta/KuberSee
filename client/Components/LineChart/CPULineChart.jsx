@@ -1,7 +1,7 @@
 import React, { useRef, useEffect } from 'react';
 import * as d3 from 'd3';
 
-const CPULineChart = ({ changeStats = [] }) => {
+const CPULineChart = ({ dataRef }) => {
   const svgRef = useRef(); //creating a variable to connect the ref prop that we
 
   function initialize(width, height) {
@@ -72,8 +72,11 @@ const CPULineChart = ({ changeStats = [] }) => {
 
     barGroup.selectAll('path').data([data]).exit().remove();
 
+    //subtracted 5 seconds from lookback to create additional buffer on the clip. 
+    const adjustLookback = new Date(lookback)
+    adjustLookback.setSeconds(adjustLookback.getSeconds() - 5);
     // specifes what date from the plot that is older than the lookback.
-    const to_remove = data.filter((a) => a.timestamp < lookback);
+    const to_remove = data.filter((a) => a.timestamp < adjustLookback);
     barGroup.selectAll('circle').data(to_remove).exit().remove();
 
     var valueLine = d3
@@ -95,7 +98,7 @@ const CPULineChart = ({ changeStats = [] }) => {
       .attr("stroke-width", 4.5)
 
     // returning a filtered array 'data' of data that is newer than the lookback and append the points to barGroup.
-    data = data.filter((a) => a.timestamp > lookback);
+    data = data.filter((a) => a.timestamp > adjustLookback);
     barGroup.selectAll('g').data(data).enter().append('circle');
 
     barGroup
@@ -120,6 +123,7 @@ const CPULineChart = ({ changeStats = [] }) => {
 
     var x_axis = d3.axisBottom().scale(xScale);
     xScaleGroup
+      // .transition()
       .attr(
         'transform',
         'translate(0,' + (graph.attr('height') - room_for_axis) + ')'
@@ -134,12 +138,6 @@ const CPULineChart = ({ changeStats = [] }) => {
     return data; // return the updated filter data.
   }
 
-  // function new_point(last_point, scale) {
-  //   const walk = (Math.random() - 0.5) * scale
-  //   return last_point + walk
-  // }
-  const strictIsoParse = d3.utcParse('%Y-%m-%dT%H:%M:%S.%LZ'); // need to use d3's isoParse: https://github.com/d3/d3-time-format
-
   useEffect(() => {
     const scale = 0.2;
     const lookback_s = 30;
@@ -149,58 +147,19 @@ const CPULineChart = ({ changeStats = [] }) => {
     const width = 960;
     const graphVars = initialize(width, width * 0.7);
 
-    let data = [];
-
-    // this is only if we need to plot historical data
-    // data.forEach((d) => {
-    //   d.Date = strictIsoParse(d.Date);
-    //   // console.log(d.Date);
-    //   d.cpuPercent = +d.cpuPercent;
-    // });
-
     var lookback = new Date(now); // creates a copy of now's date
     lookback.setSeconds(lookback.getSeconds() - lookback_s); // go back in time by 30 seconds
 
-    render(data, now, lookback, graphVars); // invoke to show first graph
+    render(dataRef.current, now, lookback, graphVars); // invoke to show first graph
 
     const updateIntervalMs = 200;
     const intervalID = setInterval(async function () {
-      const response = await fetch('/api/metrics');
-      const metrics = await response.json();
-      const pod = metrics.topPods[0];
-      // console.log('all', metrics);
-      // console.log('name', metrics.namespace);
-      // console.log('nodes', metrics.topNodes);
-      // console.log('pods', metrics.topPods);
-      changeStats([
-        { id: 1, name: 'Namespaces', value: metrics.namespace.length },
-        { id: 2, name: 'Nodes', value: metrics.topNodes.length },
-        { id: 3, name: 'Pods', value: metrics.totalPods },
-      ]);
-      const mapArray = metrics.topPods.map((el) => {
-        return {
-          podName: el.pod,
-          cpuCurrentUsage: el.cpuCurrentUsage,
-          timestamp: strictIsoParse(new Date().toISOString()),
-        };
-      });
-      // console.log(mapArray);
-      data.push(...mapArray);
-      // console.log(mapArray);
-      // console.log(pod);
-
-      // data.push({
-      //   podName: pod.pod,
-      //   cpuCurrentUsage: pod.cpuCurrentUsage * 100000, // this value is a percentage
-      //   timestamp: strictIsoParse(new Date().toISOString()) // convert the date to string and then use the parse method for D3
-      // })
-
       // Move time forward
       now = new Date();
       lookback = new Date(now);
       lookback.setSeconds(lookback.getSeconds() - lookback_s);
 
-      data = render(data, now, lookback, graphVars); // reassigning data with the newly pushed data.
+      dataRef.current = render(dataRef.current, now, lookback, graphVars); // reassigning data with the newly pushed data.
     }, updateIntervalMs);
     return () => {
       clearInterval(intervalID); // once the component is removed, it will perform a clean up. Don't want the setInterval to run in the background even if the component is running in the background.
