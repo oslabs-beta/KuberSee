@@ -2,9 +2,10 @@ import React from 'react';
 import LogDashboard from '../../Components/Dashboard/LogDashboard.jsx';
 import MetricsDashboard from '../../Components/Dashboard/MetricsDashboard.jsx';
 import Stats from '../../Components/TotalStats/Stats.jsx';
-import ChartTestTwo from '../../Components/LineChart/ChartTestTwo.jsx';
+import ChartTestTwo from '../../Components/LineChart/CPULineChart.jsx';
 import Dashboard from '../../Components/Dashboard/Dashboard.jsx';
 import { useState } from 'react';
+import CPULineChart from '../../Components/LineChart/CPULineChart.jsx';
 
 export default function HomePage() {
   const [stats, setStats] = useState([
@@ -14,7 +15,7 @@ export default function HomePage() {
   ]);
   return (
     <div>
-      <ChartTestTwo changeStats={setStats} />
+      <CPULineChart changeStats={setStats} />
       <Dashboard stats={stats} />
       <LogDashboard />
     </div>

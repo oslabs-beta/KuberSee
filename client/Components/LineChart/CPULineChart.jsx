@@ -1,7 +1,7 @@
 import React, { useRef, useEffect } from 'react';
 import * as d3 from 'd3';
 
-const ChartTestTwo = ({ changeStats = [] }) => {
+const CPULineChart = ({ changeStats = [] }) => {
   const svgRef = useRef(); //creating a variable to connect the ref prop that we
 
   function initialize(width, height) {
@@ -210,4 +210,4 @@ const ChartTestTwo = ({ changeStats = [] }) => {
   return <svg ref={svgRef}></svg>;
 };
 
-export default ChartTestTwo;
+export default CPULineChart;
