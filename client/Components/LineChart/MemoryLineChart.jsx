@@ -1,7 +1,7 @@
 import React, { useRef, useEffect } from 'react';
 import * as d3 from 'd3';
 
-const CPULineChart = ({ dataRef }) => {
+const MemoryLineChart = ({ dataRef }) => {
   const svgRef = useRef(); //creating a variable to connect the ref prop that we
 
   function initialize(width, height) {
@@ -47,7 +47,7 @@ const CPULineChart = ({ dataRef }) => {
     const radius = graph.attr('width') / 200.0; // for the circle
 
     // const xValues = data.map(a => a.Date);
-    // const yValues = data.map((a) => a.cpuCurrentUsage);
+    // const yValues = data.map((a) => a.memoryCurrentUsage);
 
     const xScale = d3
       .scaleTime() //accepts a date as a value and helps us compare the time
@@ -60,7 +60,7 @@ const CPULineChart = ({ dataRef }) => {
       .domain([
         0,
         d3.max(data, (d) => {
-          return d.cpuCurrentUsage * 2;
+          return d.memoryCurrentUsage * 2;
         }),
       ])
       .range([graph.attr('height') - room_for_axis, 0]); // range deals with the position of where things get plotted (area)
@@ -85,7 +85,7 @@ const CPULineChart = ({ dataRef }) => {
         return xScale(d.timestamp);
       })
       .y((d) => {
-        return yScale(d.cpuCurrentUsage);
+        return yScale(d.memoryCurrentUsage);
       });
     barGroup
       .selectAll('.temp-path')
@@ -108,7 +108,7 @@ const CPULineChart = ({ dataRef }) => {
         return xScale(d.timestamp); //tells us where on the graph that the plot should be relative to the chart's width.
       })
       .attr('cy', function (d) {
-        return yScale(d.cpuCurrentUsage); // tells us where on the graph that the plot should be relative to chart's height.
+        return yScale(d.memoryCurrentUsage); // tells us where on the graph that the plot should be relative to chart's height.
       })
       .attr('r', radius)
       .attr('clip-path', 'url(#rectangle-clip)') // clip the rectangle
@@ -118,7 +118,7 @@ const CPULineChart = ({ dataRef }) => {
 
     // data.forEach((d) => {
     //   d.Date = d.timestamp;
-    //   d.cpuPercent = +d.cpuCurrentUsage;
+    //   d.memoryCurrentUsage = +d.memoryCurrentUsage;
     // });
 
     var x_axis = d3.axisBottom().scale(xScale);
@@ -169,4 +169,4 @@ const CPULineChart = ({ dataRef }) => {
   return <svg ref={svgRef}></svg>;
 };
 
-export default CPULineChart;
+export default MemoryLineChart;
