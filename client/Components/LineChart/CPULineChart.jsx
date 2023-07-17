@@ -47,7 +47,7 @@ const CPULineChart = ({ dataRef }) => {
     const radius = graph.attr('width') / 200.0; // for the circle
 
     // const xValues = data.map(a => a.Date);
-    const yValues = data.map((a) => a.cpuCurrentUsage);
+    // const yValues = data.map((a) => a.cpuCurrentUsage);
 
     const xScale = d3
       .scaleTime() //accepts a date as a value and helps us compare the time
@@ -139,7 +139,7 @@ const CPULineChart = ({ dataRef }) => {
   }
 
   useEffect(() => {
-    const scale = 0.2;
+    // const scale = 0.2;
     const lookback_s = 30;
 
     // initialize

@@ -1,7 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
 import LogDashboard from '../../Components/Dashboard/LogDashboard.jsx';
-import MetricsDashboard from '../../Components/Dashboard/MetricsDashboard.jsx';
-import Stats from '../../Components/TotalStats/Stats.jsx';
 import Dashboard from '../../Components/Dashboard/Dashboard.jsx';
 import CPULineChart from '../../Components/LineChart/CPULineChart.jsx';
 import * as d3 from 'd3';
@@ -43,7 +41,6 @@ export default function HomePage() {
       <CPULineChart dataRef={dataRef} />
       <Dashboard stats={stats} />
       <LogDashboard />
-
     </div>
   );
 }
