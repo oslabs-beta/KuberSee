@@ -40,7 +40,9 @@ export default function HomePage() {
   }, []);
   return (
     <>
+      <h2>CPU</h2>
       <CPULineChart dataRef={dataRef} />
+      <h2>Memory</h2>
       <MemoryLineChart dataRef={dataRef} />
       <Dashboard stats={stats} />
       <LogDashboard />
