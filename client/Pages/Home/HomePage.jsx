@@ -12,7 +12,9 @@ export default function HomePage() {
     { id: 2, name: 'Nodes', value: 0 },
     { id: 3, name: 'Pods', value: 0 },
   ]);
+  const namespacesRef = useRef([]);
   const dataRef = useRef([]); // possible solution: create a ref that will not re-render across components
+
   useEffect(() => {
     const strictIsoParse = d3.utcParse('%Y-%m-%dT%H:%M:%S.%LZ'); // need to use d3's isoParse: https://github.com/d3/d3-time-format
     const updateIntervalMs = 1000;
@@ -21,11 +23,13 @@ export default function HomePage() {
       const metrics = await res1.json();
       const res2 = await fetch('/api/metrics/stats');
       const stats = await res2.json();
+
       setStats([
         { id: 1, name: 'Namespaces', value: stats.totalNamespaces },
         { id: 2, name: 'Nodes', value: stats.totalNodes },
         { id: 3, name: 'Pods', value: stats.totalPods },
       ]);
+
       const mapArray = metrics.topPods.map((el) => {
         return {
           podName: el.pod,
@@ -34,6 +38,14 @@ export default function HomePage() {
           timestamp: strictIsoParse(new Date().toISOString()),
         };
       });
+
+      const newNamespaces = [...stats.namespaces];
+      // Update namespacesRef.current only if there are new namespaces
+      if (
+        JSON.stringify(namespacesRef.current) !== JSON.stringify(newNamespaces)
+      ) {
+        namespacesRef.current = [...newNamespaces];
+      }
       dataRef.current.push(...mapArray);
     }, updateIntervalMs);
     return () => {
@@ -42,13 +54,12 @@ export default function HomePage() {
   }, []);
   return (
     <>
-      <DropdownMenu />
+      <DropdownMenu namespaces={namespacesRef.current} />
       <Dashboard stats={stats} />
       <h2>CPU</h2>
       <CPULineChart dataRef={dataRef} />
       <h2>Memory</h2>
       <MemoryLineChart dataRef={dataRef} />
-      <CPULineChart dataRef={dataRef} />
       <LogDashboard />    
     </>
   );

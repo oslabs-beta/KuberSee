@@ -6,9 +6,9 @@ import Fade from '@mui/material/Fade';
 import Box from '@mui/material/Box';
 import { alpha } from '@mui/system';
 
-export default function DropdownMenu() {
+export default function DropdownMenu({ namespaces=[] }) {
   const [anchorEl, setAnchorEl] = useState(null);
-  const [namespaces, setNamespaces] = useState([]);
+  // const [namespaces, setNamespaces] = useState([]);
 
   const open = Boolean(anchorEl);
   const handleClick = (event) => {
@@ -18,20 +18,20 @@ export default function DropdownMenu() {
     setAnchorEl(null);
   };
 
-  useEffect(() => {
-    const fetchNamespace = async () => {
-      try {
-        const response = await fetch('/api/metrics');
-        const data = await response.json();
-        console.log(data);
-        //set the namespace state.
-        setNamespaces(data.namespace);
-      } catch (error) {
-        console.log('Error fetching namespaces', error);
-      }
-    };
-    fetchNamespace();
-  }, []);
+  // useEffect(() => {
+  //   const fetchNamespace = async () => {
+  //     try {
+  //       const response = await fetch('/api/metrics/stats');
+  //       const data = await response.json();
+  //       console.log(data);
+  //       //set the namespace state.
+  //       setNamespaces(data.namespaces);
+  //     } catch (error) {
+  //       console.log('Error fetching namespaces', error);
+  //     }
+  //   };
+  //   fetchNamespace();
+  // }, []);
 
   return (
     <Box display='flex' justifyContent='center' alignItems='center'>
@@ -56,12 +56,12 @@ export default function DropdownMenu() {
           onClose={handleClose}
           TransitionComponent={Fade}
         >
-          {namespaces &&
-            namespaces.map((namespace) => (
-              <MenuItem key={namespace} onClick={handleClose}>
+          {namespaces && namespaces.map((namespace, i) =>
+          (
+            <MenuItem key={namespace} onClick={handleClose}>
                 {namespace}
-              </MenuItem>
-            ))}
+            </MenuItem>
+          ))}
         </Menu>
       </div>
     </Box>
