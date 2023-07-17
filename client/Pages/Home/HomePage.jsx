@@ -2,6 +2,7 @@ import React, { useState, useEffect, useRef } from 'react';
 import LogDashboard from '../../Components/Dashboard/LogDashboard.jsx';
 import Dashboard from '../../Components/Dashboard/Dashboard.jsx';
 import CPULineChart from '../../Components/LineChart/CPULineChart.jsx';
+import DropdownMenu from '../../Components/Dropdown/DropdownButton.jsx';
 import * as d3 from 'd3';
 import MemoryLineChart from '../../Components/LineChart/MemoryLineChart.jsx';
 
@@ -11,7 +12,7 @@ export default function HomePage() {
     { id: 2, name: 'Nodes', value: 0 },
     { id: 3, name: 'Pods', value: 0 },
   ]);
-  const dataRef = useRef([]); // possible solution: create a ref that will not re-render across components 
+  const dataRef = useRef([]); // possible solution: create a ref that will not re-render across components
   useEffect(() => {
     const strictIsoParse = d3.utcParse('%Y-%m-%dT%H:%M:%S.%LZ'); // need to use d3's isoParse: https://github.com/d3/d3-time-format
     const updateIntervalMs = 1000;
@@ -41,12 +42,14 @@ export default function HomePage() {
   }, []);
   return (
     <>
+      <DropdownMenu />
+      <Dashboard stats={stats} />
       <h2>CPU</h2>
       <CPULineChart dataRef={dataRef} />
       <h2>Memory</h2>
       <MemoryLineChart dataRef={dataRef} />
-      <Dashboard stats={stats} />
-      <LogDashboard />
+      <CPULineChart dataRef={dataRef} />
+      <LogDashboard />    
     </>
   );
 }
