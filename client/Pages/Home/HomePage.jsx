@@ -48,8 +48,7 @@ export default function HomePage() {
       <CPULineChart dataRef={dataRef} />
       <h2>Memory</h2>
       <MemoryLineChart dataRef={dataRef} />
-      <CPULineChart dataRef={dataRef} />
-      <LogDashboard />    
+      <LogDashboard />
     </>
   );
 }

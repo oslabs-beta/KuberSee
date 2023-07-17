@@ -1,7 +1,7 @@
 import React, { useRef, useEffect } from 'react';
-import {nest} from 'd3-collection';
+import { nest } from 'd3-collection';
 import * as d3 from 'd3';
-import {selectAll} from 'd3-selection';
+import { selectAll } from 'd3-selection';
 
 const CPULineChart = ({ dataRef }) => {
   const svgRef = useRef(); //creating a variable to connect the ref prop that we
@@ -10,22 +10,22 @@ const CPULineChart = ({ dataRef }) => {
     var margin = { top: 20, right: 175, bottom: 50, left: 100 },
       width = width - margin.left - margin.right,
       height = height - margin.top - margin.bottom;
-    
-    
+
+
     //   var svg = d3.select("#graph").append("svg")
     // .attr("width", width + margin.left + margin.right)
     // .attr("height", height + margin.top + margin.bottom)
     // .append("g") // grouping
     // .attr("class", "graphtoAppendTo")
     // .attr("transform", `translate(${margin.left}, ${margin.top})`);
-    
+
     var graph = d3
       .select(svgRef.current) //select the svg element from the virtual DOM.
       .attr("width", width + margin.left + margin.right)
       .attr("height", height + margin.top + margin.bottom)
       .attr("transform", `translate(${margin.left}, ${margin.top})`);
 
-    var barGroup = graph.append('g');
+    var circleGroup = graph.append('g');
 
     var xScaleGroup = graph.append('g');
 
@@ -39,22 +39,22 @@ const CPULineChart = ({ dataRef }) => {
       .attr('y', 0) // position the y-centre
       .attr('width', width * 2 + 300)
       .attr('height', height);
-    
-    
+
+
     graph.append("text")
-    .attr("text-anchor", "end")
-    .attr("x", width/2+ margin.left)
-    .attr("y", height + margin.bottom/2)
-    .text("Time (seconds)")
+      .attr("text-anchor", "end")
+      .attr("x", width / 2 + margin.left)
+      .attr("y", height + margin.bottom / 2)
+      .text("Time (seconds)")
       .style("fill", "white")
       .attr('font-size', 12)
-    
+
     graph.append("text")
-    .attr("text-anchor", "end")
-    .attr("transform", "rotate(-90)")
-    .attr("x", -height/2+margin.bottom)
-    .attr("y", margin.left/6)
-    .text("CPU (cores)")
+      .attr("text-anchor", "end")
+      .attr("transform", "rotate(-90)")
+      .attr("x", -height / 2 + margin.bottom)
+      .attr("y", margin.left / 6)
+      .text("CPU (cores)")
       .style("fill", "white")
       .attr('font-size', 12)
     //I used this to make the clipping mask to visualize what the size of the graph of was
@@ -67,14 +67,14 @@ const CPULineChart = ({ dataRef }) => {
     //   .style("opacity", .10)
     // .attr("clip-path", "url(#rectangle-clip)") // clip the rectangle
 
-    return [graph, barGroup, xScaleGroup, yScaleGroup, width, margin]; // returns an array of the variables, giving you the reference to the variable.
+    return [graph, circleGroup, xScaleGroup, yScaleGroup, width, margin]; // returns an array of the variables, giving you the reference to the variable.
   }
 
   // updates the graph. data is our data, now is the end time, and lookback is the start time, graph vars is the array of reference of what we returned in initialize.
   function render(data, now, lookback, graphVars) {
     const room_for_axis = 100; // padding for axis
 
-    const [graph, barGroup, xScaleGroup, yScaleGroup, width, margin] = graphVars;
+    const [graph, circleGroup, xScaleGroup, yScaleGroup, width] = graphVars;
 
     const radius = graph.attr('width') / 200.0; // for the circle
 
@@ -84,11 +84,11 @@ const CPULineChart = ({ dataRef }) => {
 
 
     let sumStat = nest()
-    .key(function (d) { return d.podName })
+      .key(function (d) { return d.podName })
       .entries(data);
     // console.log('SUMSTAT', sumStat);
-    
-    
+
+
     //   // add the Line
 
     var color = d3.scaleOrdinal(d3.schemeCategory10);
@@ -116,33 +116,33 @@ const CPULineChart = ({ dataRef }) => {
       .domain([lookback, now])
       .range(['blue', 'red']);
 
-    barGroup.selectAll('path').data(sumStat).exit().remove();
+    circleGroup.selectAll('path').data(sumStat).exit().remove();
     graph.selectAll('text.pod-name').data(sumStat).remove();
 
     graph.selectAll('.pod-name-temp')
-    .data(sumStat)
-    .join('text')
-    .attr('class', 'pod-name')
-    .text(function (d) {
-      return d.key
-    })
-    .style('fill', function(d,i) {
-      return(color(d.key))
-    })
-    .attr('x', width)
-    .attr('y', function (d) {
-       return yScale(d.values[d.values.length-1].cpuCurrentUsage)
-    })
-    .attr('alignment-baseline', 'middle')
-    .attr('dx', 5)
-    .attr('font-size', 12)
+      .data(sumStat)
+      .join('text')
+      .attr('class', 'pod-name')
+      .text(function (d) {
+        return d.key
+      })
+      .style('fill', function (d, i) {
+        return (color(d.key))
+      })
+      .attr('x', width)
+      .attr('y', function (d) {
+        return yScale(d.values[d.values.length - 1].cpuCurrentUsage)
+      })
+      .attr('alignment-baseline', 'middle')
+      .attr('dx', 5)
+      .attr('font-size', 12)
 
     //subtracted 5 seconds from lookback to create additional buffer on the clip. 
     const adjustLookback = new Date(lookback)
     adjustLookback.setSeconds(adjustLookback.getSeconds() - 5);
     // specifes what date from the plot that is older than the lookback.
     const to_remove = data.filter((a) => a.timestamp < adjustLookback);
-    barGroup.selectAll('circle').data(to_remove).exit().remove();
+    circleGroup.selectAll('circle').data(to_remove).exit().remove();
 
     var valueLine = d3
       .line()
@@ -152,12 +152,12 @@ const CPULineChart = ({ dataRef }) => {
       .y((d) => {
         return yScale(d.cpuCurrentUsage);
       });
-    barGroup
+    circleGroup
       .selectAll('.temp-path')
       .data(sumStat)
       .join('path')
       .attr('d', function (d) {
-         return valueLine(d.values)
+        return valueLine(d.values)
       })
       .attr("fill", "none")
       .attr("clip-path", "url(#rectangle-clip)") // clip the rectangle
@@ -165,35 +165,12 @@ const CPULineChart = ({ dataRef }) => {
         return (color(d.key));
       })
       .attr("stroke-width", 4.5)
-    
-    // barGroup.selectAll('.podName-label')
-    //   .data(sumStat)
-    //   .enter()
-    //   .append('text')
-    //   .attr('class', 'pod-name')
-    //   .text(function (d) {
-    //     return d.key
-    //   })
-    //   .style('fill', function(d,i) {
-    //     return(color(d.key))
-    //   })
-    //   .attr('x', width)
-    //   .attr('y', function (d) {
-    //     return yScale(d.values[d.values.length-1].cpuCurrentUsage)
-    //   })
-    //   // .attr('alignment-baseline', 'middle')
-    //   // .attr('dx', 5)
-    //   .attr('font-size', 12)
-    //   .attr("clip-path", "url(#rectangle-clip)")
 
-  
-    // .attr("clip-path", "url(#rectangle-clip)")
-
-    // returning a filtered array 'data' of data that is newer than the lookback and append the points to barGroup.
     data = data.filter((a) => a.timestamp > adjustLookback);
-    barGroup.selectAll('g').data(data).enter().append('circle');
+    circleGroup
+      .selectAll('g').data(data).enter().append('circle');
 
-    barGroup
+    circleGroup
       .selectAll('circle')
       .attr('cx', function (d) {
         // cx = circle's x position (specific svg attribute)
