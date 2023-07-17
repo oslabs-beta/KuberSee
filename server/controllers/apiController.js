@@ -1,6 +1,6 @@
 const apiController = {};
-const k8s = require('@kubernetes/client-node');
-const { cp } = require('fs');
+const k8s = require("@kubernetes/client-node");
+const { cp } = require("fs");
 
 // io.on('connection', (socket) => {
 //   console.log('a user connected');
@@ -25,11 +25,12 @@ apiController.getMetrics = async (req, res, next) => {
 
   const k8sApi = kc.makeApiClient(k8s.CoreV1Api);
   const metricsClient = new k8s.Metrics(kc);
-  const namespace = 'default';
+
+  const { namespace = "default" } = req.body;
 
   res.locals.topNodes = [];
   res.locals.topPods = [];
-  res.locals.namespaces = [];
+
   const currentTime = new Date();
   await k8s.topNodes(k8sApi, metricsClient, namespace).then((nodes) => {
     nodes.map((node) => {
@@ -51,10 +52,10 @@ apiController.getMetrics = async (req, res, next) => {
 
       let cpuPercentage = (pod.CPU.CurrentUsage / pod.CPU.LimitTotal) * 100;
       // console.log(pod.CPU.LimitTotal);
-      if (cpuPercentage === Infinity || typeof cpuPercentage === 'undefined') {
+      if (cpuPercentage === Infinity || typeof cpuPercentage === "undefined") {
         cpuPercentage = 0;
       }
-      //                 console.log(pod.Memory);
+      // console.log(pod.Memory);
 
       res.locals.topPods.push({
         pod: pod.Pod.metadata.name,
@@ -64,10 +65,24 @@ apiController.getMetrics = async (req, res, next) => {
       });
     });
   });
-  
-    await k8sApi.listPodForAllNamespaces().then(data =>
-    res.locals.totalPods = data.body.items.length
-);
+
+  return next();
+};
+
+apiController.getStats = async (req, res, next) => {
+  const kc = new k8s.KubeConfig();
+  kc.loadFromDefault();
+  const k8sApi = kc.makeApiClient(k8s.CoreV1Api);
+
+  res.locals.namespaces = [];
+
+  await k8sApi
+    .listPodForAllNamespaces()
+    .then((data) => (res.locals.totalPods = data.body.items.length));
+
+  await k8sApi
+    .listNode()
+    .then((data) => (res.locals.totalNodes = data.body.items.length));
 
   await k8sApi.listNamespace().then((data) => {
     for (let i in data.body.items) {
@@ -75,11 +90,6 @@ apiController.getMetrics = async (req, res, next) => {
     }
   });
 
-  //   req.io.emit("event", {
-  //         namespace: res.locals.namespaces,
-  //         topPods: res.locals.topPods,
-  //         todNodes: res.locals.topNodes,
-  //   });
   return next();
 };
 
@@ -89,9 +99,9 @@ apiController.getLogs = async (req, res, next) => {
     kc.loadFromDefault();
 
     const k8sApi = kc.makeApiClient(k8s.CoreV1Api);
-    const namespace = 'kube-system';
-    const podName = 'kube-controller-manager-minikube';
-    const containerName = '';
+    const namespace = "kube-system";
+    const podName = "kube-controller-manager-minikube";
+    const containerName = "";
     const tailLines = 100; // Number of lines to fetch
 
     const logsResponse = await k8sApi.readNamespacedPodLog(
@@ -104,7 +114,7 @@ apiController.getLogs = async (req, res, next) => {
       tailLines
     );
     const data = logsResponse.body;
-    const logs = data.split('\n');
+    const logs = data.split("\n");
     res.locals.logsKey = `${namespace}=${podName}`;
     //write logic to parse res.locals.log
     const newArray = [];
@@ -121,11 +131,11 @@ apiController.getLogs = async (req, res, next) => {
       newArray.push(log);
     });
     res.locals.logs = newArray;
-    console.log('new Array', newArray);
+    console.log("new Array", newArray);
     return next();
   } catch (error) {
-    console.error('Error fetching logs:', error);
-    return res.status(500).send('Error fetching logs');
+    console.error("Error fetching logs:", error);
+    return res.status(500).send("Error fetching logs");
   }
 };
 
