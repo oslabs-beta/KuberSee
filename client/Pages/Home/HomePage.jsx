@@ -3,6 +3,7 @@ import LogDashboard from '../../Components/Dashboard/LogDashboard.jsx';
 import Dashboard from '../../Components/Dashboard/Dashboard.jsx';
 import CPULineChart from '../../Components/LineChart/CPULineChart.jsx';
 import * as d3 from 'd3';
+import MemoryLineChart from '../../Components/LineChart/MemoryLineChart.jsx';
 
 export default function HomePage() {
   const [stats, setStats] = useState([
@@ -26,6 +27,7 @@ export default function HomePage() {
         return {
           podName: el.pod,
           cpuCurrentUsage: el.cpuCurrentUsage,
+          memoryCurrentUsage: el.memoryCurrentUsage,
           timestamp: strictIsoParse(new Date().toISOString()),
         };
       });
@@ -37,10 +39,11 @@ export default function HomePage() {
     };
   }, []);
   return (
-    <div>
+    <>
       <CPULineChart dataRef={dataRef} />
+      <MemoryLineChart dataRef={dataRef} />
       <Dashboard stats={stats} />
       <LogDashboard />
-    </div>
+    </>
   );
 }
