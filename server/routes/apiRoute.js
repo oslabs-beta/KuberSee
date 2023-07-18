@@ -3,19 +3,14 @@ const router = express.Router();
 const apiController = require("../controllers/apiController");
 
 // define the home page route
-router.get("/metrics", apiController.getMetrics, (req, res) => {
-  // req.io.emit("event", {
-  //      namespace: res.locals.namespaces,
-  //      topPods: res.locals.topPods,
-  //      todNodes: res.locals.topNodes,
-  // });
+router.get("/metrics/:namespace", apiController.getMetrics, (req, res) => {
   return res.status(200).json({
     topPods: res.locals.topPods,
     topNodes: res.locals.topNodes,
   });
 });
 
-router.get("/metrics/stats", apiController.getStats, (req, res) => {
+router.get("/stats", apiController.getStats, (req, res) => {
   return res.status(200).json({
     namespaces: res.locals.namespaces,
     totalNamespaces: res.locals.namespaces.length,

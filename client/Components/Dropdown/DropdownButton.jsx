@@ -6,9 +6,8 @@ import Fade from '@mui/material/Fade';
 import Box from '@mui/material/Box';
 import { alpha } from '@mui/system';
 
-export default function DropdownMenu() {
+export default function DropdownMenu({ changeNamespace, namespaces=[] }) {
   const [anchorEl, setAnchorEl] = useState(null);
-  const [namespaces, setNamespaces] = useState([]);
 
   const open = Boolean(anchorEl);
   const handleClick = (event) => {
@@ -17,21 +16,6 @@ export default function DropdownMenu() {
   const handleClose = () => {
     setAnchorEl(null);
   };
-
-  useEffect(() => {
-    const fetchNamespace = async () => {
-      try {
-        const response = await fetch('/api/metrics');
-        const data = await response.json();
-        console.log(data);
-        //set the namespace state.
-        setNamespaces(data.namespace);
-      } catch (error) {
-        console.log('Error fetching namespaces', error);
-      }
-    };
-    fetchNamespace();
-  }, []);
 
   return (
     <Box display='flex' justifyContent='center' alignItems='center'>
@@ -56,12 +40,15 @@ export default function DropdownMenu() {
           onClose={handleClose}
           TransitionComponent={Fade}
         >
-          {namespaces &&
-            namespaces.map((namespace) => (
-              <MenuItem key={namespace} onClick={handleClose}>
+          {namespaces && namespaces.map((namespace) =>
+          (
+            <MenuItem key={namespace} onClick={(e) => {
+              changeNamespace(namespace);
+              handleClose();
+            }}>
                 {namespace}
-              </MenuItem>
-            ))}
+            </MenuItem>
+          ))}
         </Menu>
       </div>
     </Box>
