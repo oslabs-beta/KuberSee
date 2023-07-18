@@ -20,6 +20,7 @@ export default function HomePage() {
     const strictIsoParse = d3.utcParse('%Y-%m-%dT%H:%M:%S.%LZ'); // need to use d3's isoParse: https://github.com/d3/d3-time-format
     const updateIntervalMs = 1000;
     const intervalID = setInterval(async function () {
+
       try {
         console.log(currentNamespace);
         const res1 = await fetch(`/api/metrics/${currentNamespace}`);
@@ -49,16 +50,19 @@ export default function HomePage() {
         ) {
           namespacesRef.current = [...newNamespaces];
         }
+        
         dataRef.current.push(...mapArray);
-      
+
       } catch (error) {
         console.log(error);
       }
+
     }, updateIntervalMs);
+
     return () => {
       clearInterval(intervalID); // once the component is removed, it will perform a clean up. Don't want the setInterval to run in the background even if the component is running in the background.
     };
-  }, []);
+  }, [currentNamespace]);
   return (
     <>
       <Dashboard stats={stats} />
@@ -67,7 +71,7 @@ export default function HomePage() {
       <CPULineChart dataRef={dataRef} />
       <h2>Memory</h2>
       <MemoryLineChart dataRef={dataRef} />
-      <LogDashboard />    
+      <LogDashboard />
     </>
   );
 }

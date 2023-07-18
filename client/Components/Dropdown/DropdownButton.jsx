@@ -43,7 +43,7 @@ export default function DropdownMenu({ changeNamespace, namespaces=[] }) {
           {namespaces && namespaces.map((namespace) =>
           (
             <MenuItem key={namespace} onClick={(e) => {
-              changeNamespace(e.target.value)
+              changeNamespace(namespace);
               handleClose();
             }}>
                 {namespace}
