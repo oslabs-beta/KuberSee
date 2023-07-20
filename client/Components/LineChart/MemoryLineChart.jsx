@@ -3,7 +3,7 @@ import * as d3 from 'd3';
 import { nest } from 'd3-collection';
 import { selectAll } from 'd3-selection';
 
-const MemoryLineChart = ({ dataRef }) => {
+const MemoryLineChart = ({ dataRef, socket }) => {
   const svgRef = useRef(); //creating a variable to connect the ref prop that we
 
   function initialize(width, height) {

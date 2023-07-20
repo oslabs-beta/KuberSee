@@ -40,10 +40,12 @@ app.use('/auth', authRoute);
 //   console.log(`Listening on port ${PORT}... kubersee app`);
 // });
 
+let data;
 // looks for an event with "connection" and when you listen, you need a callback function. for future ref when someone connects to the server. 
 io.on("connection", (socket) => {
-  console.log(`User connected: ${socket.id}`);
-
+  console.log(`New user connected: ${socket.id}`);
+  if (data) clearInterval(data);
+  setInterval(() => socket.emit('hello',))
   socket.on("disconnect", () => {
     console.log("User Disconnected", socket.id);
   }) // listens for when a user disconnects from the server. 

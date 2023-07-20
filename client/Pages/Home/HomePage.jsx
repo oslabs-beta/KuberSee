@@ -74,7 +74,7 @@ export default function HomePage({ socket }) {
       <Dashboard stats={stats} />
       <DropdownMenu changeNamespace={setCurrentNamespace} namespaces={namespacesRef.current} />
       <h2>CPU</h2>
-      <CPULineChart dataRef={dataRef} />
+      <CPULineChart dataRef={dataRef} socket={socket} />
       <h2>Memory</h2>
       <MemoryLineChart dataRef={dataRef} />
       <LogDashboard />
