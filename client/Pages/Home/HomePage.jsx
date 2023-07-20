@@ -6,7 +6,7 @@ import DropdownMenu from '../../Components/Dropdown/DropdownButton.jsx';
 import * as d3 from 'd3';
 import MemoryLineChart from '../../Components/LineChart/MemoryLineChart.jsx';
 
-export default function HomePage() {
+export default function HomePage({ socket }) {
   const [stats, setStats] = useState([
     { id: 1, name: 'Namespaces', value: 0 },
     { id: 2, name: 'Nodes', value: 0 },
@@ -22,7 +22,7 @@ export default function HomePage() {
     const intervalID = setInterval(async function () {
 
       try {
-      
+
         console.log(currentNamespace);
         const res1 = await fetch(`/api/metrics/${currentNamespace}`);
         const metrics = await res1.json();
@@ -43,7 +43,7 @@ export default function HomePage() {
             timestamp: strictIsoParse(new Date().toISOString()),
           };
         });
-  
+
         const newNamespaces = [...stats.namespaces];
         // Update namespacesRef.current only if there are new namespaces
         if (
@@ -51,7 +51,7 @@ export default function HomePage() {
         ) {
           namespacesRef.current = [...newNamespaces];
         }
-        
+
         dataRef.current.push(...mapArray);
 
       } catch (error) {
@@ -68,7 +68,7 @@ export default function HomePage() {
   useEffect(() => {
     dataRef.current = [];
     console.log('USE EFFECT', dataRef);
-  },  [currentNamespace])
+  }, [currentNamespace])
   return (
     <>
       <Dashboard stats={stats} />
