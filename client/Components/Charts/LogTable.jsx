@@ -22,13 +22,16 @@ export default function LogTable() {
   ];
 
   useEffect(() => {
-    console.log('Log Table UseEffect');
-    fetch('/api/logs')
-      .then((data) => data.json())
-      .then((res) => {
-        setRows(res['kube-system=kube-controller-manager-minikube']);
-      })
-      .catch((err) => console.log(err));
+    const fetchlogs = () => {
+      console.log("fetching logs");
+      fetch('/api/logs/kube-system/kube-controller-manager-minikube')
+        .then((data) => data.json())
+        .then((res) => {
+          setRows(res);
+        })
+        .catch((err) => console.log(err));
+    }
+    setInterval(fetchlogs, 200)
   }, []);
 
   // Otherwise filter will be applied on fields such as the hidden column id

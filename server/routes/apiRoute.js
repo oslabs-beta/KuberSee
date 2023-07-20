@@ -19,8 +19,8 @@ router.get("/stats", apiController.getStats, (req, res) => {
   });
 });
 
-router.get("/logs", apiController.getLogs, (req, res) => {
-  return res.status(200).json({ [res.locals.logsKey]: res.locals.logs });
+router.get("/logs/:namespace/:podname", apiController.getLogs, (req, res) => {
+  return res.status(200).json(res.locals.logs);
 });
 
 module.exports = router;
