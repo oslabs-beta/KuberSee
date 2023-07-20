@@ -14,12 +14,12 @@ export default function HomePage() {
     { id: 3, name: 'Pods', value: 0 },
   ]);
   //setting state for current pod
-  const [currentPod, setCurrentPod] = useState('default');
+  const [currentPod, setCurrentPod] = useState('');
   const [currentNamespace, setCurrentNamespace] = useState('default');
   const namespacesRef = useRef([]);
   const dataRef = useRef([]);
   const podRef = useRef([]);
-  const podDataRef = useRef([]);
+  const [log, setLog] = useState([{ id: 1, header: '', message: '' }]);
   // possible solution: create a ref that will not re-render across components
 
   useEffect(() => {
@@ -48,6 +48,11 @@ export default function HomePage() {
           };
         });
 
+        const newPods = metrics.topPods.map((el) => el.pod);
+        if (podRef.current !== newPods) {
+          podRef.current = [...newPods];
+        }
+
         const newNamespaces = [...stats.namespaces];
         // Update namespacesRef.current only if there are new namespaces
         if (
@@ -67,10 +72,24 @@ export default function HomePage() {
       clearInterval(intervalID); // once the component is removed, it will perform a clean up. Don't want the setInterval to run in the background even if the component is running in the background.
     };
   }, [currentNamespace]);
-
+  useEffect(() => {
+    console.log('WE ARE IN USE EFFECT');
+    const fetchlogs = () => {
+      if (currentPod != '') {
+        // console.log("fetching logs");
+        fetch(`/api/logs/${currentNamespace}/${currentPod}`)
+          .then((data) => data.json())
+          .then((res) => {
+            setLog(res);
+          })
+          .catch((err) => console.log(err));
+      }
+    };
+    fetchlogs();
+  }, [currentPod]);
   useEffect(() => {
     dataRef.current = [];
-    console.log('USE EFFECT', dataRef);
+    // console.log('USE EFFECT', dataRef);
   }, [currentNamespace]);
   return (
     <>
@@ -83,8 +102,8 @@ export default function HomePage() {
       <CPULineChart dataRef={dataRef} />
       <h2>Memory</h2>
       <MemoryLineChart dataRef={dataRef} />
-      <DropdownPods changePods={setCurrentPod} pods={podDataRef.current} />
-      <LogDashboard />
+      <DropdownPods changePods={setCurrentPod} pods={podRef.current} />
+      <LogDashboard log={log} />
     </>
   );
 }
