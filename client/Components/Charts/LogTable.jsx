@@ -11,7 +11,7 @@ export default function LogTable() {
   //   visibleFields: VISIBLE_FIELDS,
   //   rowLength: 100,
   // });
-  const [rows, setRows] = useState([{ id: 1, header: 'Snow', message: 'Jon' }]);
+  const [rows, setRows] = useState([{ id: 1, header: '', message: '' }]);
   const columns = [
     { field: 'header', headerName: 'Header', width: 500 },
     {

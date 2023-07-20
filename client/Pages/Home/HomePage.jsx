@@ -5,6 +5,7 @@ import CPULineChart from '../../Components/LineChart/CPULineChart.jsx';
 import DropdownMenu from '../../Components/Dropdown/DropdownButton.jsx';
 import * as d3 from 'd3';
 import MemoryLineChart from '../../Components/LineChart/MemoryLineChart.jsx';
+import DropdownPods from '../../Components/Dropdown/DropdownPods.jsx';
 
 export default function HomePage() {
   const [stats, setStats] = useState([
@@ -12,17 +13,20 @@ export default function HomePage() {
     { id: 2, name: 'Nodes', value: 0 },
     { id: 3, name: 'Pods', value: 0 },
   ]);
-  const [currentNamespace, setCurrentNamespace] = useState('default')
+  //setting state for current pod
+  const [currentPod, setCurrentPod] = useState('default');
+  const [currentNamespace, setCurrentNamespace] = useState('default');
   const namespacesRef = useRef([]);
-  const dataRef = useRef([]); // possible solution: create a ref that will not re-render across components
+  const dataRef = useRef([]);
+  const podRef = useRef([]);
+  const podDataRef = useRef([]);
+  // possible solution: create a ref that will not re-render across components
 
   useEffect(() => {
     const strictIsoParse = d3.utcParse('%Y-%m-%dT%H:%M:%S.%LZ'); // need to use d3's isoParse: https://github.com/d3/d3-time-format
     const updateIntervalMs = 1000;
     const intervalID = setInterval(async function () {
-
       try {
-      
         console.log(currentNamespace);
         const res1 = await fetch(`/api/metrics/${currentNamespace}`);
         const metrics = await res1.json();
@@ -43,21 +47,20 @@ export default function HomePage() {
             timestamp: strictIsoParse(new Date().toISOString()),
           };
         });
-  
+
         const newNamespaces = [...stats.namespaces];
         // Update namespacesRef.current only if there are new namespaces
         if (
-          JSON.stringify(namespacesRef.current) !== JSON.stringify(newNamespaces)
+          JSON.stringify(namespacesRef.current) !==
+          JSON.stringify(newNamespaces)
         ) {
           namespacesRef.current = [...newNamespaces];
         }
-        
-        dataRef.current.push(...mapArray);
 
+        dataRef.current.push(...mapArray);
       } catch (error) {
         console.log(error);
       }
-
     }, updateIntervalMs);
 
     return () => {
@@ -68,15 +71,19 @@ export default function HomePage() {
   useEffect(() => {
     dataRef.current = [];
     console.log('USE EFFECT', dataRef);
-  },  [currentNamespace])
+  }, [currentNamespace]);
   return (
     <>
       <Dashboard stats={stats} />
-      <DropdownMenu changeNamespace={setCurrentNamespace} namespaces={namespacesRef.current} />
+      <DropdownMenu
+        changeNamespace={setCurrentNamespace}
+        namespaces={namespacesRef.current}
+      />
       <h2>CPU</h2>
       <CPULineChart dataRef={dataRef} />
       <h2>Memory</h2>
       <MemoryLineChart dataRef={dataRef} />
+      <DropdownPods changePods={setCurrentPod} pods={podDataRef.current} />
       <LogDashboard />
     </>
   );
