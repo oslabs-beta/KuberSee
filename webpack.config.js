@@ -22,7 +22,7 @@ module.exports = {
     proxy: {
       '/api': {
         target: 'http://localhost:8080',
-        router: () => 'http://localhost:3001',
+        router: () => 'http://localhost:3000',
       },
     },
   },

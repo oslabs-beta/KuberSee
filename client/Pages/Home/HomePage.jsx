@@ -68,7 +68,11 @@ export default function HomePage({ socket }) {
   useEffect(() => {
     dataRef.current = [];
     console.log('USE EFFECT', dataRef);
-  }, [currentNamespace])
+  }, [currentNamespace]);
+
+  socket.on('msg', (res) => {
+    console.log(res);
+  })
   return (
     <>
       <Dashboard stats={stats} />

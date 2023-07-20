@@ -7,7 +7,7 @@ import SignupPage from '../../Pages/Signup/SignupPage.jsx';
 import NavBar from '../NavBar/NavBar.jsx';
 import io from 'socket.io-client'
 
-const socket = io.connect("http://localhost:3001")
+const socket = io.connect("http://localhost:3000");
 
 const App = () => {
   return (
