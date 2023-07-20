@@ -45,7 +45,7 @@ let data;
 io.on("connection", (socket) => {
   console.log(`New user connected: ${socket.id}`);
   if (data) clearInterval(data);
-  setInterval(() => socket.emit('hello',))
+  // setInterval(() => socket.emit('hello',))
   socket.on("disconnect", () => {
     console.log("User Disconnected", socket.id);
   }) // listens for when a user disconnects from the server. 
