@@ -22,6 +22,7 @@ export default function HomePage() {
     const intervalID = setInterval(async function () {
 
       try {
+      
         console.log(currentNamespace);
         const res1 = await fetch(`/api/metrics/${currentNamespace}`);
         const metrics = await res1.json();
@@ -63,6 +64,11 @@ export default function HomePage() {
       clearInterval(intervalID); // once the component is removed, it will perform a clean up. Don't want the setInterval to run in the background even if the component is running in the background.
     };
   }, [currentNamespace]);
+
+  useEffect(() => {
+    dataRef.current = [];
+    console.log('USE EFFECT', dataRef);
+  },  [currentNamespace])
   return (
     <>
       <Dashboard stats={stats} />
