@@ -29,7 +29,7 @@ apiController.getMetrics = async (req, res, next) => {
 
     const namespace = req.params.namespace;
 
-    console.log("Namespace: ", namespace);
+    // console.log("Namespace: ", namespace);
     res.locals.topNodes = [];
     res.locals.topPods = [];
     const currentTime = new Date();
