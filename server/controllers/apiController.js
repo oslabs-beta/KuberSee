@@ -109,8 +109,8 @@ apiController.getLogs = async (req, res, next) => {
     kc.loadFromDefault();
 
     const k8sApi = kc.makeApiClient(k8s.CoreV1Api);
-    const namespace = "kube-system";
-    const podName = "kube-controller-manager-minikube";
+    const namespace = req.params.namespace;
+    const podName = req.params.podname;
     const containerName = "";
     const tailLines = 100; // Number of lines to fetch
 

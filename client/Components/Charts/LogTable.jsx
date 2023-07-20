@@ -11,7 +11,7 @@ export default function LogTable() {
   //   visibleFields: VISIBLE_FIELDS,
   //   rowLength: 100,
   // });
-  const [rows, setRows] = useState([{ id: 1, header: 'Snow', message: 'Jon' }]);
+  const [rows, setRows] = useState([{ id: 1, header: '', message: '' }]);
   const columns = [
     { field: 'header', headerName: 'Header', width: 500 },
     {
@@ -22,13 +22,16 @@ export default function LogTable() {
   ];
 
   useEffect(() => {
-    console.log('Log Table UseEffect');
-    fetch('/api/logs')
-      .then((data) => data.json())
-      .then((res) => {
-        setRows(res['kube-system=kube-controller-manager-minikube']);
-      })
-      .catch((err) => console.log(err));
+    const fetchlogs = () => {
+      console.log("fetching logs");
+      fetch('/api/logs/kube-system/kube-controller-manager-minikube')
+        .then((data) => data.json())
+        .then((res) => {
+          setRows(res);
+        })
+        .catch((err) => console.log(err));
+    }
+    setInterval(fetchlogs, 200)
   }, []);
 
   // Otherwise filter will be applied on fields such as the hidden column id
