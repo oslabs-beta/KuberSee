@@ -16,6 +16,10 @@ app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 app.use(cors());
 
+app.use("/", express.static(path.resolve(__dirname, "../build")));
+app.use("/api", apiRoute);
+app.use("/auth", authRoute);
+
 // const oneDay = 1000 * 60 * 60 * 24;
 // app.use(
 //   sessions({
@@ -33,10 +37,6 @@ app.get("/*", function (req, res) {
     }
   });
 });
-
-app.use("/", express.static(path.resolve(__dirname, "../build")));
-app.use("/api", apiRoute);
-app.use("/auth", authRoute);
 
 app.listen(PORT, () => {
   console.log(`Listening on port ${PORT}... idea generator app`);
