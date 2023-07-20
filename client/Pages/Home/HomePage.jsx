@@ -76,7 +76,7 @@ export default function HomePage({ socket }) {
       <h2>CPU</h2>
       <CPULineChart dataRef={dataRef} socket={socket} />
       <h2>Memory</h2>
-      <MemoryLineChart dataRef={dataRef} />
+      <MemoryLineChart dataRef={dataRef} socket={socket} />
       <LogDashboard />
     </>
   );
