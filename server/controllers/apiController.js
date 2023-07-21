@@ -2,6 +2,13 @@ const apiController = {};
 const k8s = require('@kubernetes/client-node');
 const { cp } = require('fs');
 
+//configure kubernetes api
+const kc = new k8s.KubeConfig();
+kc.loadFromDefault();
+const k8sApi = kc.makeApiClient(k8s.CoreV1Api);
+const metricsClient = new k8s.Metrics(kc);
+
+
 // io.on('connection', (socket) => {
 //   console.log('a user connected');
 
@@ -21,14 +28,7 @@ const { cp } = require('fs');
 
 apiController.getMetrics = async (req, res, next) => {
   try {
-    const kc = new k8s.KubeConfig();
-    kc.loadFromDefault();
-
-    const k8sApi = kc.makeApiClient(k8s.CoreV1Api);
-    const metricsClient = new k8s.Metrics(kc);
-
     const namespace = req.params.namespace;
-
     console.log('Namespace: ', namespace);
     res.locals.topNodes = [];
     res.locals.topPods = [];
@@ -76,10 +76,6 @@ apiController.getMetrics = async (req, res, next) => {
 
 apiController.getStats = async (req, res, next) => {
   try {
-    const kc = new k8s.KubeConfig();
-    kc.loadFromDefault();
-    const k8sApi = kc.makeApiClient(k8s.CoreV1Api);
-
     res.locals.namespaces = [];
 
     await k8sApi
@@ -105,10 +101,6 @@ apiController.getStats = async (req, res, next) => {
 
 apiController.getLogs = async (req, res, next) => {
   try {
-    const kc = new k8s.KubeConfig();
-    kc.loadFromDefault();
-
-    const k8sApi = kc.makeApiClient(k8s.CoreV1Api);
     const namespace = req.params.namespace;
     const podName = req.params.podname;
     const containerName = '';
