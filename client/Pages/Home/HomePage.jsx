@@ -1,10 +1,9 @@
 import React, { useState, useEffect, useRef } from 'react';
 import LogDashboard from '../../Components/Dashboard/LogDashboard.jsx';
 import Dashboard from '../../Components/Dashboard/Dashboard.jsx';
-import CPULineChart from '../../Components/LineChart/CPULineChart.jsx';
+import LineGraph from '../../Components/LineChart/LineGraph.jsx';
 import DropdownMenu from '../../Components/Dropdown/DropdownButton.jsx';
 import * as d3 from 'd3';
-import MemoryLineChart from '../../Components/LineChart/MemoryLineChart.jsx';
 import DropdownPods from '../../Components/Dropdown/DropdownPods.jsx';
 
 export default function HomePage() {
@@ -18,6 +17,7 @@ export default function HomePage() {
   const [currentNamespace, setCurrentNamespace] = useState('default');
   const namespacesRef = useRef([]);
   const dataRef = useRef([]);
+  const dataRefMem = useRef([]);
   const podRef = useRef([]);
   const [log, setLog] = useState([{ id: 1, header: '', message: '' }]);
   // possible solution: create a ref that will not re-render across components
@@ -43,6 +43,14 @@ export default function HomePage() {
           return {
             podName: el.pod,
             cpuCurrentUsage: el.cpuCurrentUsage,
+            // memoryCurrentUsage: el.memoryCurrentUsage,
+            timestamp: strictIsoParse(new Date().toISOString()),
+          };
+        });
+        const mapArrayMem = metrics.topPods.map((el) => {
+          return {
+            podName: el.pod,
+            // cpuCurrentUsage: el.cpuCurrentUsage,
             memoryCurrentUsage: el.memoryCurrentUsage,
             timestamp: strictIsoParse(new Date().toISOString()),
           };
@@ -63,20 +71,18 @@ export default function HomePage() {
         }
 
         dataRef.current.push(...mapArray);
+        dataRefMem.current.push(...mapArrayMem);
       } catch (error) {
         console.log(error);
       }
     }, updateIntervalMs);
-
     return () => {
       clearInterval(intervalID); // once the component is removed, it will perform a clean up. Don't want the setInterval to run in the background even if the component is running in the background.
     };
   }, [currentNamespace]);
   useEffect(() => {
-    // console.log('WE ARE IN USE EFFECT');
     const fetchlogs = () => {
       if (currentPod != '') {
-        // console.log("fetching logs");
         fetch(`/api/logs/${currentNamespace}/${currentPod}`)
           .then((data) => data.json())
           .then((res) => {
@@ -90,6 +96,7 @@ export default function HomePage() {
   useEffect(() => {
     //empty data from chart for pods in last namespace
     dataRef.current = [];
+    dataRefMem.current = [];
     //empty log data from last namespace
     setLog([{ id: 1, header: '', message: '' }]);
   }, [currentNamespace]);
@@ -101,9 +108,9 @@ export default function HomePage() {
         namespaces={namespacesRef.current}
       />
       <h2>CPU</h2>
-      <CPULineChart dataRef={dataRef} />
+      <LineGraph dataRef={dataRef} yaxis='CPU (Cores)' legendName ='Pod Names Legend'/>
       <h2>Memory</h2>
-      <MemoryLineChart dataRef={dataRef} />
+      <LineGraph dataRef={dataRefMem} yaxis={'Memory (Bytes'} legendName ='Pod Names Legend' />
       <DropdownPods changePods={setCurrentPod} pods={podRef.current} />
       <LogDashboard log={log} />
     </>

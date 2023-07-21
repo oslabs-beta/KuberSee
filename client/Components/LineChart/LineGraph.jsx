@@ -1,23 +1,18 @@
-import React, { useRef, useEffect } from 'react';
+import React, { useRef, useEffect, useState } from 'react';
 import { nest } from 'd3-collection';
 import * as d3 from 'd3';
 import { selectAll } from 'd3-selection';
 
-const CPULineChart = ({ dataRef }) => {
-  const svgRef = useRef(); //creating a variable to connect the ref prop that we
 
+const LineGraph = ({ dataRef, yaxis, legendName}) => {
+  const svgRef = useRef(); //creating a variable to connect the ref prop that we
+  const y = useRef('')
+  if (dataRef['current'][0]) (y.current = (Object.keys(dataRef['current'][0])[1]));
   function initialize(width, height) {
+ 
     var margin = { top: 20, right: 175, bottom: 50, left: 100 },
       width = width - margin.left - margin.right,
       height = height - margin.top - margin.bottom;
-
-
-    //   var svg = d3.select("#graph").append("svg")
-    // .attr("width", width + margin.left + margin.right)
-    // .attr("height", height + margin.top + margin.bottom)
-    // .append("g") // grouping
-    // .attr("class", "graphtoAppendTo")
-    // .attr("transform", `translate(${margin.left}, ${margin.top})`);
 
     var graph = d3
       .select(svgRef.current) //select the svg element from the virtual DOM.
@@ -49,12 +44,13 @@ const CPULineChart = ({ dataRef }) => {
       .style("fill", "white")
       .attr('font-size', 12)
 
-    graph.append("text")
+    graph
+      .append("text")
       .attr("text-anchor", "end")
       .attr("transform", "rotate(-90)")
       .attr("x", -height / 2 + margin.bottom)
       .attr("y", margin.left / 6)
-      .text("CPU (cores)")
+      .text(`${yaxis}`)
       .style("fill", "white")
       .attr('font-size', 12)
     
@@ -62,7 +58,7 @@ const CPULineChart = ({ dataRef }) => {
       .attr("text-anchor", "start")
       .attr("x", width + margin.right/8)
       .attr("y", 20)
-      .text("Pod Names Legend")
+      .text(legendName)
       .style("fill", "white")
       .attr('font-size', 12)
       
@@ -81,6 +77,7 @@ const CPULineChart = ({ dataRef }) => {
 
   // updates the graph. data is our data, now is the end time, and lookback is the start time, graph vars is the array of reference of what we returned in initialize.
   function render(data, now, lookback, graphVars) {
+    // if (data[0]) y = Object.keys(dataRef['current'][0])[1];
     const room_for_axis = 100; // padding for axis
 
     const [graph, circleGroup, xScaleGroup, yScaleGroup, width] = graphVars;
@@ -112,10 +109,13 @@ const CPULineChart = ({ dataRef }) => {
       .scaleLinear()
       .domain([
         d3.min(data, (d) => {
-          return d.cpuCurrentUsage - .0001;
+          if (y.current === 'cpuCurrentUsage') {
+            return -.00000001;
+          }
+          return d[`${y.current}`]/4;
         }),
         d3.max(data, (d) => {
-          return d.cpuCurrentUsage * 2;
+          return d[`${y.current}`] * 1.2;
         }),
       ])
       .range([graph.attr('height') - room_for_axis, 0]); // range deals with the position of where things get plotted (area)
@@ -168,7 +168,7 @@ const CPULineChart = ({ dataRef }) => {
         return xScale(d.timestamp);
       })
       .y((d) => {
-        return yScale(d.cpuCurrentUsage);
+        return yScale(d[`${y.current}`]);
       });
     circleGroup
       .selectAll('.temp-path')
@@ -195,7 +195,7 @@ const CPULineChart = ({ dataRef }) => {
         return xScale(d.timestamp); //tells us where on the graph that the plot should be relative to the chart's width.
       })
       .attr('cy', function (d) {
-        return yScale(d.cpuCurrentUsage); // tells us where on the graph that the plot should be relative to chart's height.
+        return yScale(d[`${y.current}`]); // tells us where on the graph that the plot should be relative to chart's height.
       })
       .attr('r', radius)
       .attr('clip-path', 'url(#rectangle-clip)') // clip the rectangle
@@ -226,6 +226,8 @@ const CPULineChart = ({ dataRef }) => {
   }
 
   useEffect(() => {
+
+    
     // const scale = 0.2;
     const lookback_s = 30;
 
@@ -256,4 +258,4 @@ const CPULineChart = ({ dataRef }) => {
   return <svg ref={svgRef}></svg>;
 };
 
-export default CPULineChart;
+export default LineGraph;
