@@ -1,23 +1,5 @@
 const apiController = {};
 const k8s = require("@kubernetes/client-node");
-const { cp } = require("fs");
-
-// io.on('connection', (socket) => {
-//   console.log('a user connected');
-
-//   socket.on('latest', (event) => {
-//     console.log('Latest event: ' + event);
-//   });
-
-//   socket.on('event', (event) => {
-//     console.log('Received an event: ' + event);
-//     io.emit('event', event);
-//   });
-
-//   socket.on('disconnect', () => {
-//     console.log('user disconnected');
-//   });
-// });
 
 apiController.getMetrics = async (req, res, next) => {
   try {

@@ -11,7 +11,10 @@ const socket = io.connect("http://localhost:3000");
 
 const App = () => {
   useEffect(() => {
-    socket.emit('test', 'hello');
+    // socket.emit('metrics', {
+    //   namespace: 'default'
+    // });
+    socket.emit('stats', null);
   }, []);
   return (
     <BrowserRouter>
