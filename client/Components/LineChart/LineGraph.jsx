@@ -4,11 +4,12 @@ import * as d3 from 'd3';
 import { selectAll } from 'd3-selection';
 
 
-const CPULineChart = ({ dataRef }) => {
+const LineGraph = ({ dataRef, yaxis, legendName}) => {
   const svgRef = useRef(); //creating a variable to connect the ref prop that we
   const y = useRef('')
   if (dataRef['current'][0]) (y.current = (Object.keys(dataRef['current'][0])[1]));
-  function initialize(width, height) {
+  function initialize(width, height, yaxis) {
+ 
     var margin = { top: 20, right: 175, bottom: 50, left: 100 },
       width = width - margin.left - margin.right,
       height = height - margin.top - margin.bottom;
@@ -43,12 +44,13 @@ const CPULineChart = ({ dataRef }) => {
       .style("fill", "white")
       .attr('font-size', 12)
 
-    graph.append("text")
+    graph
+      .append("text")
       .attr("text-anchor", "end")
       .attr("transform", "rotate(-90)")
       .attr("x", -height / 2 + margin.bottom)
       .attr("y", margin.left / 6)
-      .text("CPU (cores)")
+      .text(`${yaxis}`)
       .style("fill", "white")
       .attr('font-size', 12)
     
@@ -56,7 +58,7 @@ const CPULineChart = ({ dataRef }) => {
       .attr("text-anchor", "start")
       .attr("x", width + margin.right/8)
       .attr("y", 20)
-      .text("Pod Names Legend")
+      .text(legendName)
       .style("fill", "white")
       .attr('font-size', 12)
       
@@ -76,7 +78,6 @@ const CPULineChart = ({ dataRef }) => {
   // updates the graph. data is our data, now is the end time, and lookback is the start time, graph vars is the array of reference of what we returned in initialize.
   function render(data, now, lookback, graphVars) {
     // if (data[0]) y = Object.keys(dataRef['current'][0])[1];
-    console.log(y, 'YYY')
     const room_for_axis = 100; // padding for axis
 
     const [graph, circleGroup, xScaleGroup, yScaleGroup, width] = graphVars;
@@ -108,10 +109,13 @@ const CPULineChart = ({ dataRef }) => {
       .scaleLinear()
       .domain([
         d3.min(data, (d) => {
-          return d[`${y.current}`] - .0001;
+          if (y.current === 'cpuCurrentUsage') {
+            return -.00000001;
+          }
+          return d[`${y.current}`]/4;
         }),
         d3.max(data, (d) => {
-          return d[`${y.current}`] * 2;
+          return d[`${y.current}`] * 1.2;
         }),
       ])
       .range([graph.attr('height') - room_for_axis, 0]); // range deals with the position of where things get plotted (area)
@@ -222,13 +226,15 @@ const CPULineChart = ({ dataRef }) => {
   }
 
   useEffect(() => {
+
+    
     // const scale = 0.2;
     const lookback_s = 30;
 
     // initialize
     var now = new Date();
     const width = 1050;
-    const graphVars = initialize(width, width * 0.7);
+    const graphVars = initialize(width, width * 0.7, yaxis);
 
     var lookback = new Date(now); // creates a copy of now's date
     lookback.setSeconds(lookback.getSeconds() - lookback_s); // go back in time by 30 seconds
@@ -252,4 +258,4 @@ const CPULineChart = ({ dataRef }) => {
   return <svg ref={svgRef}></svg>;
 };
 
-export default CPULineChart;
+export default LineGraph;
