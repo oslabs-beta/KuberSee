@@ -70,9 +70,13 @@ export default function HomePage({ socket }) {
     console.log('USE EFFECT', dataRef);
   }, [currentNamespace]);
 
-  socket.on('msg', (res) => {
-    console.log(res);
-  })
+
+  useEffect(() => {
+    socket.on('msg', (res) => {
+      console.log(res);
+    })
+  }, [socket]);
+
   return (
     <>
       <Dashboard stats={stats} />

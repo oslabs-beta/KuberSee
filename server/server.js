@@ -38,16 +38,18 @@ const io = new Server(server, {
 //   console.log(`Listening on port ${PORT}... kubersee app`);
 // });
 
-let data;
+
 // looks for an event with "connection" and when you listen, you need a callback function. for future ref when someone connects to the server. 
 io.on("connection", (socket) => {
   console.log(`New user connected: ${socket.id}`);
   // if (data) clearInterval(data);
   // setInterval(() =>
-  io.emit('msg', 'Testing');
-  socket.on('connect', msg => {
-    console.log(msg)
-    io.emit('msg', 'Testing');
+  // io.emit('msg', 'Testing');
+  socket.on('test', msg => {
+    console.log(msg);
+    setInterval(() => {
+      socket.emit('msg', 'Testing');
+    }, 1000)
   })
   socket.on("disconnect", () => {
     console.log("User Disconnected", socket.id);

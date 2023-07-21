@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import NotFound from '../../Pages/NotFound/NotFound.jsx';
 import HomePage from '../../Pages/Home/Homepage.jsx';
@@ -10,6 +10,9 @@ import io from 'socket.io-client'
 const socket = io.connect("http://localhost:3000");
 
 const App = () => {
+  useEffect(() => {
+    socket.emit('test', 'hello');
+  }, []);
   return (
     <BrowserRouter>
       <Routes>
