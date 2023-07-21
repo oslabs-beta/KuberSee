@@ -73,7 +73,7 @@ export default function HomePage() {
     };
   }, [currentNamespace]);
   useEffect(() => {
-    console.log('WE ARE IN USE EFFECT');
+    // console.log('WE ARE IN USE EFFECT');
     const fetchlogs = () => {
       if (currentPod != '') {
         // console.log("fetching logs");
@@ -88,8 +88,10 @@ export default function HomePage() {
     fetchlogs();
   }, [currentPod]);
   useEffect(() => {
+    //empty data from chart for pods in last namespace
     dataRef.current = [];
-    // console.log('USE EFFECT', dataRef);
+    //empty log data from last namespace
+    setLog([{ id: 1, header: '', message: '' }]);
   }, [currentNamespace]);
   return (
     <>
