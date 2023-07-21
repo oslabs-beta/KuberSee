@@ -8,7 +8,7 @@ const LineGraph = ({ dataRef, yaxis, legendName}) => {
   const svgRef = useRef(); //creating a variable to connect the ref prop that we
   const y = useRef('')
   if (dataRef['current'][0]) (y.current = (Object.keys(dataRef['current'][0])[1]));
-  function initialize(width, height, yaxis) {
+  function initialize(width, height) {
  
     var margin = { top: 20, right: 175, bottom: 50, left: 100 },
       width = width - margin.left - margin.right,
@@ -234,7 +234,7 @@ const LineGraph = ({ dataRef, yaxis, legendName}) => {
     // initialize
     var now = new Date();
     const width = 1050;
-    const graphVars = initialize(width, width * 0.7, yaxis);
+    const graphVars = initialize(width, width * 0.7);
 
     var lookback = new Date(now); // creates a copy of now's date
     lookback.setSeconds(lookback.getSeconds() - lookback_s); // go back in time by 30 seconds
