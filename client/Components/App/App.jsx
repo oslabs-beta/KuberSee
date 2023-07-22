@@ -10,12 +10,6 @@ import io from 'socket.io-client'
 const socket = io.connect("http://localhost:3000");
 
 const App = () => {
-  useEffect(() => {
-    // socket.emit('metrics', {
-    //   namespace: 'default'
-    // });
-    socket.emit('stats', null);
-  }, []);
   return (
     <BrowserRouter>
       <Routes>

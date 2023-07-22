@@ -15,7 +15,7 @@ app.use(cors({ origin: "http://localhost:8080" }));
 
 app.use("/", express.static(path.resolve(__dirname, "../build")));
 
-// connects server and tells socket.io it's okay to accept these things from port 3000 to resolve cors issues that come out with using socket.io.
+// connect express server with socket.io 
 const server = http.createServer(app);
 const io = socketIO(server, {
   cors: {
@@ -26,7 +26,6 @@ const io = socketIO(server, {
 
 app.use("/api", apiRoute);
 app.use("/auth", authRoute);
-// app.use("/data", socketRoutes(io));
 
 // app.use(cookieParser());
 // const oneDay = 1000 * 60 * 60 * 24;
@@ -38,10 +37,6 @@ app.use("/auth", authRoute);
 //     resave: false,
 //   })
 // );
-
-// app.listen(PORT, () => {
-//   console.log(`Listening on port ${PORT}... kubersee app`);
-// });
 
 // looks for an event with "connection" and when you listen, you need a callback function. for future ref when someone connects to the server.
 io.on("connection", (socket) => {
@@ -55,7 +50,6 @@ io.on("connection", (socket) => {
       // Send metrics data to the client every 1000ms after the middleware has been set up
       metricsInterval = setInterval(async () => {
         const metrics = await socketController.getMetricsMiddleware(data);
-
         socket.emit("metrics", {
           topPods: metrics.topPods,
           topNodes: metrics.topNodes,
@@ -69,8 +63,12 @@ io.on("connection", (socket) => {
   });
 
   socket.on("stats", async () => {
+    let statsInterval;
     try {
-      setInterval(async () => {
+      if (statsInterval) {
+        clearInterval(statsInterval);
+      }
+      statsInterval = setInterval(async () => {
         const stats = await socketController.getStatsMiddleware();
 
         socket.emit("stats", {
@@ -86,10 +84,10 @@ io.on("connection", (socket) => {
       socket.emit("error", "Error fetching stats");
     }
   });
-
+  // listens for when a user disconnects from the server.
   socket.on("disconnect", () => {
-    console.log("User Disconnected", socket.id);
-  }); // listens for when a user disconnects from the server.
+    console.log(`User Disconnected: ${socket.id}`);
+  });
   app.get("/*", function (req, res) {
     res.sendFile(path.resolve(__dirname, "../index.html"), function (err) {
       if (err) {
@@ -99,6 +97,6 @@ io.on("connection", (socket) => {
   });
 });
 
-server.listen(3000, () => {
-  console.log("Socket Server Running...");
+server.listen(PORT, () => {
+  console.log(`WebSocket server running on ${PORT}`);
 });

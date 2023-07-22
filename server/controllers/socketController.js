@@ -11,14 +11,12 @@ socketController.getMetricsMiddleware = async function (data) {
 
     const namespace = data.namespace; // Assuming data.namespace is sent from the client
     const locals = {};
-    console.log("Namespace: ", namespace);
     locals.topNodes = [];
     locals.topPods = [];
     const currentTime = new Date();
 
     await k8s.topNodes(k8sApi, metricsClient, namespace).then((nodes) => {
       nodes.map((node) => {
-        // console.log(node);
         locals.topNodes.push({
           node: node.Node.metadata.name,
           cpuCurrentUsage: node.CPU.RequestTotal.toString(),
@@ -92,7 +90,6 @@ socketController.getStatsMiddleware = async () => {
     };
   } catch (error) {
     console.error("Error fetching logs:", error);
-    return res.status(500).send("Error fetching logs");
   }
 };
 
