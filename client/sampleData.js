@@ -52,7 +52,6 @@
 
 // ]
 
-
 // const testCPUData = [
 //     {
 //         'coredns-787d4945fb-7r5zr': [{
@@ -135,12 +134,12 @@
 //             memoryCurrentUsage: "25960448",
 //             timestamp: 1688849973952
 //         },
-//         {
-//             pod: "prometheus-kube-state-metrics-799f44d4db-wvm2t",
-//             cpuCurrentUsage: "0.001241719",
-//             memoryCurrentUsage: "12636160",
-//             timestamp: 1688849973965
-//         },
+// {
+//     pod: "prometheus-kube-state-metrics-799f44d4db-wvm2t",
+//     cpuCurrentUsage: "0.001241719",
+//     memoryCurrentUsage: "12636160",
+//     timestamp: 1688849973965
+// },
 //         {
 //             pod: "prometheus-prometheus-kube-prometheus-prometheus-0",
 //             cpuCurrentUsage: "0.024168207",

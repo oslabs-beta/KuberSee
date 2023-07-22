@@ -3,13 +3,12 @@ import { nest } from 'd3-collection';
 import * as d3 from 'd3';
 import { selectAll } from 'd3-selection';
 
-
-const LineGraph = ({ dataRef, yaxis, legendName}) => {
+const LineGraph = ({ dataRef, yaxis, legendName }) => {
   const svgRef = useRef(); //creating a variable to connect the ref prop that we
-  const y = useRef('')
+  const y = useRef('');
   if (dataRef['current'][0]) (y.current = (Object.keys(dataRef['current'][0])[1]));
   function initialize(width, height) {
- 
+
     var margin = { top: 20, right: 175, bottom: 50, left: 100 },
       width = width - margin.left - margin.right,
       height = height - margin.top - margin.bottom;
@@ -53,15 +52,15 @@ const LineGraph = ({ dataRef, yaxis, legendName}) => {
       .text(`${yaxis}`)
       .style("fill", "white")
       .attr('font-size', 12)
-    
+
     graph.append("text")
       .attr("text-anchor", "start")
-      .attr("x", width + margin.right/8)
+      .attr("x", width + margin.right / 8)
       .attr("y", 20)
       .text(legendName)
       .style("fill", "white")
       .attr('font-size', 12)
-      
+
     //I used this to make the clipping mask to visualize what the size of the graph of was
     // graph.append("rect")
     // .attr("x", 0)         // position the x-centre
@@ -112,7 +111,7 @@ const LineGraph = ({ dataRef, yaxis, legendName}) => {
           if (y.current === 'cpuCurrentUsage') {
             return -.00000001;
           }
-          return d[`${y.current}`]/4;
+          return d[`${y.current}`] / 4;
         }),
         d3.max(data, (d) => {
           return d[`${y.current}`] * 1.2;
@@ -128,15 +127,15 @@ const LineGraph = ({ dataRef, yaxis, legendName}) => {
     circleGroup.selectAll('path').data(sumStat).exit().remove();
     graph.selectAll('text.pod-name').remove();
     graph.selectAll('.circle-pod-name').remove();
-  
+
     graph.selectAll('.circlelegend')
       .data(sumStat)
       .join("circle")
       .attr('class', 'circle-pod-name')
       .attr("cx", width + 25)
-      .attr("cy", function(d,i){ return  60 + i*40 - 2}) // 100 is where the first dot appears. 25 is the distance between dots
+      .attr("cy", function (d, i) { return 60 + i * 40 - 2 }) // 100 is where the first dot appears. 25 is the distance between dots
       .attr("r", 5)
-      .style("fill", function(d){ return color(d.key)})
+      .style("fill", function (d) { return color(d.key) })
     graph.selectAll('.pod-name-temp')
       .data(sumStat)
       .join('text')
@@ -149,7 +148,7 @@ const LineGraph = ({ dataRef, yaxis, legendName}) => {
       })
       .attr('x', width + 28)
       .attr('y', function (d, i) {
-        return  60 + i*40
+        return 60 + i * 40
       })
       .attr('alignment-baseline', 'middle')
       .attr('dx', 5)
@@ -227,7 +226,7 @@ const LineGraph = ({ dataRef, yaxis, legendName}) => {
 
   useEffect(() => {
 
-    
+
     // const scale = 0.2;
     const lookback_s = 30;
 
