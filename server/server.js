@@ -90,6 +90,13 @@ io.on("connection", (socket) => {
   socket.on("disconnect", () => {
     console.log("User Disconnected", socket.id);
   }); // listens for when a user disconnects from the server.
+  app.get("/*", function (req, res) {
+    res.sendFile(path.resolve(__dirname, "../index.html"), function (err) {
+      if (err) {
+        res.status(500).send(err);
+      }
+    });
+  });
 });
 
 server.listen(3000, () => {

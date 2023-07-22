@@ -36,6 +36,7 @@ userController.signin = async (req, res, next) => {
     const query = `SELECT * FROM "User" where username=$1`;
     // console.log(query);
     const resp = await db.query(query, user);
+    console.log(resp);
     console.log(resp.rows.length);
     if (resp.rows.length === 0) {
       console.log("none found");

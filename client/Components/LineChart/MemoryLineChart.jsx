@@ -48,6 +48,14 @@ const MemoryLineChart = ({ dataRef, socket }) => {
       .text("Memory (bytes)")
       .style("fill", "white")
       .attr('font-size', 12)
+    
+      graph.append("text")
+      .attr("text-anchor", "start")
+      .attr("x", width + margin.right/8)
+      .attr("y", 20)
+      .text("Pod Names Legend")
+      .style("fill", "white")
+      .attr('font-size', 12)
     //I used this to make the clipping mask to visualize what the size of the graph of was
     // graph.append("rect")
     // .attr("x", 0)         // position the x-centre
@@ -99,8 +107,18 @@ const MemoryLineChart = ({ dataRef, socket }) => {
       .range(['blue', 'red']);
 
     barGroup.selectAll('path').data([data]).exit().remove();
-    graph.selectAll('text.pod-name').data(sumStat).remove();
-
+    graph.selectAll('text.pod-name').remove();
+    graph.selectAll('.circle-pod-name').remove();
+  
+    graph.selectAll('.circlelegend')
+      .data(sumStat)
+      .join("circle")
+      .attr('class', 'circle-pod-name')
+      .attr("cx", width + 25)
+      .attr("cy", function(d,i){ return  60 + i*40 - 2}) // 100 is where the first dot appears. 25 is the distance between dots
+      .attr("r", 5)
+      .style("fill", function (d) { return color(d.key) })
+    
     graph.selectAll('.pod-name-temp')
       .data(sumStat)
       .join('text')
@@ -111,9 +129,9 @@ const MemoryLineChart = ({ dataRef, socket }) => {
       .style('fill', function (d, i) {
         return (color(d.key))
       })
-      .attr('x', width)
-      .attr('y', function (d) {
-        return yScale(d.values[d.values.length - 1].memoryCurrentUsage)
+      .attr('x', width + 28)
+      .attr('y', function (d, i) {
+        return  60 + i*40
       })
       .attr('alignment-baseline', 'middle')
       .attr('dx', 5)

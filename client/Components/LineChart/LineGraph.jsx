@@ -1,23 +1,17 @@
-import React, { useRef, useEffect } from 'react';
+import React, { useRef, useEffect, useState } from 'react';
 import { nest } from 'd3-collection';
 import * as d3 from 'd3';
 import { selectAll } from 'd3-selection';
 
-const CPULineChart = ({ dataRef, socket }) => {
+const LineGraph = ({ dataRef, yaxis, legendName }) => {
   const svgRef = useRef(); //creating a variable to connect the ref prop that we
-
+  const y = useRef('');
+  if (dataRef['current'][0]) (y.current = (Object.keys(dataRef['current'][0])[1]));
   function initialize(width, height) {
+
     var margin = { top: 20, right: 175, bottom: 50, left: 100 },
       width = width - margin.left - margin.right,
       height = height - margin.top - margin.bottom;
-
-
-    //   var svg = d3.select("#graph").append("svg")
-    // .attr("width", width + margin.left + margin.right)
-    // .attr("height", height + margin.top + margin.bottom)
-    // .append("g") // grouping
-    // .attr("class", "graphtoAppendTo")
-    // .attr("transform", `translate(${margin.left}, ${margin.top})`);
 
     var graph = d3
       .select(svgRef.current) //select the svg element from the virtual DOM.
@@ -49,14 +43,24 @@ const CPULineChart = ({ dataRef, socket }) => {
       .style("fill", "white")
       .attr('font-size', 12)
 
-    graph.append("text")
+    graph
+      .append("text")
       .attr("text-anchor", "end")
       .attr("transform", "rotate(-90)")
       .attr("x", -height / 2 + margin.bottom)
       .attr("y", margin.left / 6)
-      .text("CPU (cores)")
+      .text(`${yaxis}`)
       .style("fill", "white")
       .attr('font-size', 12)
+
+    graph.append("text")
+      .attr("text-anchor", "start")
+      .attr("x", width + margin.right / 8)
+      .attr("y", 20)
+      .text(legendName)
+      .style("fill", "white")
+      .attr('font-size', 12)
+
     //I used this to make the clipping mask to visualize what the size of the graph of was
     // graph.append("rect")
     // .attr("x", 0)         // position the x-centre
@@ -72,6 +76,7 @@ const CPULineChart = ({ dataRef, socket }) => {
 
   // updates the graph. data is our data, now is the end time, and lookback is the start time, graph vars is the array of reference of what we returned in initialize.
   function render(data, now, lookback, graphVars) {
+    // if (data[0]) y = Object.keys(dataRef['current'][0])[1];
     const room_for_axis = 100; // padding for axis
 
     const [graph, circleGroup, xScaleGroup, yScaleGroup, width] = graphVars;
@@ -103,10 +108,13 @@ const CPULineChart = ({ dataRef, socket }) => {
       .scaleLinear()
       .domain([
         d3.min(data, (d) => {
-          return d.cpuCurrentUsage - .0001;
+          if (y.current === 'cpuCurrentUsage') {
+            return -.00000001;
+          }
+          return d[`${y.current}`] / 4;
         }),
         d3.max(data, (d) => {
-          return d.cpuCurrentUsage * 2;
+          return d[`${y.current}`] * 1.2;
         }),
       ])
       .range([graph.attr('height') - room_for_axis, 0]); // range deals with the position of where things get plotted (area)
@@ -117,8 +125,17 @@ const CPULineChart = ({ dataRef, socket }) => {
       .range(['blue', 'red']);
 
     circleGroup.selectAll('path').data(sumStat).exit().remove();
-    graph.selectAll('text.pod-name').data(sumStat).remove();
+    graph.selectAll('text.pod-name').remove();
+    graph.selectAll('.circle-pod-name').remove();
 
+    graph.selectAll('.circlelegend')
+      .data(sumStat)
+      .join("circle")
+      .attr('class', 'circle-pod-name')
+      .attr("cx", width + 25)
+      .attr("cy", function (d, i) { return 60 + i * 40 - 2 }) // 100 is where the first dot appears. 25 is the distance between dots
+      .attr("r", 5)
+      .style("fill", function (d) { return color(d.key) })
     graph.selectAll('.pod-name-temp')
       .data(sumStat)
       .join('text')
@@ -129,9 +146,9 @@ const CPULineChart = ({ dataRef, socket }) => {
       .style('fill', function (d, i) {
         return (color(d.key))
       })
-      .attr('x', width)
-      .attr('y', function (d) {
-        return yScale(d.values[d.values.length - 1].cpuCurrentUsage)
+      .attr('x', width + 28)
+      .attr('y', function (d, i) {
+        return 60 + i * 40
       })
       .attr('alignment-baseline', 'middle')
       .attr('dx', 5)
@@ -150,7 +167,7 @@ const CPULineChart = ({ dataRef, socket }) => {
         return xScale(d.timestamp);
       })
       .y((d) => {
-        return yScale(d.cpuCurrentUsage);
+        return yScale(d[`${y.current}`]);
       });
     circleGroup
       .selectAll('.temp-path')
@@ -177,7 +194,7 @@ const CPULineChart = ({ dataRef, socket }) => {
         return xScale(d.timestamp); //tells us where on the graph that the plot should be relative to the chart's width.
       })
       .attr('cy', function (d) {
-        return yScale(d.cpuCurrentUsage); // tells us where on the graph that the plot should be relative to chart's height.
+        return yScale(d[`${y.current}`]); // tells us where on the graph that the plot should be relative to chart's height.
       })
       .attr('r', radius)
       .attr('clip-path', 'url(#rectangle-clip)') // clip the rectangle
@@ -208,6 +225,8 @@ const CPULineChart = ({ dataRef, socket }) => {
   }
 
   useEffect(() => {
+
+
     // const scale = 0.2;
     const lookback_s = 30;
 
@@ -238,4 +257,4 @@ const CPULineChart = ({ dataRef, socket }) => {
   return <svg ref={svgRef}></svg>;
 };
 
-export default CPULineChart;
+export default LineGraph;
