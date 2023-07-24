@@ -2,11 +2,23 @@
   "name": "kubersee",
   "version": "1.0.0",
   "description": "Kubernetes Visualizer",
-  "main": "index.js",
+  "main": "electron/main.js",
+  "config": {
+    "forge": {
+      "packagerConfig": {},
+      "makers": [
+        {
+          "name": "@electron-forge/maker-zip"
+        }
+      ]
+    }
+  },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "npm run build && electron ./dist/electron.js",
-    "dev": "webpack-dev-server --open & nodemon server/server.js & npm start",
+    "start": "electron-forge start",
+    "package": "electron-forge package",
+    "make": "electron-forge make",
+    "dev": "webpack-dev-server --open & nodemon server/server.js &  electron ./electron/main.js",
     "build": "NODE_ENV=production webpack"
   },
   "author": "Joey Cheng, Elinor Weissberg, Jordan Lopez, Daniel Zhao, and Alexis Contreras",
@@ -15,6 +27,13 @@
     "@babel/core": "^7.22.5",
     "@babel/preset-env": "^7.22.5",
     "@babel/preset-react": "^7.22.5",
+    "@electron-forge/cli": "^6.2.1",
+    "@electron-forge/maker-deb": "^6.2.1",
+    "@electron-forge/maker-rpm": "^6.2.1",
+    "@electron-forge/maker-squirrel": "^6.2.1",
+    "@electron-forge/maker-zip": "^6.2.1",
+    "@electron-forge/plugin-auto-unpack-natives": "^6.2.1",
+    "@electron-forge/plugin-webpack": "^6.2.1",
     "@types/node": "^20.4.1",
     "babel-loader": "^9.1.2",
     "css-loader": "^6.8.1",
@@ -53,6 +72,7 @@
     "d3-collection": "^1.0.7",
     "d3-selection": "^3.0.0",
     "dotenv": "^16.3.1",
+    "electron-squirrel-startup": "^1.0.0",
     "express": "^4.18.2",
     "express-session": "^1.17.3",
     "http": "^0.0.1-security",

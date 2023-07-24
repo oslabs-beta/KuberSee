@@ -10,14 +10,14 @@ const createWindow = () => {
         maxWidth: 1500,
 
     });
-    // win.loadURL("http://localhost:8080");
-    win.loadFile("index.html");
+    win.loadURL("http://localhost:8080");
+    // win.loadFile("index.html");
 };
 app.whenReady().then(() => {
     createWindow()
-  app.on('activate', () => {
-    if (BrowserWindow.getAllWindows().length === 0) createWindow()
-  })
+//   app.on('activate', () => {
+//     if (BrowserWindow.getAllWindows().length === 0) createWindow()
+//   })
 })
   
 app.on('window-all-closed', () => {
