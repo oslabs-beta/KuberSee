@@ -15,10 +15,8 @@
   },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "electron-forge start",
-    "package": "electron-forge package",
-    "make": "electron-forge make",
-    "dev": "webpack-dev-server --open & nodemon server/server.js &  electron ./electron/main.js",
+    "start": "electron ./electron/main.js",
+    "dev": "webpack-dev-server --open & nodemon server/server.js & npm start",
     "build": "NODE_ENV=production webpack"
   },
   "author": "Joey Cheng, Elinor Weissberg, Jordan Lopez, Daniel Zhao, and Alexis Contreras",
