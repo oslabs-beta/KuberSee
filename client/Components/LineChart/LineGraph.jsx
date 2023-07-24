@@ -3,10 +3,13 @@ import { nest } from 'd3-collection';
 import * as d3 from 'd3';
 import { selectAll } from 'd3-selection';
 
-const LineGraph = ({ dataRef, yaxis, legendName }) => {
+const LineGraph = ({ dataRef, yaxis, propertyName, legendName }) => {
   const svgRef = useRef(); //creating a variable to connect the ref prop that we
-  const y = useRef('');
-  if (dataRef['current'][0]) (y.current = (Object.keys(dataRef['current'][0])[1]));
+  // const y = useRef('');
+  // if (dataRef['current'][0]) (y.current = (Object.keys(dataRef['current'][0])[1]));
+  // if (dataRef['current'][0]) console.log(Object.keys(dataRef.current[0]));
+  // y.current = propertyName;
+  console.log(propertyName)
   function initialize(width, height) {
 
     var margin = { top: 20, right: 175, bottom: 50, left: 100 },
@@ -89,7 +92,7 @@ const LineGraph = ({ dataRef, yaxis, legendName }) => {
 
 
     let sumStat = nest()
-      .key(function (d) { return d.podName })
+      .key(function (d) { return d.name })
       .entries(data);
     // console.log('SUMSTAT', sumStat);
 
@@ -108,13 +111,13 @@ const LineGraph = ({ dataRef, yaxis, legendName }) => {
       .scaleLinear()
       .domain([
         d3.min(data, (d) => {
-          if (y.current === 'cpuCurrentUsage') {
+          if (propertyName === 'cpuCurrentUsage') {
             return -.00000001;
           }
-          return d[`${y.current}`] / 4;
+          return d[`${propertyName}`] / 4;
         }),
         d3.max(data, (d) => {
-          return d[`${y.current}`] * 1.2;
+          return d[`${propertyName}`] * 1.2;
         }),
       ])
       .range([graph.attr('height') - room_for_axis, 0]); // range deals with the position of where things get plotted (area)
@@ -167,7 +170,7 @@ const LineGraph = ({ dataRef, yaxis, legendName }) => {
         return xScale(d.timestamp);
       })
       .y((d) => {
-        return yScale(d[`${y.current}`]);
+        return yScale(d[`${propertyName}`]);
       });
     circleGroup
       .selectAll('.temp-path')
@@ -194,7 +197,7 @@ const LineGraph = ({ dataRef, yaxis, legendName }) => {
         return xScale(d.timestamp); //tells us where on the graph that the plot should be relative to the chart's width.
       })
       .attr('cy', function (d) {
-        return yScale(d[`${y.current}`]); // tells us where on the graph that the plot should be relative to chart's height.
+        return yScale(d[`${propertyName}`]); // tells us where on the graph that the plot should be relative to chart's height.
       })
       .attr('r', radius)
       .attr('clip-path', 'url(#rectangle-clip)') // clip the rectangle
