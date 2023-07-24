@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "electron ./electron/main.js",
+    "start": "npm run build && electron ./dist/electron.js",
     "dev": "webpack-dev-server --open & nodemon server/server.js & npm start",
     "build": "NODE_ENV=production webpack"
   },
