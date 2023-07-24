@@ -4,7 +4,8 @@ import * as d3 from 'd3';
 import { selectAll } from 'd3-selection';
 
 const LineGraph = ({ dataRef, yaxis, propertyName, legendName }) => {
-  const svgRef = useRef(); //creating a variable to connect the ref prop that we
+  const svgRef = useRef();
+  console.log(propertyName)
   function initialize(width, height) {
 
     var margin = { top: 20, right: 175, bottom: 50, left: 100 },

@@ -20,7 +20,9 @@ export default function HomePage({ socket }) {
   const dataRefMem = useRef([]);
   const podRef = useRef([]);
   const nodeCPURef = useRef([]);
+  const nodeCPUPercentRef = useRef([]);
   const nodeMemRef = useRef([]);
+  const nodeMemPercentRef = useRef([])
   const [log, setLog] = useState([{ id: 1, header: '', message: '' }]);
 
   useEffect(() => {
@@ -53,8 +55,10 @@ export default function HomePage({ socket }) {
           name: el.node,
           cpuCurrentUsage: el.cpuCurrentUsage,
           cpuTotal: el.cpuTotal,
+          cpuPercentage: el.cpuCurrentUsage / el.cpuTotal,
           memoryCurrentUsage: el.memoryCurrentUsage,
           memoryTotal: el.memoryTotal,
+          memoryPercentage: el.memoryCurrentUsage / el.memoryTotal,
           timestamp: strictIsoParse(new Date().toISOString()),
         }
       })
@@ -77,7 +81,9 @@ export default function HomePage({ socket }) {
       dataRef.current.push(...pods);
       dataRefMem.current.push(...mapArrayMem);
       nodeCPURef.current.push(...nodes);
+      nodeCPUPercentRef.current.push(...nodes);
       nodeMemRef.current.push(...nodes);
+      nodeMemPercentRef.current.push(...nodes);
       const newPods = metrics.topPods.map((el) => el.pod);
       if (podRef.current !== newPods) {
         podRef.current = [...newPods];
@@ -108,7 +114,9 @@ export default function HomePage({ socket }) {
     dataRef.current = [];
     dataRefMem.current = [];
     nodeCPURef.current = [];
+    nodeCPUPercentRef.current = [];
     nodeMemRef.current = [];
+    nodeMemPercentRef.current = [];
     //empty log data from last namespace
     setLog([{ id: 1, header: '', message: '' }]);
   }, [currentNamespace]);
@@ -126,8 +134,12 @@ export default function HomePage({ socket }) {
       <LineGraph dataRef={dataRefMem} yaxis={'Memory (Bytes)'} propertyName='memoryCurrentUsage' legendName='Pod Names Legend' />
       <h2>Node CPU Usage</h2>
       <LineGraph dataRef={nodeCPURef} yaxis='CPU (Cores)' propertyName='cpuCurrentUsage' legendName='Node Names Legend' />
+      <h2>Node CPU % Over Total</h2>
+      <LineGraph dataRef={nodeCPUPercentRef} yaxis={'CPU Usage (%)'} propertyName='cpuPercentage' legendName='Node Names Legend' />
       <h2>Node Memory Usage</h2>
       <LineGraph dataRef={nodeMemRef} yaxis={'Memory (Bytes)'} propertyName='memoryCurrentUsage' legendName='Node Names Legend' />
+      <h2>Node Memory % Over Total</h2>
+      <LineGraph dataRef={nodeMemPercentRef} yaxis={'Memory Usage (%)'} propertyName='memoryPercentage' legendName='Node Names Legend' />
       <DropdownPods changePods={setCurrentPod} pods={podRef.current} />
       <LogDashboard log={log} />
     </>
