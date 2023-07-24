@@ -5,11 +5,6 @@ import { selectAll } from 'd3-selection';
 
 const LineGraph = ({ dataRef, yaxis, propertyName, legendName }) => {
   const svgRef = useRef(); //creating a variable to connect the ref prop that we
-  // const y = useRef('');
-  // if (dataRef['current'][0]) (y.current = (Object.keys(dataRef['current'][0])[1]));
-  // if (dataRef['current'][0]) console.log(Object.keys(dataRef.current[0]));
-  // y.current = propertyName;
-  console.log(propertyName)
   function initialize(width, height) {
 
     var margin = { top: 20, right: 175, bottom: 50, left: 100 },

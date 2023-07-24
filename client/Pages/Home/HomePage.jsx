@@ -20,6 +20,7 @@ export default function HomePage({ socket }) {
   const dataRefMem = useRef([]);
   const podRef = useRef([]);
   const nodeCPURef = useRef([]);
+  const nodeMemRef = useRef([]);
   const [log, setLog] = useState([{ id: 1, header: '', message: '' }]);
 
   useEffect(() => {
@@ -75,7 +76,8 @@ export default function HomePage({ socket }) {
       });
       dataRef.current.push(...pods);
       dataRefMem.current.push(...mapArrayMem);
-      nodeCPURef.current.push(...nodes); // need to verify we push all data or just some
+      nodeCPURef.current.push(...nodes);
+      nodeMemRef.current.push(...nodes);
       const newPods = metrics.topPods.map((el) => el.pod);
       if (podRef.current !== newPods) {
         podRef.current = [...newPods];
@@ -105,7 +107,8 @@ export default function HomePage({ socket }) {
     //empty data from chart for pods in last namespace
     dataRef.current = [];
     dataRefMem.current = [];
-    nodeCPURef.current = []
+    nodeCPURef.current = [];
+    nodeMemRef.current = [];
     //empty log data from last namespace
     setLog([{ id: 1, header: '', message: '' }]);
   }, [currentNamespace]);
@@ -117,12 +120,14 @@ export default function HomePage({ socket }) {
         changeNamespace={setCurrentNamespace}
         namespaces={namespacesRef.current}
       />
-      <h2>Pod CPU</h2>
+      <h2>Pod CPU Usage</h2>
       <LineGraph dataRef={dataRef} yaxis='CPU (Cores)' propertyName='cpuCurrentUsage' legendName='Pod Names Legend' />
-      <h2>Pod Memory</h2>
+      <h2>Pod Memory Usage</h2>
       <LineGraph dataRef={dataRefMem} yaxis={'Memory (Bytes)'} propertyName='memoryCurrentUsage' legendName='Pod Names Legend' />
-      <h2>Node CPU</h2>
-      <LineGraph nodeCPURef={nodeCPURef} yaxis='CPU (Cores)' propertyName='cpuCurrentUsage' legendName='Node Names Legend' />
+      <h2>Node CPU Usage</h2>
+      <LineGraph dataRef={nodeCPURef} yaxis='CPU (Cores)' propertyName='cpuCurrentUsage' legendName='Node Names Legend' />
+      <h2>Node Memory Usage</h2>
+      <LineGraph dataRef={nodeMemRef} yaxis={'Memory (Bytes)'} propertyName='memoryCurrentUsage' legendName='Node Names Legend' />
       <DropdownPods changePods={setCurrentPod} pods={podRef.current} />
       <LogDashboard log={log} />
     </>
