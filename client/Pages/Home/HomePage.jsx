@@ -25,7 +25,7 @@ export default function HomePage({ socket }) {
     socket.emit('metrics', {
       namespace: currentNamespace
     });
-  }, [currentNamespace])
+  }, [currentNamespace]);
 
   useEffect(() => {
     const fetchlogs = () => {
@@ -45,6 +45,7 @@ export default function HomePage({ socket }) {
     const strictIsoParse = d3.utcParse('%Y-%m-%dT%H:%M:%S.%LZ'); // need to use d3's isoParse: https://github.com/d3/d3-time-format
 
     socket.on('metrics', (metrics) => {
+      console.log(metrics);
       const pods = metrics.topPods.map((el) => {
         return {
           podName: el.pod,
@@ -63,7 +64,6 @@ export default function HomePage({ socket }) {
       });
       dataRef.current.push(...pods);
       dataRefMem.current.push(...mapArrayMem);
-
       const newPods = metrics.topPods.map((el) => el.pod);
       if (podRef.current !== newPods) {
         podRef.current = [...newPods];
@@ -73,12 +73,12 @@ export default function HomePage({ socket }) {
 
   useEffect(() => {
     socket.on('stats', (stats) => {
+      console.log(stats)
       setStats([
         { id: 1, name: 'Namespaces', value: stats.totalNamespaces },
         { id: 2, name: 'Nodes', value: stats.totalNodes },
         { id: 3, name: 'Pods', value: stats.totalPods },
       ]);
-
       const newNamespaces = stats.namespaces;
       // Update namespacesRef.current only if there are new namespaces
       if (
@@ -96,6 +96,7 @@ export default function HomePage({ socket }) {
     //empty log data from last namespace
     setLog([{ id: 1, header: '', message: '' }]);
   }, [currentNamespace]);
+
   return (
     <>
       <Dashboard stats={stats} />

@@ -15,7 +15,7 @@ app.use(cors({ origin: "http://localhost:8080" }));
 
 app.use("/", express.static(path.resolve(__dirname, "../build")));
 
-// connect express server with socket.io 
+// connect express server with socket.io
 const server = http.createServer(app);
 const io = socketIO(server, {
   cors: {
@@ -70,7 +70,6 @@ io.on("connection", (socket) => {
       }
       statsInterval = setInterval(async () => {
         const stats = await socketController.getStatsMiddleware();
-
         socket.emit("stats", {
           namespaces: stats.namespaces,
           totalNamespaces: stats.namespaces.length,
@@ -88,12 +87,13 @@ io.on("connection", (socket) => {
   socket.on("disconnect", () => {
     console.log(`User Disconnected: ${socket.id}`);
   });
-  app.get("/*", function (req, res) {
-    res.sendFile(path.resolve(__dirname, "../index.html"), function (err) {
-      if (err) {
-        res.status(500).send(err);
-      }
-    });
+});
+
+app.get("/*", function (req, res) {
+  res.sendFile(path.resolve(__dirname, "../index.html"), function (err) {
+    if (err) {
+      res.status(500).send(err);
+    }
   });
 });
 

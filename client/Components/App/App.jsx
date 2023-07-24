@@ -10,6 +10,11 @@ import io from 'socket.io-client'
 const socket = io.connect("http://localhost:3000");
 
 const App = () => {
+
+  useEffect(() => {
+    socket.emit('stats', null);
+  }, []);
+
   return (
     <BrowserRouter>
       <Routes>
@@ -23,4 +28,5 @@ const App = () => {
     </BrowserRouter>
   );
 };
+
 export default App;

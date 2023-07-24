@@ -225,8 +225,6 @@ const LineGraph = ({ dataRef, yaxis, legendName }) => {
   }
 
   useEffect(() => {
-
-
     // const scale = 0.2;
     const lookback_s = 30;
 
