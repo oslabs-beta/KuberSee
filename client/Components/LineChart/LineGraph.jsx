@@ -3,9 +3,8 @@ import { nest } from 'd3-collection';
 import * as d3 from 'd3';
 import { selectAll } from 'd3-selection';
 
-const LineGraph = ({ dataRef, yaxis, propertyName, legendName }) => {
+const LineGraph = ({ dataRef, yaxis, propertyName, legendName, title }) => {
   const svgRef = useRef();
-  console.log(propertyName)
   function initialize(width, height) {
 
     var margin = { top: 20, right: 175, bottom: 50, left: 100 },
@@ -90,7 +89,6 @@ const LineGraph = ({ dataRef, yaxis, propertyName, legendName }) => {
     let sumStat = nest()
       .key(function (d) { return d.name })
       .entries(data);
-    // console.log('SUMSTAT', sumStat);
 
 
     //   // add the Line
@@ -229,7 +227,7 @@ const LineGraph = ({ dataRef, yaxis, propertyName, legendName }) => {
 
     // initialize
     var now = new Date();
-    const width = 1050;
+    const width = 900;
     const graphVars = initialize(width, width * 0.7);
 
     var lookback = new Date(now); // creates a copy of now's date
@@ -251,7 +249,12 @@ const LineGraph = ({ dataRef, yaxis, propertyName, legendName }) => {
     };
   }, []);
 
-  return <svg ref={svgRef}></svg>;
+  return (
+    <div className='flex flex-col items-center justify-center'>
+      <h2 className='text-2xl'>{title}</h2>
+      <svg ref={svgRef}></svg>
+    </div>
+  )
 };
 
 export default LineGraph;
