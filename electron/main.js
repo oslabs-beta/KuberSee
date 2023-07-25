@@ -36,7 +36,7 @@ function createWindow() {
         protocol: "file:",
         slashes: true,
       })
-    : "http://localhost:3000";
+    : "http://localhost:8080";
 
   mainWindow.loadURL(appURL);
 
@@ -48,20 +48,20 @@ function createWindow() {
     mainWindow.webContents.openDevTools();
   }
 }
-// Setup a local proxy to adjust the paths of requested files when loading
-// them from the local production bundle (e.g.: local fonts, etc...).
-function setupLocalFilesNormalizerProxy() {
-    protocol.registerHttpProtocol(
-      "file",
-      (request, callback) => {
-        const url = request.url.substr(8);
-        callback({ path: path.normalize(`${__dirname}/${url}`) });
-      },
-      (error) => {
-        if (error) console.error("Failed to register protocol");
-      }
-    );
-}
+// // Setup a local proxy to adjust the paths of requested files when loading
+// // them from the local production bundle (e.g.: local fonts, etc...).
+// function setupLocalFilesNormalizerProxy() {
+//     protocol.registerHttpProtocol(
+//       "file",
+//       (request, callback) => {
+//         const url = request.url.substr(8);
+//         callback({ path: path.normalize(`${__dirname}/${url}`) });
+//       },
+//       (error) => {
+//         if (error) console.error("Failed to register protocol");
+//       }
+//     );
+// }
   
 
 
@@ -71,7 +71,7 @@ function setupLocalFilesNormalizerProxy() {
 // Some APIs can only be used after this event occurs.
 app.whenReady().then(() => {
     createWindow();
-    setupLocalFilesNormalizerProxy();
+    // setupLocalFilesNormalizerProxy();
   
     app.on("activate", function () {
       // On macOS it's common to re-create a window in the app when the
@@ -81,31 +81,17 @@ app.whenReady().then(() => {
       }
     });
 });
+
+
+
+
+app.whenReady().then(() => {
+    createWindow()
+  app.on('activate', () => {
+    if (BrowserWindow.getAllWindows().length === 0) createWindow()
+  })
+})
   
-
-ipcMain.on('close-app', (evt, arg) => {
-	app.quit()
-});
-
-ipcMain.on('minimize-app', (evt, arg) => {
-	mainWindow.minimize();
-});
-
-ipcMain.on('maximize-app', (evt, arg) => {
-	mainWindow.maximize();
-});
-
-
-
-
-
-// app.whenReady().then(() => {
-//     createWindow()
-//   app.on('activate', () => {
-//     if (BrowserWindow.getAllWindows().length === 0) createWindow()
-//   })
-// })
-  
-// app.on('window-all-closed', () => {
-//     if (process.platform !== 'darwin') app.quit()
-//   })
+app.on('window-all-closed', () => {
+    if (process.platform !== 'darwin') app.quit()
+  })
