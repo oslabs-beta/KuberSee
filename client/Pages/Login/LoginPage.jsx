@@ -30,36 +30,36 @@ export default function LoginPage() {
     }
   };
   return (
-    <html data-theme='night'>
-      <div class='h-screen flex items-center justify-around mx-10'>
-        <h1 class='mb-4 text-4xl font-extrabold leading-none tracking-tight text-gray-900 md:text-5xl lg:text-6xl dark:text-white'>
+    <div data-theme='night'>
+      <div className='h-screen flex items-center justify-around mx-10'>
+        <h1 className='mb-4 text-4xl font-extrabold leading-none tracking-tight text-gray-900 md:text-5xl lg:text-6xl dark:text-white'>
           Log in.
         </h1>
-        <form class='space-y-4'>
+        <form className='space-y-4'>
           <div>
-            <label class='label'>
-              <span class='text-base label-text'>Username</span>
+            <label className='label'>
+              <span className='text-base label-text'>Username</span>
             </label>
             <input
               type='text'
               id='loginUsername'
               placeholder='Username'
-              class='w-full input input-bordered input-primary'
+              className='w-full input input-bordered input-primary'
             />
           </div>
           <div>
-            <label class='label'>
-              <span class='text-base label-text'>Password</span>
+            <label className='label'>
+              <span className='text-base label-text'>Password</span>
             </label>
             <input
               type='password'
               id='loginPassword'
               placeholder='Enter Password'
-              class='w-full input input-bordered input-primary'
+              className='w-full input input-bordered input-primary'
             />
           </div>
           <div>
-            <button class='btn btn-block btn-primary' onClick={login}>
+            <button className='btn btn-block btn-primary' onClick={login}>
               Login
             </button>
           </div>
@@ -77,6 +77,6 @@ export default function LoginPage() {
           </span>
         </form>
       </div>
-    </html>
+    </div>
   );
 }

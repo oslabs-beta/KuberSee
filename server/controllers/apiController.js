@@ -26,78 +26,78 @@ const metricsClient = new k8s.Metrics(kc);
 //   });
 // });
 
-apiController.getMetrics = async (req, res, next) => {
-  try {
-    const namespace = req.params.namespace;
-    console.log('Namespace: ', namespace);
-    res.locals.topNodes = [];
-    res.locals.topPods = [];
-    const currentTime = new Date();
+// apiController.getMetrics = async (req, res, next) => {
+//   try {
+//     const namespace = req.params.namespace;
+//     console.log('Namespace: ', namespace);
+//     res.locals.topNodes = [];
+//     res.locals.topPods = [];
+//     const currentTime = new Date();
 
-    await k8s.topNodes(k8sApi, metricsClient, namespace).then((nodes) => {
-      nodes.map((node) => {
-        // console.log(node);
-        res.locals.topNodes.push({
-          node: node.Node.metadata.name,
-          cpuCurrentUsage: node.CPU.RequestTotal.toString(),
-          cpuTotal: node.CPU.Capacity.toString(),
-          memoryCurrentUsage: node.Memory.RequestTotal.toString(),
-          memoryTotal: node.Memory.Capacity.toString(),
-          timestamp: currentTime,
-        });
-      });
-    });
+//     await k8s.topNodes(k8sApi, metricsClient, namespace).then((nodes) => {
+//       nodes.map((node) => {
+//         // console.log(node);
+//         res.locals.topNodes.push({
+//           node: node.Node.metadata.name,
+//           cpuCurrentUsage: node.CPU.RequestTotal.toString(),
+//           cpuTotal: node.CPU.Capacity.toString(),
+//           memoryCurrentUsage: node.Memory.RequestTotal.toString(),
+//           memoryTotal: node.Memory.Capacity.toString(),
+//           timestamp: currentTime,
+//         });
+//       });
+//     });
 
-    await k8s.topPods(k8sApi, metricsClient, namespace).then((pods) => {
-      pods.map((pod) => {
-        let cpuPercentage = (pod.CPU.CurrentUsage / pod.CPU.LimitTotal) * 100;
-        if (
-          cpuPercentage === Infinity ||
-          typeof cpuPercentage === 'undefined'
-        ) {
-          cpuPercentage = 0;
-        }
+//     await k8s.topPods(k8sApi, metricsClient, namespace).then((pods) => {
+//       pods.map((pod) => {
+//         let cpuPercentage = (pod.CPU.CurrentUsage / pod.CPU.LimitTotal) * 100;
+//         if (
+//           cpuPercentage === Infinity ||
+//           typeof cpuPercentage === 'undefined'
+//         ) {
+//           cpuPercentage = 0;
+//         }
 
-        res.locals.topPods.push({
-          pod: pod.Pod.metadata.name,
-          cpuCurrentUsage: pod.CPU.CurrentUsage,
-          memoryCurrentUsage: pod.Memory.CurrentUsage.toString(),
-          timestamp: currentTime,
-        });
-      });
-    });
+//         res.locals.topPods.push({
+//           pod: pod.Pod.metadata.name,
+//           cpuCurrentUsage: pod.CPU.CurrentUsage,
+//           memoryCurrentUsage: pod.Memory.CurrentUsage.toString(),
+//           timestamp: currentTime,
+//         });
+//       });
+//     });
 
-    return next();
-  } catch (error) {
-    console.error('Error fetching logs:', error);
-    return res.status(500).send('Error fetching logs');
-  }
-};
+//     return next();
+//   } catch (error) {
+//     console.error('Error fetching logs:', error);
+//     return res.status(500).send('Error fetching logs');
+//   }
+// };
 
-apiController.getStats = async (req, res, next) => {
-  try {
-    res.locals.namespaces = [];
+// apiController.getStats = async (req, res, next) => {
+//   try {
+//     res.locals.namespaces = [];
 
-    await k8sApi
-      .listPodForAllNamespaces()
-      .then((data) => (res.locals.totalPods = data.body.items.length));
+//     await k8sApi
+//       .listPodForAllNamespaces()
+//       .then((data) => (res.locals.totalPods = data.body.items.length));
 
-    await k8sApi
-      .listNode()
-      .then((data) => (res.locals.totalNodes = data.body.items.length));
+//     await k8sApi
+//       .listNode()
+//       .then((data) => (res.locals.totalNodes = data.body.items.length));
 
-    await k8sApi.listNamespace().then((data) => {
-      for (let i in data.body.items) {
-        res.locals.namespaces.push(data.body.items[i].metadata.name);
-      }
-    });
+//     await k8sApi.listNamespace().then((data) => {
+//       for (let i in data.body.items) {
+//         res.locals.namespaces.push(data.body.items[i].metadata.name);
+//       }
+//     });
 
-    return next();
-  } catch (error) {
-    console.error('Error fetching logs:', error);
-    return res.status(500).send('Error fetching logs');
-  }
-};
+//     return next();
+//   } catch (error) {
+//     console.error('Error fetching logs:', error);
+//     return res.status(500).send('Error fetching logs');
+//   }
+// };
 
 apiController.getLogs = async (req, res, next) => {
   try {
