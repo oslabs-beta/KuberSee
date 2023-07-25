@@ -14,17 +14,21 @@ const App = () => {
   useEffect(() => {
     socket.emit('stats', null);
   }, []);
-  // const showNavBar = location.pathname === '/' || location.pathname === '/signup';
+  const showNavBar = location.pathname === '/' || location.pathname === '/signup';
   return (
     // <BrowserRouter>
-    <BrowserRouter>
+    // <BrowserRouter>
+    <div>
       <Routes>
-        <Route path='/' element={<LoginPage />} />
-        <Route path='home' element={<HomePage socket={socket} />} />
-        <Route path='signup' element={<SignupPage />} />
-        <Route path='*' element={<NotFound />} />
+        <Route path='/' element={<NavBar />}>
+          <Route index element={<LoginPage />} />
+          <Route path='home' element={<HomePage socket={socket} />} />
+          <Route path='signup' element={<SignupPage />} />
+          <Route path='*' element={<NotFound />} />
+        </Route>
       </Routes>
-    </BrowserRouter>
+      </div>
+    // </BrowserRouter>
 
 
     // <div>
@@ -36,6 +40,7 @@ const App = () => {
     //     <Route path='*' element={<NotFound />} />
     //   </Routes>
     // </div>
+
     // </BrowserRouter>
     // </BrowserRouter>
   );
