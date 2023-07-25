@@ -3,7 +3,7 @@ import { Outlet, Link } from 'react-router-dom';
 
 const NavBar = () => {
   return (
-    <html data-theme='night'>
+    <div data-theme='night'>
       <>
         <nav>
           <ul className='flex justify-evenly items-center navbar bg-base-100 '>
@@ -29,7 +29,7 @@ const NavBar = () => {
         </nav>
         <Outlet />
       </>
-    </html>
+    </div>
   );
 };
 
