@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { Link, Navigate, useNavigate } from 'react-router-dom';
+import Logo from '../../../assets/KuberSee-t.png'
 
 //Creating a SALT when signing up
 // const salt = bcrypt.genSaltSync(10)
@@ -54,24 +55,27 @@ export default function SignupPage() {
   };
   //message when form is properly submitted
   return (
-    <html data-theme='night'>
+    <div data-theme='night'>
+
       <div
         className='signUpForm'
         class='h-screen flex items-center justify-around mx-10'
       >
-        <h1 class=' mb-4 text-4xl font-extrabold leading-none tracking-tight text-gray-900 md:text-5xl lg:text-6xl dark:text-white '>
-          Create an account.
+        <img className="w-80" src={Logo} />
+        <div className='flex-col'>
+        <h1 className=' mb-4 text-4xl font-extrabold leading-none tracking-tight text-gray-900 md:text-5xl lg:text-6xl dark:text-white '>
+          Sign Up
         </h1>
-        <form class='space-y-4'>
-          <div class='mb-4'>
+        <form className='space-y-4'>
+          <div className='mb-4'>
             <label className='label' class='text-base label-text'>
               {' '}
               Create a username:
             </label>
           </div>
-          <div class='mb-6'>
+          <div classNAme='mb-6'>
             <input
-              class='w-full input input-bordered input-primary'
+              className='w-full input input-bordered input-primary'
               name='user'
               placeholder='username'
               value={username}
@@ -84,7 +88,7 @@ export default function SignupPage() {
           </div>
           <input
             type='password'
-            class='w-full input input-bordered input-primary'
+            className='w-full input input-bordered input-primary'
             name='userPassword'
             placeholder='password'
             value={password}
@@ -94,9 +98,10 @@ export default function SignupPage() {
             <button class='btn btn-block btn-primary' onClick={saveUser}>
               Sign Up
             </button>
+            </div>
+          </form>
           </div>
-        </form>
       </div>
-    </html>
+    </div>
   );
 }
