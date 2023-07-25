@@ -27,7 +27,8 @@ function createWindow() {
       // communicate between node-land and browser-land.
       webPreferences: {
         nodeIntegration: true,
-              contextIsolation: false,
+        contextIsolation: false,
+
       },
     });
     const appURL = app.isPackaged
@@ -36,7 +37,7 @@ function createWindow() {
         protocol: "file:",
         slashes: true,
       })
-    : "http://localhost:3000";
+    : "http://localhost:8080";
 
   mainWindow.loadURL(appURL);
 
