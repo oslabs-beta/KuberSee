@@ -1,5 +1,6 @@
 import React from 'react';
 import { Link, useNavigate, redirect } from 'react-router-dom';
+import Logo from '../../../assets/KuberSee-t.png'
 
 export default function LoginPage() {
   const navigate = useNavigate();
@@ -32,9 +33,11 @@ export default function LoginPage() {
   return (
     <div data-theme='night'>
       <div className='h-screen flex items-center justify-around mx-10'>
-        <h1 className='mb-4 text-4xl font-extrabold leading-none tracking-tight text-gray-900 md:text-5xl lg:text-6xl dark:text-white'>
-          Log in.
-        </h1>
+        <img className="w-80" src={Logo} />
+        <div className='flex-col'>
+        <h1 className='mb-4 mt-4 text-4xl font-extrabold leading-none tracking-tight text-gray-800 md:text-5xl lg:text-6xl dark:text-white'>
+          Login
+          </h1>
         <form className='space-y-4'>
           <div>
             <label className='label'>
@@ -63,9 +66,9 @@ export default function LoginPage() {
               Login
             </button>
           </div>
-          <span>
-            Don't have an account ?
-            <Link to='/signup' className='text-blue-600 hover:underline'>
+          <span >
+            Don't have an account ? 
+            <Link to='/signup' className=' mt-6 text-blue-600 hover:underline'>
               Sign up
             </Link>
             {/* <a
@@ -75,7 +78,8 @@ export default function LoginPage() {
               Signup
             </a> */}
           </span>
-        </form>
+          </form>
+          </div>
       </div>
     </div>
   );
