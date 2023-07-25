@@ -10,7 +10,7 @@ import io from 'socket.io-client'
 const socket = io.connect("http://localhost:3000");
 
 const App = () => {
-  const location = useLocation();
+  // const location = useLocation();
   useEffect(() => {
     socket.emit('stats', null);
   }, []);
@@ -19,14 +19,28 @@ const App = () => {
     // <BrowserRouter>
     // <BrowserRouter>
     <div>
-      {showNavBar && <NavBar />}
       <Routes>
-        <Route path='/' element={<LoginPage />} />
-        <Route path='home' element={<HomePage socket={socket} />} />
-        <Route path='signup' element={<SignupPage />} />
-        <Route path='*' element={<NotFound />} />
+        <Route path='/' element={<NavBar />}>
+          <Route index element={<LoginPage />} />
+          <Route path='home' element={<HomePage socket={socket} />} />
+          <Route path='signup' element={<SignupPage />} />
+          <Route path='*' element={<NotFound />} />
+        </Route>
       </Routes>
       </div>
+    // </BrowserRouter>
+
+
+    // <div>
+    //   {showNavBar && <NavBar />}
+    //   <Routes>
+    //     <Route path='/' element={<LoginPage />} />
+    //     <Route path='home' element={<HomePage socket={socket} />} />
+    //     <Route path='signup' element={<SignupPage />} />
+    //     <Route path='*' element={<NotFound />} />
+    //   </Routes>
+    // </div>
+
     // </BrowserRouter>
     // </BrowserRouter>
   );
