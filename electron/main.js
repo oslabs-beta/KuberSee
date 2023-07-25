@@ -36,7 +36,7 @@ function createWindow() {
         protocol: "file:",
         slashes: true,
       })
-    : "http://localhost:8080";
+    : "http://localhost:3000";
 
   mainWindow.loadURL(appURL);
 
