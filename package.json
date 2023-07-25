@@ -3,16 +3,6 @@
   "version": "1.0.0",
   "description": "Kubernetes Visualizer",
   "main": "electron/main.js",
-  "config": {
-    "forge": {
-      "packagerConfig": {},
-      "makers": [
-        {
-          "name": "@electron-forge/maker-zip"
-        }
-      ]
-    }
-  },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "electron ./electron/main.js",
@@ -37,6 +27,7 @@
     "css-loader": "^6.8.1",
     "daisyui": "^3.2.1",
     "electron": "^25.3.1",
+    "electron-builder": "^24.6.3",
     "file-loader": "^6.2.0",
     "html-webpack-plugin": "^5.5.3",
     "nodemon": "^2.0.22",
