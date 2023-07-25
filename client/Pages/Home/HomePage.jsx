@@ -108,7 +108,6 @@ export default function HomePage({ socket }) {
         changeNamespace={setCurrentNamespace}
         namespaces={namespacesRef.current}
       />
-
       <div className='flex flex-wrap items-center justify-center'>
         <LineGraph dataRef={podRef} yaxis='CPU (Cores)' propertyName='cpuCurrentUsage' legendName='Pod Names Legend' title='Pod CPU Usage' />
         <LineGraph dataRef={podRef} yaxis={'Memory (Bytes)'} propertyName='memoryCurrentUsage' legendName='Pod Names Legend' title='Pod Memory Usage' />
