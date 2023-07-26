@@ -3,7 +3,6 @@ const app = express();
 const path = require("path");
 const cors = require("cors");
 const PORT = 3000;
-const apiRoute = require("./routes/apiRoute");
 const authRoute = require("./routes/authRoute");
 const socketController = require("./controllers/socketController");
 const http = require("http");
@@ -24,7 +23,6 @@ const io = socketIO(server, {
   },
 });
 
-app.use("/api", apiRoute);
 app.use("/auth", authRoute);
 
 // app.use(cookieParser());
