@@ -31,7 +31,7 @@ function createWindow() {
     },
   });
 
-  mainWindow.loadFile(path.join(__dirname, "index.html"));
+  mainWindow.loadFile(path.join(__dirname, "./build/index.html"));
 
   mainWindow.once("ready-to-show", () => {
     mainWindow.show();
