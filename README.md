@@ -17,16 +17,37 @@ KuberSee is an open source product with the goal of providing developers an easi
 [![Typescript][TS.js]][TS-url] [![JavaScript][JavaScript]][JavaScript-url] [![React][React.js]][React-url] [![React Router][React Router]][React-Router-url] [![Node.js][Node.js]][Node-url] [![Kubernetes][Kubernetes]][Kubernetes-url] [![Jest][Jest]][Jest-url] [![Tailwind][Tailwind]][Tailwind-url] [![DaisyUI][DaisyUI]][DaisyUI-url] [![MUI][MUI]][MUI-url] [![SocketIO][SocketIO]][SocketIO-url] [![Electron.js][Electron.js]][Electron-url][![Docker][Docker]][Docker-url]
 </div>
 
-## How to test through Minicube: 
-#### STEP 1 - Download Docker Desktop
-- Install Docker Desktop on your device and enable the Kubernetes extension: https://www.docker.com/products/docker-desktop/
-#### STEP 2 - Install Minikube
-- Follow the installation guide for your device and install the appropriate minikube for your operating system. https://minikube.sigs.k8s.io/docs/start/ 
-- On your terminal, start your minikube: `minikube start`
-- Enable metrics: `minikube addons enable metrics-server`
-- Create a pod: 
-`kubectl create deployment hello-node --image=registry.k8s.io/e2e-test-images/agnhost:2.39 -- /agnhost netexec --http-port=8080`
-- When you are done with the session, stop your minikube: `minikube stop`
+## Download the Application
+  - Install the application from www.kubersee.com
+## Configuration of Cloud Kubernetes Cluster
+- ### Configure with GCloud: 
+  - Enter command line: `gcloud init` This command will guide you through the authentication process and ask you to log in with your Google account using a web browser.
+  - Follow the prompts to select your Google Cloud project, authenticate your account, and set your default region and zone.
+  - Set Up Kubernetes Configuration: If you are using Google Kubernetes Engine (GKE) to create your Kubernetes clusters, you can use the following command to set up kubectl to use the credentials from your Google Cloud project: `gcloud container clusters get-credentials CLUSTER_NAME --zone ZONE --project PROJECT_ID` Replace CLUSTER_NAME with the name of your GKE cluster, ZONE with the GCP zone where your cluster is located, and PROJECT_ID with your Google Cloud project ID.
+  - Verify Credentials: To verify that kubectl is using the correct credentials, you can use the following command to get information about your Kubernetes cluster:`kubectl cluster-info` This command will show you the API server address of your cluster, indicating that you are successfully using the credentials obtained from your Google Cloud project.
+  - After following these steps, you should have the necessary credentials to interact with your Google Kubernetes Engine cluster using kubectl. If you need to switch between different Google Cloud projects or clusters, you can use the gcloud config set project PROJECT_ID and kubectl config use-context CONTEXT_NAME commands to switch between configurations.
+
+- ### Configure with Amazon EKS (Elastic Kubernetes Service)
+  - Install Dependencies: Ensure you have the following dependencies installed on your machine:
+    - AWS CLI: Install the AWS Command Line Interface as explained in the previous response.
+    - kubectl: Install kubectl to interact with Kubernetes clusters. You can find installation instructions here: https://kubernetes.io/docs/tasks/tools/install-kubectl/
+  - Configure AWS CLI: If you haven't already, configure the AWS CLI with your AWS access keys using the aws configure command. This step is necessary to access the Amazon EKS cluster.
+  - Create or Access an Amazon EKS Cluster: Using the AWS Management Console or the AWS CLI, create an Amazon EKS cluster or access an existing one. Note down the cluster name, region, and AWS account ID associated with the cluster.
+  - Install AWS IAM Authenticator: Amazon EKS requires the AWS IAM Authenticator to authenticate with your EKS cluster using IAM roles. You can find installation instructions here: https://docs.aws.amazon.com/eks/latest/userguide/install-aws-iam-authenticator.html
+  - Configure kubectl for Amazon EKS: Run the following command to update the Kubernetes configuration and associate kubectl with your Amazon EKS cluster:`aws eks update-kubeconfig --name CLUSTER_NAME --region REGION` Replace CLUSTER_NAME with the name of your Amazon EKS cluster and REGION with the AWS region where your cluster is located. This command retrieves the necessary authentication information and updates the Kubernetes configuration file (~/.kube/config).
+  - Verify Configuration: You can verify that kubectl is correctly configured to access your Amazon EKS cluster by running a simple command: `kubectl get nodes` This command should return the list of nodes in your Amazon EKS cluster. Now, your Kubernetes configuration is set up, and you can use kubectl to interact with your Amazon EKS cluster and manage Kubernetes resources.
+  - Please note that managing Amazon EKS clusters may involve additional steps, such as creating and configuring worker nodes, setting up security groups, and managing IAM roles. For more detailed information on managing Amazon EKS, refer to the official AWS documentation: https://aws.amazon.com/eks/
+
+## How to test through Minikube: 
+Note: If Kubernetes Cluster configuration setup with .kube DISREGARD minikube 
+- Download Docker Desktop
+  - Install Docker Desktop on your device and enable the Kubernetes extension: https://www.docker.com/products/docker-desktop/
+- Install Minikube
+  - Follow the installation guide for your device and install the appropriate minikube for your operating system. https://minikube.sigs.k8s.io/docs/start/ 
+  - On your terminal, start your minikube: `minikube start`
+  - Enable metrics: `minikube addons enable metrics-server`
+  - Create a pod: `kubectl create deployment hello-node --image=registry.k8s.io/e2e-test-images/agnhost:2.39 -- /agnhost netexec --http-port=8080`
+  - When you are done with the session, stop your minikube: `minikube stop`
 <br />
 
 ______________________________________________________
