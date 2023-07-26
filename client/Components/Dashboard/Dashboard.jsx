@@ -9,7 +9,6 @@ export default function Dashboard({ stats = [] }) {
   return (
     <div data-theme='night'>
       <div>
-
       <button className='btn btn-block btn-primary' onClick={logout}>Logout</button>
       </div>
       <div className='bg-night py-24 sm:py-32'>
