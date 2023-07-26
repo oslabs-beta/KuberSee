@@ -4,7 +4,7 @@ import { useNavigate } from 'react-router-dom';
 export default function Dashboard({ stats = [] }) {
   const navigate = useNavigate()
   const logout = () => {
-    navigate('/')
+    navigate('*')
   }
   return (
     <div data-theme='night'>

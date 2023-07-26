@@ -219,7 +219,7 @@ const LineGraph = ({ dataRef, yaxis, propertyName, legendName, title }) => {
 
     // initialize
     var now = new Date();
-    const width = 800;
+    const width = 750;
     const graphVars = initialize(width, width * 0.6);
 
     var lookback = new Date(now); // creates a copy of now's date

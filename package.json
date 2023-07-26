@@ -5,6 +5,26 @@
   "version": "1.0.0",
   "description": "Kubernetes Visualizer",
   "main": "electron/main.js",
+  "build": {
+    "appId": "com.KuberSee.app",
+    "nsis": {
+      "createDesktopShortcut": "always"
+    },
+    "dmg": {
+      "contents": [
+        {
+          "x": 130,
+          "y": 220
+        },
+        {
+          "x": 410,
+          "y": 220,
+          "type": "link",
+          "path": "/Applications"
+        }
+      ]
+    }
+  },
   "scripts": {
     "test": "jest",
     "start": "nodemon server/server.js",
