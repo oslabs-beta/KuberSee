@@ -81,10 +81,6 @@ const LineGraph = ({ dataRef, yaxis, propertyName, legendName, title }) => {
 
     const radius = graph.attr('width') / 200.0; // for the circle
 
-    // const xValues = data.map(a => a.Date);
-    // const yValues = data.map((a) => a.cpuCurrentUsage);
-    //COPIED LINES OF MULTIPLE LINES
-
 
     let sumStat = nest()
       .key(function (d) { return d.name })
@@ -199,10 +195,6 @@ const LineGraph = ({ dataRef, yaxis, propertyName, legendName, title }) => {
         return colorScale(d.timestamp);
       });
 
-    // data.forEach((d) => {
-    //   d.Date = d.timestamp;
-    //   d.cpuPercent = +d.cpuCurrentUsage;
-    // });
 
     var x_axis = d3.axisBottom().scale(xScale);
     xScaleGroup
@@ -227,8 +219,8 @@ const LineGraph = ({ dataRef, yaxis, propertyName, legendName, title }) => {
 
     // initialize
     var now = new Date();
-    const width = 900;
-    const graphVars = initialize(width, width * 0.7);
+    const width = 800;
+    const graphVars = initialize(width, width * 0.6);
 
     var lookback = new Date(now); // creates a copy of now's date
     lookback.setSeconds(lookback.getSeconds() - lookback_s); // go back in time by 30 seconds
