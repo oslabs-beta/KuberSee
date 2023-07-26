@@ -34,26 +34,24 @@ userController.signin = async (req, res, next) => {
   try {
     const user = [req.body.username];
     const query = `SELECT * FROM "User" where username=$1`;
-    // console.log(query);
     const resp = await db.query(query, user);
     console.log(resp);
     console.log(resp.rows.length);
     if (resp.rows.length === 0) {
       console.log("none found");
-      // res.locals.users = "wrong user";
-      // return;
       return res.status(400).json("wrong");
-      // throw new Error("fucks you");
     }
     const saltRounds = 10;
     const hashedPassword = await bcrypt.hash(req.body.password, saltRounds);
     if (resp.rows[0].password === hashedPassword) {
-      console.log("found users");
+      // console.log("found users");
+      res.locals.users = resp.rows[0];
+      // console.log(res.locals.users);
+      return next();
     }
     res.locals.users = resp.rows[0];
-    console.log(res.locals.users);
+      // console.log(res.locals.users);
     return next();
-    // console.log(resp.rows);
   } catch (error) {
     return next(error);
   }
