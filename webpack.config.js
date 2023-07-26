@@ -7,8 +7,7 @@ module.exports = {
   // target: 'electron-renderer',
   output: {
     filename: "bundle.js",
-    path: path.resolve(__dirname, "build"),
-    publicPath: "/",
+    path: path.resolve(__dirname, "./electron/build"),
   },
   plugins: [
     new HtmlWebpackPlugin({
@@ -49,7 +48,6 @@ module.exports = {
         test: /\.(png|jpg|jpeg|svg|gif)$/,
         loader: "file-loader",
       },
-
     ],
   },
   // resolve: {

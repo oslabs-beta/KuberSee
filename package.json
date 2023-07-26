@@ -1,5 +1,6 @@
 {
   "name": "kubersee",
+  "homepage": "./",
   "version": "1.0.0",
   "description": "Kubernetes Visualizer",
   "main": "electron/main.js",
@@ -8,7 +9,8 @@
     "start": "nodemon server/server.js",
     "electron": "electron ./electron/main.js",
     "dev": "webpack-dev-server --open & nodemon server/server.js",
-    "build": "NODE_ENV=production webpack"
+    "build": "NODE_ENV=production webpack",
+    "dist": "electron-builder"
   },
   "author": "Joey Cheng, Elinor Weissberg, Jordan Lopez, Daniel Zhao, and Alexis Contreras",
   "license": "ISC",

@@ -1,109 +1,17 @@
 const apiController = {};
-const k8s = require('@kubernetes/client-node');
-const { cp } = require('fs');
+const k8s = require("@kubernetes/client-node");
+const { cp } = require("fs");
 
 //configure kubernetes api
 const kc = new k8s.KubeConfig();
 kc.loadFromDefault();
 const k8sApi = kc.makeApiClient(k8s.CoreV1Api);
-const metricsClient = new k8s.Metrics(kc);
-
-
-// io.on('connection', (socket) => {
-//   console.log('a user connected');
-
-//   socket.on('latest', (event) => {
-//     console.log('Latest event: ' + event);
-//   });
-
-//   socket.on('event', (event) => {
-//     console.log('Received an event: ' + event);
-//     io.emit('event', event);
-//   });
-
-//   socket.on('disconnect', () => {
-//     console.log('user disconnected');
-//   });
-// });
-
-// apiController.getMetrics = async (req, res, next) => {
-//   try {
-//     const namespace = req.params.namespace;
-//     console.log('Namespace: ', namespace);
-//     res.locals.topNodes = [];
-//     res.locals.topPods = [];
-//     const currentTime = new Date();
-
-//     await k8s.topNodes(k8sApi, metricsClient, namespace).then((nodes) => {
-//       nodes.map((node) => {
-//         // console.log(node);
-//         res.locals.topNodes.push({
-//           node: node.Node.metadata.name,
-//           cpuCurrentUsage: node.CPU.RequestTotal.toString(),
-//           cpuTotal: node.CPU.Capacity.toString(),
-//           memoryCurrentUsage: node.Memory.RequestTotal.toString(),
-//           memoryTotal: node.Memory.Capacity.toString(),
-//           timestamp: currentTime,
-//         });
-//       });
-//     });
-
-//     await k8s.topPods(k8sApi, metricsClient, namespace).then((pods) => {
-//       pods.map((pod) => {
-//         let cpuPercentage = (pod.CPU.CurrentUsage / pod.CPU.LimitTotal) * 100;
-//         if (
-//           cpuPercentage === Infinity ||
-//           typeof cpuPercentage === 'undefined'
-//         ) {
-//           cpuPercentage = 0;
-//         }
-
-//         res.locals.topPods.push({
-//           pod: pod.Pod.metadata.name,
-//           cpuCurrentUsage: pod.CPU.CurrentUsage,
-//           memoryCurrentUsage: pod.Memory.CurrentUsage.toString(),
-//           timestamp: currentTime,
-//         });
-//       });
-//     });
-
-//     return next();
-//   } catch (error) {
-//     console.error('Error fetching logs:', error);
-//     return res.status(500).send('Error fetching logs');
-//   }
-// };
-
-// apiController.getStats = async (req, res, next) => {
-//   try {
-//     res.locals.namespaces = [];
-
-//     await k8sApi
-//       .listPodForAllNamespaces()
-//       .then((data) => (res.locals.totalPods = data.body.items.length));
-
-//     await k8sApi
-//       .listNode()
-//       .then((data) => (res.locals.totalNodes = data.body.items.length));
-
-//     await k8sApi.listNamespace().then((data) => {
-//       for (let i in data.body.items) {
-//         res.locals.namespaces.push(data.body.items[i].metadata.name);
-//       }
-//     });
-
-//     return next();
-//   } catch (error) {
-//     console.error('Error fetching logs:', error);
-//     return res.status(500).send('Error fetching logs');
-//   }
-// };
 
 apiController.getLogs = async (req, res, next) => {
   try {
     const namespace = req.params.namespace;
     const podName = req.params.podname;
-    const containerName = '';
+    const containerName = "";
     const tailLines = 100; // Number of lines to fetch
 
     const logsResponse = await k8sApi.readNamespacedPodLog(
@@ -116,7 +24,7 @@ apiController.getLogs = async (req, res, next) => {
       tailLines
     );
     const data = logsResponse.body;
-    const logs = data.split('\n');
+    const logs = data.split("\n");
     //write logic to parse res.locals.log
     const newArray = [];
     logs.forEach((el, i) => {
@@ -135,8 +43,8 @@ apiController.getLogs = async (req, res, next) => {
     // console.log("new Array", newArray);
     return next();
   } catch (error) {
-    console.error('Error fetching logs:', error);
-    return res.status(500).send('Error fetching logs');
+    console.error("Error fetching logs:", error);
+    return res.status(500).send("Error fetching logs");
   }
 };
 
