@@ -28,17 +28,18 @@ export default function HomePage({ socket }) {
   }, [currentNamespace]);
 
   useEffect(() => {
-    const fetchlogs = () => {
-      if (currentPod != '') {
-        fetch(`/api/logs/${currentNamespace}/${currentPod}`)
-          .then((data) => data.json())
-          .then((res) => {
-            setLog(res);
-          })
-          .catch((err) => console.log(err));
-      }
-    };
-    fetchlogs();
+    if (currentPod !== '') {
+      socket.emit('logs', {
+        namespace: currentNamespace,
+        podname: currentPod,
+      })
+    }
+  }, [currentPod]);
+
+  useEffect(() => {
+    socket.on('logs', (logs) => {
+      setLog(logs);
+    })
   }, [currentPod]);
 
   useEffect(() => {
@@ -120,7 +121,7 @@ export default function HomePage({ socket }) {
         <LineGraph dataRef={nodeRef} yaxis={'Memory (Bytes)'} propertyName='memoryCurrentUsage' legendName='Node Names Legend' title='Node Memory Usage' />
         <LineGraph dataRef={nodeRef} yaxis={'Memory Usage (%)'} propertyName='memoryPercentage' legendName='Node Names Legend' title='Node Memory % Over Total' />
       </div>
-      <DropdownPods changePods={setCurrentPod} pods={podNamesRef.current} />
+      <DropdownPods changePod={setCurrentPod} pods={podNamesRef.current} />
       <LogDashboard log={log} />
     </>
   );

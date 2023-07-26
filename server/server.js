@@ -83,6 +83,19 @@ io.on("connection", (socket) => {
       socket.emit("error", "Error fetching stats");
     }
   });
+
+  socket.on("logs", async (body) => {
+    try {
+      const data = await socketController.getLogs(body);
+
+      socket.emit("logs", data);
+    } catch (error) {
+      console.error("Error fetching logs:", error);
+      // Emit an error event or handle it in the event handler if needed
+      socket.emit("error", "Error fetching logs");
+    }
+  });
+
   // listens for when a user disconnects from the server.
   socket.on("disconnect", () => {
     console.log(`User Disconnected: ${socket.id}`);

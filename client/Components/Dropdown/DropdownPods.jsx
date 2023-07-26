@@ -6,7 +6,7 @@ import Fade from '@mui/material/Fade';
 import Box from '@mui/material/Box';
 import { alpha } from '@mui/system';
 
-export default function DropdownPods({ changePods, pods = [] }) {
+export default function DropdownPods({ changePod, pods = [] }) {
   const [anchorEl, setAnchorEl] = useState(null);
   const open = Boolean(anchorEl);
   const handleClick = (event) => {
@@ -44,7 +44,7 @@ export default function DropdownPods({ changePods, pods = [] }) {
               <MenuItem
                 key={pod}
                 onClick={(e) => {
-                  changePods(pod);
+                  changePod(pod);
                   handleClose();
                 }}
               >
