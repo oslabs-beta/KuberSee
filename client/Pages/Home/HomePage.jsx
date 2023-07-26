@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import LogDashboard from '../../Components/Dashboard/LogDashboard.jsx';
 import Dashboard from '../../Components/Dashboard/Dashboard.jsx';
-import LineGraph from '../../Components/LineChart/LineGraph.jsx';
+import LineGraph from '../../Components/LineGraph/LineGraph.jsx';
 import DropdownMenu from '../../Components/Dropdown/DropdownButton.jsx';
 import * as d3 from 'd3';
 import DropdownPods from '../../Components/Dropdown/DropdownPods.jsx';
