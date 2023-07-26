@@ -1,20 +1,10 @@
 const { app, BrowserWindow } = require("electron");
 const path = require("path");
 const url = require("url");
+const { fork } = require('child_process')
+const ps = fork(path.join(__dirname, '../server/server.js'));
 
-// const createWindow = () => {
-//     win = new BrowserWindow({
-//       width: 800,
-//       height: 500,
-//       minHeight: 400,
-//       maxHeight: 800,
-//       minWidth: 400,
-//         maxWidth: 1500,
 
-//     });
-//     // win.loadURL("http://localhost:8080");
-//     win.loadFile("index.html");
-// };
 function createWindow() {
   mainWindow = new BrowserWindow({
     width: 1100,
@@ -31,7 +21,8 @@ function createWindow() {
     },
   });
 
-  mainWindow.loadFile(path.join(__dirname, "index.html"));
+  mainWindow.loadFile(path.join(__dirname, "./build/index.html"));
+
 
   mainWindow.once("ready-to-show", () => {
     mainWindow.show();
@@ -41,20 +32,6 @@ function createWindow() {
     mainWindow.webContents.openDevTools();
   }
 }
-// // Setup a local proxy to adjust the paths of requested files when loading
-// // them from the local production bundle (e.g.: local fonts, etc...).
-// function setupLocalFilesNormalizerProxy() {
-//     protocol.registerHttpProtocol(
-//       "file",
-//       (request, callback) => {
-//         const url = request.url.substr(8);
-//         callback({ path: path.normalize(`${__dirname}/${url}`) });
-//       },
-//       (error) => {
-//         if (error) console.error("Failed to register protocol");
-//       }
-//     );
-// }
 
 // This method will be called when Electron has finished its initialization and
 // is ready to create the browser windows.

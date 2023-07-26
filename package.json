@@ -1,5 +1,6 @@
 {
   "name": "kubersee",
+  "product_name": "KuberSee",
   "homepage": "./",
   "version": "1.0.0",
   "description": "Kubernetes Visualizer",
@@ -8,6 +9,7 @@
     "test": "jest",
     "start": "nodemon server/server.js",
     "electron": "electron ./electron/main.js",
+    "start-server-electron":  "concurrently \"npm run start\" \"npm run electron\"",
     "dev": "webpack-dev-server --open & nodemon server/server.js",
     "build": "NODE_ENV=production webpack",
     "dist": "electron-builder"
@@ -20,6 +22,7 @@
     "@babel/preset-react": "^7.22.5",
     "@types/node": "^20.4.1",
     "babel-loader": "^9.1.2",
+    "concurrently": "^8.2.0",
     "css-loader": "^6.8.1",
     "daisyui": "^3.2.1",
     "electron": "^25.3.1",
