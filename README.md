@@ -17,6 +17,19 @@ KuberSee is an open source product with the goal of providing developers an easi
 [![Typescript][TS.js]][TS-url] [![JavaScript][JavaScript]][JavaScript-url] [![React][React.js]][React-url] [![React Router][React Router]][React-Router-url] [![Node.js][Node.js]][Node-url] [![Kubernetes][Kubernetes]][Kubernetes-url] [![Jest][Jest]][Jest-url] [![Tailwind][Tailwind]][Tailwind-url] [![DaisyUI][DaisyUI]][DaisyUI-url] [![MUI][MUI]][MUI-url] [![SocketIO][SocketIO]][SocketIO-url] [![Electron.js][Electron.js]][Electron-url][![Docker][Docker]][Docker-url]
 </div>
 
+https://github.com/oslabs-beta/KuberSee/assets/124442983/b3f1c2df-390a-4980-bfa0-658924404a3d
+
+## Table of Contents
+
+  <ol>
+    <li>
+    <a href="#about-kubersee">About KuberSee</a></li>
+    <li><a href="#download-the-application">Download the Application</a></li>
+    <li><a href="#configuration-of-cloud-kubernetes-cluster">Configuration of Cloud Kubernetes Cluster</a></li>
+    <li><a href="#how-to-test-through-minikube">How to Test Through Minikube</a></li>
+    <li><a href="#authors">Authors</a></li>
+  </ol>
+
 ## Download the Application
   - Install the application from www.kubersee.com
 ## Configuration of Cloud Kubernetes Cluster
