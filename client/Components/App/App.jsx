@@ -18,6 +18,7 @@ const App = () => {
     <div>
       <Routes>
         <Route path='/' element={<NavBar />}>
+          <Route index element={<LoginPage />} />
           <Route path='home' element={<HomePage socket={socket} />} />
           <Route path='signup' element={<SignupPage />} />
           <Route path='*' element={<LoginPage />} />
