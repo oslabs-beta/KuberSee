@@ -1,4 +1,3 @@
-const express = require("express");
 const sessionController = {};
 
 sessionController.createSession = (req, res, next) => {

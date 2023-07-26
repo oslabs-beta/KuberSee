@@ -55,7 +55,8 @@ socketController.getMetricsMiddleware = async function (data) {
     console.error("Error fetching logs:", error);
     // Emit an error event or handle it in the event handler if needed
     return {
-      error: true,
+      topNodes: [],
+      topPods: [],
     };
   }
 };
@@ -66,8 +67,7 @@ socketController.getStatsMiddleware = async () => {
     kc.loadFromDefault();
     const k8sApi = kc.makeApiClient(k8s.CoreV1Api);
 
-    const locals = {};
-    locals.namespaces = [];
+    const namespaces = [];
 
     const totalPods = await k8sApi
       .listPodForAllNamespaces()
@@ -79,17 +79,66 @@ socketController.getStatsMiddleware = async () => {
 
     await k8sApi.listNamespace().then((data) => {
       for (let i in data.body.items) {
-        locals.namespaces.push(data.body.items[i].metadata.name);
+        namespaces.push(data.body.items[i].metadata.name);
       }
     });
 
     return {
-      namespaces: locals.namespaces,
+      namespaces,
       totalNodes,
       totalPods,
     };
   } catch (error) {
     console.error("Error fetching logs:", error);
+    return {
+      namespaces: [],
+      totalNodes: 0,
+      totalPods: 0,
+    };
+  }
+};
+
+socketController.getLogs = async (body) => {
+  try {
+    const kc = new k8s.KubeConfig();
+    kc.loadFromDefault();
+    const k8sApi = kc.makeApiClient(k8s.CoreV1Api);
+
+    const namespace = body.namespace;
+    const podName = body.podname;
+    const containerName = "";
+    const tailLines = 100; // Number of lines to fetch
+
+    const logsResponse = await k8sApi.readNamespacedPodLog(
+      podName,
+      namespace,
+      containerName,
+      undefined,
+      undefined,
+      undefined,
+      tailLines
+    );
+    const data = logsResponse.body;
+    const logs = data.split("\n");
+    //write logic to parse res.locals.log
+    const newArray = [];
+    logs.forEach((el, i) => {
+      const splitLog = el.split(/\]/);
+      if (splitLog[1] && splitLog[1].length) {
+        splitLog[1] = splitLog[1].trim();
+      }
+      const log = {
+        id: i,
+        header: splitLog[0],
+        message: splitLog[1],
+      };
+      newArray.push(log);
+    });
+    // console.log("new Array", newArray);
+    return newArray;
+  } catch (error) {
+    console.error("Error fetching logs:", error);
+    return [];
   }
 };
 
