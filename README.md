@@ -14,7 +14,7 @@ KuberSee is an open source product with the goal of providing developers an easi
 
 <div align="center" width="100%">
             
-[![Typescript][TS.js]][TS-url] [![JavaScript][JavaScript]][JavaScript-url] [![React][React.js]][React-url] [![React Router][React Router]][React-Router-url] [![Node.js][Node.js]][Node-url] [![Kubernetes][Kubernetes]][Kubernetes-url] [![Jest][Jest]][Jest-url] [![Tailwind][Tailwind]][Tailwind-url] [![DaisyUI][DaisyUI]][DaisyUI-url] [![MUI][MUI]][MUI-url] [![SocketIO][SocketIO]][SocketIO-url] [![Electron.js][Electron.js]][Electron-url][![Docker][Docker]][Docker-url]
+[![Typescript][TS.js]][TS-url] [![JavaScript][JavaScript]][JavaScript-url] [![React][React.js]][React-url] [![React Router][React Router]][React-Router-url] [![Node.js][Node.js]][Node-url] [![Kubernetes][Kubernetes]][Kubernetes-url] [![Jest][Jest]][Jest-url] [![Tailwind][Tailwind]][Tailwind-url] [![DaisyUI][DaisyUI]][DaisyUI-url] [![MUI][MUI]][MUI-url] [![SocketIO][SocketIO]][SocketIO-url] [![Electron.js][Electron.js]][Electron-url][![Vercel][Vercel]][Vercel-url]
 </div>
 
 https://github.com/oslabs-beta/KuberSee/assets/124442983/b3f1c2df-390a-4980-bfa0-658924404a3d
@@ -94,8 +94,8 @@ ______________________________________________________
 [Kubernetes-url]: https://kubernetes.io/
 [Jest]: https://img.shields.io/badge/-jest-%23C21325?style=for-the-badge&logo=jest&logoColor=white
 [Jest-url]: https://jestjs.io/
-[Docker]: https://img.shields.io/badge/docker-%230db7ed.svg?style=for-the-badge&logo=docker&logoColor=white
-[Docker-url]: https://www.docker.com/
+[Vercel]: https://img.shields.io/badge/vercel-%23000000.svg?style=for-the-badge&logo=vercel&logoColor=white
+[Vercel-url]: https://vercel.com/
 [DaisyUI]: https://img.shields.io/badge/daisyui-5A0EF8?style=for-the-badge&logo=daisyui&logoColor=white
 [DaisyUI-url]: https://daisyui.com/
 [Tailwind]: https://img.shields.io/badge/Tailwind-%231DA1F2.svg?style=for-the-badge&logo=tailwind-css&logoColor=white
