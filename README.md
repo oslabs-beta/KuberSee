@@ -14,7 +14,7 @@ KuberSee is an open source product with the goal of providing developers an easi
 
 <div align="center" width="100%">
             
-[![Typescript][TS.js]][TS-url] [![JavaScript][JavaScript]][JavaScript-url] [![React][React.js]][React-url] [![React Router][React Router]][React-Router-url] [![Node.js][Node.js]][Node-url] [![Kubernetes][Kubernetes]][Kubernetes-url] [![Jest][Jest]][Jest-url] [![Tailwind][Tailwind]][Tailwind-url] [![DaisyUI][DaisyUI]][DaisyUI-url] [![MUI][MUI]][MUI-url] [![SocketIO][SocketIO]][SocketIO-url] [![Electron.js][Electron.js]][Electron-url][![Docker][Docker]][Docker-url]
+[![Typescript][TS.js]][TS-url] [![JavaScript][JavaScript]][JavaScript-url] [![React][React.js]][React-url] [![React Router][React Router]][React-Router-url] [![Node.js][Node.js]][Node-url] [![Kubernetes][Kubernetes]][Kubernetes-url] [![Jest][Jest]][Jest-url] [![Tailwind][Tailwind]][Tailwind-url] [![DaisyUI][DaisyUI]][DaisyUI-url] [![MUI][MUI]][MUI-url] [![SocketIO][SocketIO]][SocketIO-url] [![Electron.js][Electron.js]][Electron-url] [![AWS][AWS]][AWS-url]
 </div>
 
 https://github.com/oslabs-beta/KuberSee/assets/124442983/b3f1c2df-390a-4980-bfa0-658924404a3d
@@ -31,8 +31,12 @@ https://github.com/oslabs-beta/KuberSee/assets/124442983/b3f1c2df-390a-4980-bfa0
   </ol>
 
 ## Download the Application
-  - Install the application from www.kubersee.com (for Mac users only)
-  - Once installed, locate the application in your Finder. Control-click the app icon and choose "Open" from the shortcut menu to override Apple's default preferences. 
+  - Download the application from www.kubersee.com (for Mac users only).
+  - Drag the zip file to your Application folder. 
+  - Open the zip file. 
+  - Once installed, control-click the app icon and choose "Open" from the shortcut menu. Then hit “cancel” and control-click the app icon a second time and choose “open”. You will receive a prompt to “open” the application, allowing you to override Apple's default preferences. 
+  - From here, if your cluster is already configured, you can sign up for an account and begin using the application to visualize your Kubernetes cluster. 
+
 ## Configuration of Cloud Kubernetes Cluster
 - ### Configure with GCloud: 
   - Enter command line: `gcloud init` This command will guide you through the authentication process and ask you to log in with your Google account using a web browser.
@@ -95,8 +99,8 @@ ______________________________________________________
 [Kubernetes-url]: https://kubernetes.io/
 [Jest]: https://img.shields.io/badge/-jest-%23C21325?style=for-the-badge&logo=jest&logoColor=white
 [Jest-url]: https://jestjs.io/
-[Docker]: https://img.shields.io/badge/docker-%230db7ed.svg?style=for-the-badge&logo=docker&logoColor=white
-[Docker-url]: https://www.docker.com/
+[AWS]: https://img.shields.io/badge/AWS-%23FF9900.svg?style=for-the-badge&logo=amazon-aws&logoColor=white
+[AWS-url]: https://aws.amazon.com/
 [DaisyUI]: https://img.shields.io/badge/daisyui-5A0EF8?style=for-the-badge&logo=daisyui&logoColor=white
 [DaisyUI-url]: https://daisyui.com/
 [Tailwind]: https://img.shields.io/badge/Tailwind-%231DA1F2.svg?style=for-the-badge&logo=tailwind-css&logoColor=white
