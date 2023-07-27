@@ -31,7 +31,8 @@ https://github.com/oslabs-beta/KuberSee/assets/124442983/b3f1c2df-390a-4980-bfa0
   </ol>
 
 ## Download the Application
-  - Install the application from www.kubersee.com
+  - Install the application from www.kubersee.com (for Mac users only)
+  - Once installed, locate the application in your Finder. Control-click the app icon and choose "Open" from the shortcut menu to override Apple's default preferences. 
 ## Configuration of Cloud Kubernetes Cluster
 - ### Configure with GCloud: 
   - Enter command line: `gcloud init` This command will guide you through the authentication process and ask you to log in with your Google account using a web browser.
