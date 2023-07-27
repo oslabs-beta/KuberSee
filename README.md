@@ -10,6 +10,9 @@
 ## About KuberSee
 KuberSee is an open source product with the goal of providing developers an easier way to visualize their Kubernetes clusters in real-time. Through our application, developers can obtain log data on their pods and view information on their pods, nodes, and namespaces. 
 
+For more information visit our [website](http://www.kubersee.com/) and our [medium article](https://medium.com/@kubersee/visualize-your-kubernetes-clusters-and-log-data-in-real-time-d58eb47409e0).
+
+
 ## Tech Stacks
 
 <div align="center" width="100%">
@@ -77,7 +80,7 @@ ______________________________________________________
 | Elinor Weissberg | [![Github](https://img.shields.io/badge/github-%23121011.svg?style=for-the-badge&logo=github&logoColor=white)](https://github.com/inorle) |  [![LinkedIn](https://img.shields.io/badge/LinkedIn-%230077B5.svg?logo=linkedin&logoColor=white)](https://www.linkedin.com/in/elinorweissberg/)  |
 |  Jordan Lopez  |  [![Github](https://img.shields.io/badge/github-%23121011.svg?style=for-the-badge&logo=github&logoColor=white)](https://github.com/jordanlope)   |   [![LinkedIn](https://img.shields.io/badge/LinkedIn-%230077B5.svg?logo=linkedin&logoColor=white)](https://www.linkedin.com/in/jordan-lopez-28538019a/)    |
 | Alexis Contreras |  [![Github](https://img.shields.io/badge/github-%23121011.svg?style=for-the-badge&logo=github&logoColor=white)](https://github.com/alexis-contre)   |  [![LinkedIn](https://img.shields.io/badge/LinkedIn-%230077B5.svg?logo=linkedin&logoColor=white)](https://www.linkedin.com/in/alexis-contre/)   |
-|  Daniel Zhao   |   [![Github](https://img.shields.io/badge/github-%23121011.svg?style=for-the-badge&logo=github&logoColor=white)](https://github.com/TianqiZhao416)    |    [![LinkedIn](https://img.shields.io/badge/LinkedIn-%230077B5.svg?logo=linkedin&logoColor=white)](https://www.linkedin.com/in/tianqi-zhao416/)    |
+|  Tianqi Zhao   |   [![Github](https://img.shields.io/badge/github-%23121011.svg?style=for-the-badge&logo=github&logoColor=white)](https://github.com/TianqiZhao416)    |    [![LinkedIn](https://img.shields.io/badge/LinkedIn-%230077B5.svg?logo=linkedin&logoColor=white)](https://www.linkedin.com/in/tianqi-zhao416/)    |
 
 
 <br />
