@@ -8,7 +8,7 @@
 
 
 ## About KuberSee
-KuberSee is an open source product with the goal of providing developers an easier way to visualize their Kubernetes clusters in real-time. Through our application, developers can obtain log data on their pods and view information on their pods, nodes, and namespaces. 
+KuberSee is an open source product that provides developers an easier way to visualize their Kubernetes clusters in real-time. Through our application, developers can obtain log data on their pods and view information on their pods, nodes, and namespaces. 
 
 For more information visit our [website](http://www.kubersee.com/) and our [medium article](https://medium.com/@kubersee/visualize-your-kubernetes-clusters-and-log-data-in-real-time-d58eb47409e0).
 
