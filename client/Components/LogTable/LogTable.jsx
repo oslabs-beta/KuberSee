@@ -4,7 +4,7 @@ import { DataGrid, GridToolbar } from '@mui/x-data-grid';
 
 // const VISIBLE_FIELDS = ['headers', 'message'];
 
-export default function LogTable({log}) {
+export default function LogTable({logs}) {
   const columns = [
     { field: 'header', headerName: 'Header', width: 500 },
     {
@@ -21,7 +21,7 @@ export default function LogTable({log}) {
         disableColumnSelector
         disableDensitySelector
         columns={columns}
-        rows={log}
+        rows={logs}
         slots={{ toolbar: GridToolbar }}
         sx={{
           boxShadow: 2,

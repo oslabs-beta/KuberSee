@@ -1,6 +1,5 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
-import { ReactComponentElement } from 'react';
 import {StatsDataProps, StatsData, ReactElementsArray} from '../../types'
 
 export default function Dashboard({ data = [] }: StatsDataProps) {

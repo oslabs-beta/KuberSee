@@ -8,7 +8,13 @@ export type StatsDataProps = {
 export type StatsData = {
   id: String,
   name: String,
-  value: Number
+  value: Number,
+}
+
+export type LogsData = {
+    id: String,
+    header: String,
+    message: String
 }
 
 export type ReactElementsArray = React.ReactElement<React.ReactElement>[];

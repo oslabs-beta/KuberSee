@@ -1,10 +1,10 @@
 import React from 'react';
 import LogTable from '../LogTable/LogTable.jsx';
 
-export default function LogDashboard({log}) {
+export default function LogsDashboard({logs}) {
   return (
     <div className='flex items-center justify-center'>
-      <LogTable log={log} />
+      <LogTable logs={logs} />
     </div>
   );
 }
