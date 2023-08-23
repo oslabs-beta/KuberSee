@@ -1,25 +1,52 @@
 import React, { useState, useEffect, useRef } from 'react';
-import LogDashboard from '../../Components/Dashboard/LogDashboard.jsx';
-import Dashboard from '../../Components/Dashboard/Dashboard.jsx';
+import LogsDashboard from '../../Components/Dashboard/LogsDashboard.jsx';
+import Dashboard from '../../Components/Dashboard/Dashboard';
 import LineGraph from '../../Components/LineGraph/LineGraph.jsx';
 import DropdownMenu from '../../Components/Dropdown/DropdownButton.jsx';
 import * as d3 from 'd3';
 import DropdownPods from '../../Components/Dropdown/DropdownPods.jsx';
+import { Socket } from 'socket.io-client';
+import {StatsDataProps, StatsData, LogsData} from '../../types'
 
-export default function HomePage({ socket }) {
-  const [stats, setStats] = useState([
-    { id: 1, name: 'Namespaces', value: 0 },
-    { id: 2, name: 'Nodes', value: 0 },
-    { id: 3, name: 'Pods', value: 0 },
-  ]);
+
+type HomePageProps = {
+  socket: Socket;
+}
+
+type NodeMetrics = {
+  node: String;
+  cpuCurrentUsage: number;
+  cpuTotal: number ;
+  memoryCurrentUsage: number;
+  memoryTotal: number ;
+}
+
+type PodMetrics = {
+  pod: String;
+  cpuCurrentUsage: number;
+  memoryCurrentUsage: number;
+}
+
+const initialStats: StatsData[] = [
+  { id: "1", name: 'Namespaces', value: 0 },
+  { id: "2", name: 'Nodes', value: 0 },
+  { id: "3", name: 'Pods', value: 0 },
+];
+
+const initialNamespaces: String[] = [];
+
+const initialLogs: LogsData[] = [{ id: '1', header: '', message: '' }];
+
+export default function HomePage({ socket }: HomePageProps) {
+  const [stats, setStats] = useState(initialStats);
 
   const [currentPod, setCurrentPod] = useState('');
   const [currentNamespace, setCurrentNamespace] = useState('default');
-  const namespacesRef = useRef([]);
+  const namespacesRef = useRef(initialNamespaces);
   const podRef = useRef([]);
   const podNamesRef = useRef([]);
   const nodeRef = useRef([]);
-  const [log, setLog] = useState([{ id: 1, header: '', message: '' }]);
+  const [logs, setLogs] = useState(initialLogs);
 
   useEffect(() => {
     socket.emit('metrics', {
@@ -37,8 +64,8 @@ export default function HomePage({ socket }) {
   }, [currentPod]);
 
   useEffect(() => {
-    socket.on('logs', (logs) => {
-      setLog(logs);
+    socket.on('logs', (log) => {
+      setLogs(log);
     })
   }, [currentPod]);
 
@@ -47,19 +74,19 @@ export default function HomePage({ socket }) {
 
     socket.on('metrics', (metrics) => {
       console.log(metrics);
-      const nodes = metrics.topNodes.map((el) => {
+      const nodes = metrics.topNodes.map((el: NodeMetrics) => {
         return {
           name: el.node,
           cpuCurrentUsage: el.cpuCurrentUsage,
           cpuTotal: el.cpuTotal,
-          cpuPercentage: el.cpuCurrentUsage / el.cpuTotal,
+          cpuPercentage: (el.cpuCurrentUsage / el.cpuTotal),
           memoryCurrentUsage: el.memoryCurrentUsage,
           memoryTotal: el.memoryTotal,
-          memoryPercentage: el.memoryCurrentUsage / el.memoryTotal,
+          memoryPercentage: (el.memoryCurrentUsage / el.memoryTotal),
           timestamp: strictIsoParse(new Date().toISOString()),
         }
-      })
-      const pods = metrics.topPods.map((el) => {
+      });
+      const pods = metrics.topPods.map((el: PodMetrics) => {
         return {
           name: el.pod,
           cpuCurrentUsage: el.cpuCurrentUsage,
@@ -69,7 +96,7 @@ export default function HomePage({ socket }) {
       });
       podRef.current.push(...pods);
       nodeRef.current.push(...nodes);
-      const newPods = metrics.topPods.map((el) => el.pod);
+      const newPods = metrics.topPods.map((el: PodMetrics) => el.pod);
       if (podNamesRef.current !== newPods) {
         podNamesRef.current = [...newPods];
       }
@@ -77,14 +104,16 @@ export default function HomePage({ socket }) {
   }, [socket]);
 
   useEffect(() => {
-    socket.on('stats', (stats) => {
-      console.log(stats)
-      setStats([
-        { id: 1, name: 'Namespaces', value: stats.totalNamespaces },
-        { id: 2, name: 'Nodes', value: stats.totalNodes },
-        { id: 3, name: 'Pods', value: stats.totalPods },
-      ]);
-      const newNamespaces = stats.namespaces;
+    socket.on('stats', (data) => {
+      // console.log(stats)
+      const newStats: StatsData[] = [
+        { id: '1', name: 'Namespaces', value: data.totalNamespaces },
+        { id: '2', name: 'Nodes', value: data.totalNodes },
+        { id: '3', name: 'Pods', value: data.totalPods },
+      ];
+      setStats(newStats);
+
+      const newNamespaces = data.namespaces;
       // Update namespacesRef.current only if there are new namespaces
       if (
         JSON.stringify(namespacesRef.current) !== JSON.stringify(newNamespaces)
@@ -99,12 +128,12 @@ export default function HomePage({ socket }) {
     podRef.current = [];
     nodeRef.current = [];
     //empty log data from last namespace
-    setLog([{ id: 1, header: '', message: '' }]);
+    setLogs([{ id: '1', header: '', message: '' }]);
   }, [currentNamespace]);
 
   return (
     <>
-      <Dashboard stats={stats} />
+      <Dashboard data={stats} />
       <DropdownMenu
         changeNamespace={setCurrentNamespace}
         namespaces={namespacesRef.current}
@@ -122,7 +151,7 @@ export default function HomePage({ socket }) {
         <LineGraph dataRef={nodeRef} yaxis={'Memory Usage (%)'} propertyName='memoryPercentage' legendName='Node Names Legend' title='Node Memory % Over Total' />
       </div>
       <DropdownPods changePod={setCurrentPod} pods={podNamesRef.current} />
-      <LogDashboard log={log} />
+      <LogsDashboard logs={logs} />
     </>
   );
 }

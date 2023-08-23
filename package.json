@@ -4,15 +4,15 @@
   "homepage": "./",
   "version": "1.0.0",
   "description": "Kubernetes Visualizer",
-  "main": "electron/main.js",
+  "main": "electron/main.ts",
   "build": {
     "appId": "com.KuberSee.app",
   },
   "scripts": {
     "test": "jest",
     "start": "nodemon server/server.js",
-    "electron": "electron ./electron/main.js",
-    "start-server-electron":  "concurrently \"npm run start\" \"npm run electron\"",
+    "electron": "electron ./electron/main.ts",
+    "start-server-electron": "concurrently \"npm run start\" \"npm run electron\"",
     "dev": "webpack-dev-server --open & nodemon server/server.js",
     "build": "NODE_ENV=production webpack",
     "dist": "electron-builder"
@@ -23,6 +23,7 @@
     "@babel/core": "^7.22.5",
     "@babel/preset-env": "^7.22.5",
     "@babel/preset-react": "^7.22.5",
+    "@types/d3": "^7.4.0",
     "@types/node": "^20.4.1",
     "babel-loader": "^9.1.2",
     "concurrently": "^8.2.0",
@@ -54,6 +55,8 @@
     "@mui/x-data-grid": "^6.10.0",
     "@mui/x-data-grid-generator": "^6.10.0",
     "@prisma/client": "^4.16.2",
+    "@types/react": "^18.2.21",
+    "@types/react-dom": "^18.2.7",
     "bcrypt": "^5.1.0",
     "bcryptjs": "^2.4.3",
     "cookie-parser": "^1.4.6",
@@ -75,6 +78,7 @@
     "react-dom": "^18.2.0",
     "socket.io": "^4.7.1",
     "socket.io-client": "^4.7.1",
-    "stream": "^0.0.2"
+    "stream": "^0.0.2",
+    "ts-loader": "^9.4.4"
   }
 }

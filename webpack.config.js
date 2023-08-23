@@ -41,6 +41,11 @@ module.exports = {
         },
       },
       {
+        test: /\.(ts|tsx)$/,
+        exclude: /node_modules/,
+        use: "ts-loader",
+      },
+      {
         test: /\.s[ac]ss$/i,
         use: ["style-loader", "css-loader", "sass-loader"],
       },
@@ -50,7 +55,10 @@ module.exports = {
       },
     ],
   },
-  // resolve: {
-  //   fallback: { crypto: false },
-  // },
+  resolve: {
+    extensions: [".jsx", ".js"],
+  },
+  resolve: {
+    extensions: [".tsx", ".ts", ".js"],
+  },
 };
