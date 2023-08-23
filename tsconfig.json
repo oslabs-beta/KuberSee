@@ -1,0 +1,12 @@
+{
+    "compilerOptions": {
+        "module": "CommonJS",
+        "sourceMap": true,
+        "target": "ES6",
+        "esModuleInterop": true,
+        "jsx": "react",
+        "noImplicitAny": true,
+        "allowJs": true
+    },
+    "include": ["electron/main.ts","client/**/**/*.ts", "client/**/**/*.tsx", "server/**/*.ts", "server/**/*.tsx"]
+}

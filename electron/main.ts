@@ -1,25 +1,24 @@
 const { app, BrowserWindow } = require("electron");
 const path = require("path");
 const url = require("url");
-const { fork } = require('child_process')
+const { fork } = require('child_process');
 const ps = fork(path.join(__dirname, '../server/server.js'));
 
+const windowConfig = {
+  width: 1100,
+  height: 800,
+  show: false,
+  autoHideMenuBar: true,
+  frame: false,
+  webPreferences: {
+    nodeIntegration: true,
+    contextIsolation: false,
+    webSecurity: false,
+  },
+};
 
 function createWindow() {
-  mainWindow = new BrowserWindow({
-    width: 1100,
-    height: 800,
-    show: false,
-    autoHideMenuBar: true,
-    frame: false,
-    // Set the path of an additional "preload" script that can be used to
-    // communicate between node-land and browser-land.
-    webPreferences: {
-      nodeIntegration: true,
-      contextIsolation: false,
-      webSecurity: false,
-    },
-  });
+  let mainWindow = new BrowserWindow(windowConfig);
 
   mainWindow.loadFile(path.join(__dirname, "./build/index.html"));
 

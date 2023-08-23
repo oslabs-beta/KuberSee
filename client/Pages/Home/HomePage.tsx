@@ -1,17 +1,26 @@
 import React, { useState, useEffect, useRef } from 'react';
 import LogDashboard from '../../Components/Dashboard/LogDashboard.jsx';
-import Dashboard from '../../Components/Dashboard/Dashboard.jsx';
+import Dashboard from '../../Components/Dashboard/Dashboard';
 import LineGraph from '../../Components/LineGraph/LineGraph.jsx';
 import DropdownMenu from '../../Components/Dropdown/DropdownButton.jsx';
 import * as d3 from 'd3';
 import DropdownPods from '../../Components/Dropdown/DropdownPods.jsx';
+import { Socket } from 'socket.io-client';
+import {StatsDataProps} from '../../types'
 
-export default function HomePage({ socket }) {
-  const [stats, setStats] = useState([
-    { id: 1, name: 'Namespaces', value: 0 },
-    { id: 2, name: 'Nodes', value: 0 },
-    { id: 3, name: 'Pods', value: 0 },
-  ]);
+
+type HomePageProps = {
+  socket: Socket;
+}
+
+const stats = [
+  { id: "1", name: 'Namespaces', value: 0 },
+  { id: "2", name: 'Nodes', value: 0 },
+  { id: "3", name: 'Pods', value: 0 },
+]
+
+export default function HomePage({ socket }: HomePageProps) {
+  const [stats , setStats] = useState();
 
   const [currentPod, setCurrentPod] = useState('');
   const [currentNamespace, setCurrentNamespace] = useState('default');
@@ -104,7 +113,7 @@ export default function HomePage({ socket }) {
 
   return (
     <>
-      <Dashboard stats={stats} />
+      <Dashboard data={stats} />
       <DropdownMenu
         changeNamespace={setCurrentNamespace}
         namespaces={namespacesRef.current}
