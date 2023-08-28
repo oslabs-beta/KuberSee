@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState, useEffect, Dispatch, SetStateAction, MouseEvent } from 'react';
 import Button from '@mui/material/Button';
 import Menu from '@mui/material/Menu';
 import MenuItem from '@mui/material/MenuItem';
@@ -6,11 +6,14 @@ import Fade from '@mui/material/Fade';
 import Box from '@mui/material/Box';
 import { alpha } from '@mui/system';
 
-export default function DropdownMenu({ changeNamespace, namespaces=[] }) {
+type DropdownPodsProps = {
+  changePod: Dispatch<SetStateAction<string>>;
+  pods: string[];
+}
+export default function DropdownPods({ changePod, pods = [] }: DropdownPodsProps) {
   const [anchorEl, setAnchorEl] = useState(null);
-
   const open = Boolean(anchorEl);
-  const handleClick = (event) => {
+  const handleClick = (event: MouseEvent<HTMLElement>) => {
     setAnchorEl(event.currentTarget);
   };
   const handleClose = () => {
@@ -28,7 +31,7 @@ export default function DropdownMenu({ changeNamespace, namespaces=[] }) {
           aria-expanded={open ? 'true' : undefined}
           onClick={handleClick}
         >
-          Namespaces
+          Pods
         </Button>
         <Menu
           id='fade-menu'
@@ -40,15 +43,18 @@ export default function DropdownMenu({ changeNamespace, namespaces=[] }) {
           onClose={handleClose}
           TransitionComponent={Fade}
         >
-          {namespaces && namespaces.map((namespace) =>
-          (
-            <MenuItem key={namespace} onClick={(e) => {
-              changeNamespace(namespace);
-              handleClose();
-            }}>
-                {namespace}
-            </MenuItem>
-          ))}
+          {pods &&
+            pods.map((pod) => (
+              <MenuItem
+                key={pod}
+                onClick={(e) => {
+                  changePod(pod);
+                  handleClose();
+                }}
+              >
+                {pod}
+              </MenuItem>
+            ))}
         </Menu>
       </div>
     </Box>
