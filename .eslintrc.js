@@ -5,9 +5,10 @@ module.exports = {
 		node: true,
 	},
 	extends: [
-		'xo',
 		'plugin:react/recommended',
+		'plugin:@typescript-eslint/recommended',
 	],
+	parser: '@typescript-eslint/parser',
 	overrides: [
 		{
 			env: {
@@ -20,15 +21,6 @@ module.exports = {
 				sourceType: 'script',
 			},
 		},
-		{
-			extends: [
-				'xo-typescript',
-			],
-			files: [
-				'*.ts',
-				'*.tsx',
-			],
-		},
 	],
 	parserOptions: {
 		ecmaVersion: 'latest',
@@ -36,7 +28,9 @@ module.exports = {
 	},
 	plugins: [
 		'react',
+		'@typescript-eslint'
 	],
 	rules: {
 	},
+	root: true,
 };
