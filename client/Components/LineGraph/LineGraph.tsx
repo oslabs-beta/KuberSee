@@ -1,27 +1,51 @@
-import React, { useRef, useEffect, useState } from 'react';
+import React, { useRef, useEffect } from 'react';
 import { nest } from 'd3-collection';
 import * as d3 from 'd3';
-import { selectAll } from 'd3-selection';
+import { MappedNodeMetrics, MappedPodMetrics } from '../../types';
+type LineGraphProps = {
+  dataRef: {
+    current: Array<MappedPodMetrics | MappedNodeMetrics>
+  };
+  yaxis: string;
+  // propertyName: keyof MappedPodMetrics | keyof MappedNodeMetrics;
+  propertyName: 'cpuCurrentUsage' | 'memoryCurrentUsage' | 'cpuPercentage' | 'memoryPercentage';
+  legendName: string;
+  title: string;
+}
 
-const LineGraph = ({ dataRef, yaxis, propertyName, legendName, title }) => {
+type GraphVars = [
+  graph: d3.Selection<d3.BaseType, unknown, HTMLElement, unknown>,
+  circleGroup: d3.Selection<SVGGElement, unknown, HTMLElement, unknown>,
+  xScaleGroup: d3.Selection<SVGGElement, unknown, HTMLElement, unknown>,
+  yScaleGroup: d3.Selection<SVGGElement, unknown, HTMLElement, unknown>,
+  width: number,
+  margin: {
+    top: number;
+    right: number;
+    bottom: number;
+    left: number;
+  }
+]
+
+const LineGraph = ({ dataRef, yaxis, propertyName, legendName, title }: LineGraphProps) => {
   const svgRef = useRef();
-  function initialize(width, height) {
+  function initialize(width: number, height: number): GraphVars {
 
-    var margin = { top: 20, right: 175, bottom: 50, left: 100 },
-      width = width - margin.left - margin.right,
-      height = height - margin.top - margin.bottom;
+    const margin = { top: 20, right: 175, bottom: 50, left: 100 };
+    width = width - margin.left - margin.right;
+    height = height - margin.top - margin.bottom;
 
-    var graph = d3
+    const graph = d3
       .select(svgRef.current) //select the svg element from the virtual DOM.
       .attr("width", width + margin.left + margin.right)
       .attr("height", height + margin.top + margin.bottom)
       .attr("transform", `translate(${margin.left}, ${margin.top})`);
 
-    var circleGroup = graph.append('g');
+    const circleGroup = graph.append('g');
 
-    var xScaleGroup = graph.append('g');
+    const xScaleGroup = graph.append('g');
 
-    var yScaleGroup = graph.append('g');
+    const yScaleGroup = graph.append('g');
 
     graph
       .append('clipPath') // define a clip path
@@ -68,28 +92,27 @@ const LineGraph = ({ dataRef, yaxis, propertyName, legendName, title }) => {
     //   .style('fill', 'red')
     //   .style("opacity", .10)
     // .attr("clip-path", "url(#rectangle-clip)") // clip the rectangle
-
     return [graph, circleGroup, xScaleGroup, yScaleGroup, width, margin]; // returns an array of the variables, giving you the reference to the variable.
   }
 
   // updates the graph. data is our data, now is the end time, and lookback is the start time, graph vars is the array of reference of what we returned in initialize.
-  function render(data, now, lookback, graphVars) {
+  function render(data: Array<MappedPodMetrics | MappedNodeMetrics>, now: Date, lookback: Date, graphVars: GraphVars) {
     // if (data[0]) y = Object.keys(dataRef['current'][0])[1];
     const room_for_axis = 100; // padding for axis
 
     const [graph, circleGroup, xScaleGroup, yScaleGroup, width] = graphVars;
 
-    const radius = graph.attr('width') / 200.0; // for the circle
+    const radius = +graph.attr('width') / 200.0; // for the circle
 
 
-    let sumStat = nest()
-      .key(function (d) { return d.name })
+    const sumStat = nest()
+      .key(function ({ name }) { return name })
       .entries(data);
 
 
     //   // add the Line
 
-    var color = d3.scaleOrdinal(d3.schemeCategory10);
+    const color = d3.scaleOrdinal(d3.schemeCategory10);
 
     const xScale = d3
       .scaleTime() //accepts a date as a value and helps us compare the time
@@ -97,23 +120,45 @@ const LineGraph = ({ dataRef, yaxis, propertyName, legendName, title }) => {
       // Add a little extra room for y axis
       .range([room_for_axis + 5, width]);
 
+    const isMappedNodeMetricsArray = (data: Array<MappedPodMetrics | MappedNodeMetrics>): data is MappedNodeMetrics[] => {
+      return data.length > 0 && 'node' in data[0];
+    }
+
+    const minValue = isMappedNodeMetricsArray(data)
+      ? d3.min(data as MappedNodeMetrics[], (d) => {
+        if (propertyName === 'cpuCurrentUsage') {
+          return -0.00000001;
+        }
+        return +d[propertyName] / 4;
+      })
+      : d3.min(data as MappedPodMetrics[], (d) => {
+        if (propertyName === 'cpuCurrentUsage') {
+          return -0.00000001;
+        }
+        return +d[propertyName] / 4;
+      });
+
+    const maxValue = isMappedNodeMetricsArray(data)
+      ? d3.max(data as MappedNodeMetrics[], (d) => +d[propertyName] * 1.2)
+      : d3.max(data as MappedPodMetrics[], (d) => +d[propertyName] * 1.2);
+
     const yScale = d3
       .scaleLinear()
-      .domain([
-        d3.min(data, (d) => {
-          if (propertyName === 'cpuCurrentUsage') {
-            return -.00000001;
-          }
-          return d[`${propertyName}`] / 4;
-        }),
-        d3.max(data, (d) => {
-          return d[`${propertyName}`] * 1.2;
-        }),
-      ])
-      .range([graph.attr('height') - room_for_axis, 0]); // range deals with the position of where things get plotted (area)
+      .domain([minValue, maxValue])
+      .range([+graph.attr('height') - room_for_axis, 0]);
+
+    // const colorScale = d3
+    //   .scaleTime()
+    //   .domain([lookback, now])
+    //   .range(['blue', 'red']);
+
+    // const colorScale = d3
+    //   .scaleTime()
+    //   .domain([lookback, now])
+    //   .range([0, 1]);
 
     const colorScale = d3
-      .scaleTime()
+      .scaleTime<string, string>()
       .domain([lookback, now])
       .range(['blue', 'red']);
 
@@ -136,7 +181,7 @@ const LineGraph = ({ dataRef, yaxis, propertyName, legendName, title }) => {
       .text(function (d) {
         return d.key
       })
-      .style('fill', function (d, i) {
+      .style('fill', function (d) {
         return (color(d.key))
       })
       .attr('x', width + 28)
@@ -154,13 +199,14 @@ const LineGraph = ({ dataRef, yaxis, propertyName, legendName, title }) => {
     const to_remove = data.filter((a) => a.timestamp < adjustLookback);
     circleGroup.selectAll('circle').data(to_remove).exit().remove();
 
-    var valueLine = d3
-      .line()
+
+    const valueLine = d3
+      .line<MappedNodeMetrics | MappedPodMetrics>()
       .x((d) => {
         return xScale(d.timestamp);
       })
       .y((d) => {
-        return yScale(d[`${propertyName}`]);
+        return yScale(d[propertyName]);
       });
     circleGroup
       .selectAll('.temp-path')
@@ -171,41 +217,44 @@ const LineGraph = ({ dataRef, yaxis, propertyName, legendName, title }) => {
       })
       .attr("fill", "none")
       .attr("clip-path", "url(#rectangle-clip)") // clip the rectangle
-      .attr("stroke", function (d, i) {
+      .attr("stroke", function (d) {
         return (color(d.key));
       })
       .attr("stroke-width", 4.5)
 
-    data = data.filter((a) => a.timestamp > adjustLookback);
+    // data = data.filter((a) => a.timestamp > adjustLookback);
+    data = (data as Array<MappedPodMetrics | MappedNodeMetrics>).filter((a) => a.timestamp > adjustLookback);
     circleGroup
       .selectAll('g').data(data).enter().append('circle');
 
     circleGroup
       .selectAll('circle')
-      .attr('cx', function (d) {
+      .attr('cx', function (d: MappedPodMetrics | MappedNodeMetrics) {
         // cx = circle's x position (specific svg attribute)
         return xScale(d.timestamp); //tells us where on the graph that the plot should be relative to the chart's width.
       })
-      .attr('cy', function (d) {
-        return yScale(d[`${propertyName}`]); // tells us where on the graph that the plot should be relative to chart's height.
+      .attr('cy', function (d: MappedPodMetrics | MappedNodeMetrics) {
+        return yScale(d[propertyName]); // tells us where on the graph that the plot should be relative to chart's height.
       })
       .attr('r', radius)
       .attr('clip-path', 'url(#rectangle-clip)') // clip the rectangle
-      .attr('fill', function (d) {
+      .attr('fill', function (d: MappedPodMetrics | MappedNodeMetrics) {
         return colorScale(d.timestamp);
       });
 
 
-    var x_axis = d3.axisBottom().scale(xScale);
+    // const x_axis = d3.axisBottom().scale(xScale);
+    const x_axis = d3.axisBottom(xScale);
     xScaleGroup
       // .transition()
       .attr(
         'transform',
-        'translate(0,' + (graph.attr('height') - room_for_axis) + ')'
+        'translate(0,' + (+graph.attr('height') - room_for_axis) + ')'
       )
       .call(x_axis);
 
-    var y_axis = d3.axisLeft().scale(yScale);
+    // const y_axis = d3.axisLeft().scale(yScale);
+    const y_axis = d3.axisLeft(yScale);
     yScaleGroup
       .attr('transform', 'translate(' + room_for_axis + ',0)')
       .call(y_axis);
@@ -218,11 +267,11 @@ const LineGraph = ({ dataRef, yaxis, propertyName, legendName, title }) => {
     const lookback_s = 30;
 
     // initialize
-    var now = new Date();
+    let now = new Date();
     const width = 750;
     const graphVars = initialize(width, width * 0.6);
 
-    var lookback = new Date(now); // creates a copy of now's date
+    let lookback = new Date(now); // creates a copy of now's date
     lookback.setSeconds(lookback.getSeconds() - lookback_s); // go back in time by 30 seconds
 
     render(dataRef.current, now, lookback, graphVars); // invoke to show first graph
