@@ -1,5 +1,5 @@
 import React from 'react';
-import LogTable from '../LogTable/LogTable.jsx';
+import LogTable from '../LogTable/LogTable';
 import { type LogsData } from '../../types.js';
 
 type LogsDashboardProps = {

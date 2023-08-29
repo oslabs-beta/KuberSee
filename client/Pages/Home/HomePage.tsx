@@ -6,7 +6,7 @@ import DropdownMenu from '../../Components/Dropdown/DropdownButton';
 import * as d3 from 'd3';
 import DropdownPods from '../../Components/Dropdown/DropdownPods';
 import { type Socket } from 'socket.io-client';
-import { StatsDataProps, type StatsData, type LogsData } from '../../types';
+import { type StatsData, type LogsData } from '../../types';
 
 type HomePageProps = {
   socket: Socket;

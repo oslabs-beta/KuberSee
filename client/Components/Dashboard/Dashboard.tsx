@@ -1,6 +1,6 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
-import {StatsDataProps, StatsData, ReactElementsArray} from '../../types'
+import { StatsDataProps, StatsData, ReactElementsArray } from '../../types'
 
 export default function Dashboard({ data = [] }: StatsDataProps) {
   const navigate = useNavigate()
@@ -25,7 +25,7 @@ export default function Dashboard({ data = [] }: StatsDataProps) {
   return (
     <div data-theme='night'>
       <div>
-      <button className='btn btn-block btn-primary' onClick={logout}>Logout</button>
+        <button className='btn btn-block btn-primary' onClick={logout}>Logout</button>
       </div>
       <div className='bg-night py-24 sm:py-32'>
         <div className='mx-auto max-w-7xl px-6 lg:px-8'>
