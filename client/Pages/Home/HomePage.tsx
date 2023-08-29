@@ -71,7 +71,6 @@ export default function HomePage({ socket }: HomePageProps) {
     const strictIsoParse = d3.utcParse('%Y-%m-%dT%H:%M:%S.%LZ'); // Need to use d3's isoParse: https://github.com/d3/d3-time-format
 
     socket.on('metrics', metrics => {
-      console.log(metrics);
       const nodes = metrics.topNodes.map((el: NodeMetrics) => ({
         name: el.node,
         cpuCurrentUsage: el.cpuCurrentUsage,
@@ -99,7 +98,6 @@ export default function HomePage({ socket }: HomePageProps) {
 
   useEffect(() => {
     socket.on('stats', data => {
-      // Console.log(stats)
       const newStats: StatsData[] = [
         { id: '1', name: 'Namespaces', value: data.totalNamespaces },
         { id: '2', name: 'Nodes', value: data.totalNodes },

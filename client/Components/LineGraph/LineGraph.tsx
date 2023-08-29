@@ -7,7 +7,6 @@ type LineGraphProps = {
     current: Array<MappedPodMetrics | MappedNodeMetrics>
   };
   yaxis: string;
-  // propertyName: keyof MappedPodMetrics | keyof MappedNodeMetrics;
   propertyName: 'cpuCurrentUsage' | 'memoryCurrentUsage' | 'cpuPercentage' | 'memoryPercentage';
   legendName: string;
   title: string;
@@ -51,8 +50,8 @@ const LineGraph = ({ dataRef, yaxis, propertyName, legendName, title }: LineGrap
       .append('clipPath') // define a clip path
       .attr('id', 'rectangle-clip') // give the clipPath an ID
       .append('rect') // shape it as an ellipse
-      .attr('x', 101) // position the x-centre
-      .attr('y', 0) // position the y-centre
+      .attr('x', 101) // position the x-center
+      .attr('y', 0) // position the y-center
       .attr('width', width * 2 + 300)
       .attr('height', height);
 
@@ -83,21 +82,11 @@ const LineGraph = ({ dataRef, yaxis, propertyName, legendName, title }: LineGrap
       .style("fill", "white")
       .attr('font-size', 12)
 
-    //I used this to make the clipping mask to visualize what the size of the graph of was
-    // graph.append("rect")
-    // .attr("x", 0)         // position the x-centre
-    // .attr("y", 0)
-    // .attr("width", width*2 )
-    // .attr("height", height*2)
-    //   .style('fill', 'red')
-    //   .style("opacity", .10)
-    // .attr("clip-path", "url(#rectangle-clip)") // clip the rectangle
     return [graph, circleGroup, xScaleGroup, yScaleGroup, width, margin]; // returns an array of the variables, giving you the reference to the variable.
   }
 
   // updates the graph. data is our data, now is the end time, and lookback is the start time, graph vars is the array of reference of what we returned in initialize.
   function render(data: Array<MappedPodMetrics | MappedNodeMetrics>, now: Date, lookback: Date, graphVars: GraphVars) {
-    // if (data[0]) y = Object.keys(dataRef['current'][0])[1];
     const room_for_axis = 100; // padding for axis
 
     const [graph, circleGroup, xScaleGroup, yScaleGroup, width] = graphVars;
@@ -108,9 +97,6 @@ const LineGraph = ({ dataRef, yaxis, propertyName, legendName, title }: LineGrap
     const sumStat = nest()
       .key(function ({ name }) { return name })
       .entries(data);
-
-
-    //   // add the Line
 
     const color = d3.scaleOrdinal(d3.schemeCategory10);
 
@@ -146,16 +132,6 @@ const LineGraph = ({ dataRef, yaxis, propertyName, legendName, title }: LineGrap
       .scaleLinear()
       .domain([minValue, maxValue])
       .range([+graph.attr('height') - room_for_axis, 0]);
-
-    // const colorScale = d3
-    //   .scaleTime()
-    //   .domain([lookback, now])
-    //   .range(['blue', 'red']);
-
-    // const colorScale = d3
-    //   .scaleTime()
-    //   .domain([lookback, now])
-    //   .range([0, 1]);
 
     const colorScale = d3
       .scaleTime<string, string>()
@@ -222,7 +198,6 @@ const LineGraph = ({ dataRef, yaxis, propertyName, legendName, title }: LineGrap
       })
       .attr("stroke-width", 4.5)
 
-    // data = data.filter((a) => a.timestamp > adjustLookback);
     data = (data as Array<MappedPodMetrics | MappedNodeMetrics>).filter((a) => a.timestamp > adjustLookback);
     circleGroup
       .selectAll('g').data(data).enter().append('circle');
@@ -242,18 +217,14 @@ const LineGraph = ({ dataRef, yaxis, propertyName, legendName, title }: LineGrap
         return colorScale(d.timestamp);
       });
 
-
-    // const x_axis = d3.axisBottom().scale(xScale);
     const x_axis = d3.axisBottom(xScale);
     xScaleGroup
-      // .transition()
       .attr(
         'transform',
         'translate(0,' + (+graph.attr('height') - room_for_axis) + ')'
       )
       .call(x_axis);
 
-    // const y_axis = d3.axisLeft().scale(yScale);
     const y_axis = d3.axisLeft(yScale);
     yScaleGroup
       .attr('transform', 'translate(' + room_for_axis + ',0)')
@@ -263,7 +234,6 @@ const LineGraph = ({ dataRef, yaxis, propertyName, legendName, title }: LineGrap
   }
 
   useEffect(() => {
-    // const scale = 0.2;
     const lookback_s = 30;
 
     // initialize
