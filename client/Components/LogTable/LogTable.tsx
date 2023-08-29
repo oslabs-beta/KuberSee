@@ -1,10 +1,13 @@
 import React from 'react';
 import Box from '@mui/material/Box';
 import { DataGrid, GridToolbar } from '@mui/x-data-grid';
-
 // const VISIBLE_FIELDS = ['headers', 'message'];
+import { type LogsData } from '../../types';
 
-export default function LogTable({logs}) {
+type LogsProps = {
+  logs: LogsData[]
+}
+export default function LogTable({ logs }: LogsProps) {
   const columns = [
     { field: 'header', headerName: 'Header', width: 500 },
     {

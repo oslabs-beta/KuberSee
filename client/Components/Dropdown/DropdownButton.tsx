@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useEffect, useState, Dispatch, SetStateAction, MouseEvent } from 'react';
 import Button from '@mui/material/Button';
 import Menu from '@mui/material/Menu';
 import MenuItem from '@mui/material/MenuItem';
@@ -6,10 +6,15 @@ import Fade from '@mui/material/Fade';
 import Box from '@mui/material/Box';
 import { alpha } from '@mui/system';
 
-export default function DropdownPods({ changePod, pods = [] }) {
+type DropdownMenuProps = {
+  namespaces: string[];
+  changeNamespace: Dispatch<SetStateAction<string>>;
+}
+export default function DropdownMenu({ changeNamespace, namespaces = [] }: DropdownMenuProps) {
   const [anchorEl, setAnchorEl] = useState(null);
+
   const open = Boolean(anchorEl);
-  const handleClick = (event) => {
+  const handleClick = (event: MouseEvent<HTMLElement>) => {
     setAnchorEl(event.currentTarget);
   };
   const handleClose = () => {
@@ -27,7 +32,7 @@ export default function DropdownPods({ changePod, pods = [] }) {
           aria-expanded={open ? 'true' : undefined}
           onClick={handleClick}
         >
-          Pods
+          Namespaces
         </Button>
         <Menu
           id='fade-menu'
@@ -39,18 +44,15 @@ export default function DropdownPods({ changePod, pods = [] }) {
           onClose={handleClose}
           TransitionComponent={Fade}
         >
-          {pods &&
-            pods.map((pod) => (
-              <MenuItem
-                key={pod}
-                onClick={(e) => {
-                  changePod(pod);
-                  handleClose();
-                }}
-              >
-                {pod}
-              </MenuItem>
-            ))}
+          {namespaces && namespaces.map((namespace) =>
+          (
+            <MenuItem key={namespace} onClick={(e) => {
+              changeNamespace(namespace);
+              handleClose();
+            }}>
+              {namespace}
+            </MenuItem>
+          ))}
         </Menu>
       </div>
     </Box>

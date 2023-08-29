@@ -4,7 +4,7 @@ import NotFound from '../../Pages/NotFound/NotFound.jsx';
 import HomePage from '../../Pages/Home/HomePage';
 import LoginPage from '../../Pages/Login/LoginPage.jsx';
 import SignupPage from '../../Pages/Signup/SignupPage.jsx';
-import NavBar from '../NavBar/NavBar.jsx';
+import NavBar from '../NavBar/NavBar';
 import { io, Socket } from 'socket.io-client';
 
 const socket: Socket = io('http://localhost:3000');
@@ -24,7 +24,7 @@ const App = () => {
           <Route path='*' element={<LoginPage />} />
         </Route>
       </Routes>
-      </div>
+    </div>
   );
 };
 
