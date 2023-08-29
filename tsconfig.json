@@ -8,5 +8,12 @@
         "noImplicitAny": true,
         "allowJs": true
     },
-    "include": ["electron/main.ts","client/**/**/*.ts", "client/**/**/*.tsx", "server/**/*.ts", "server/**/*.tsx"]
+    "include": [
+        "electron/main.ts",
+        "client/**/**/*.ts",
+        "client/**/**/*.tsx",
+        "server/**/*.ts",
+        "server/**/*.tsx",
+        "index.d.ts"
+    ]
 }
