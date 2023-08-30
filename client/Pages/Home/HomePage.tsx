@@ -1,13 +1,12 @@
 import React, { useState, useEffect, useRef } from 'react';
 import LogsDashboard from '../../Components/Dashboard/LogsDashboard';
 import Dashboard from '../../Components/Dashboard/Dashboard';
-import LineGraph from '../../Components/LineGraph/LineGraph.jsx';
+import LineGraph from '../../Components/LineGraph/LineGraph';
 import DropdownMenu from '../../Components/Dropdown/DropdownButton';
 import * as d3 from 'd3';
 import DropdownPods from '../../Components/Dropdown/DropdownPods';
 import { type Socket } from 'socket.io-client';
 import { type StatsData, type LogsData } from '../../types';
-
 type HomePageProps = {
   socket: Socket;
 };
@@ -72,7 +71,6 @@ export default function HomePage({ socket }: HomePageProps) {
     const strictIsoParse = d3.utcParse('%Y-%m-%dT%H:%M:%S.%LZ'); // Need to use d3's isoParse: https://github.com/d3/d3-time-format
 
     socket.on('metrics', metrics => {
-      console.log(metrics);
       const nodes = metrics.topNodes.map((el: NodeMetrics) => ({
         name: el.node,
         cpuCurrentUsage: el.cpuCurrentUsage,
@@ -100,7 +98,6 @@ export default function HomePage({ socket }: HomePageProps) {
 
   useEffect(() => {
     socket.on('stats', data => {
-      // Console.log(stats)
       const newStats: StatsData[] = [
         { id: '1', name: 'Namespaces', value: data.totalNamespaces },
         { id: '2', name: 'Nodes', value: data.totalNodes },
