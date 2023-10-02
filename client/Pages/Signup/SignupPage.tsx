@@ -63,7 +63,7 @@ export default function SignupPage() {
       >
         <img className="w-80" src={Logo} />
         <div className='flex-col'>
-          <h1 className=' mb-4 text-4xl font-extrabold leading-none tracking-tight text-gray-900 md:text-5xl lg:text-6xl dark:text-white '>
+          <h1 className=' mb-4 text-4xl font-extrabold leading-none tracking-tight text-gray-900 md:text-5xl lg:text-6xl text-white '>
             Sign Up
           </h1>
           <form className='space-y-4'>

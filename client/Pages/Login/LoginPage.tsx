@@ -39,7 +39,7 @@ export default function LoginPage() {
       <div className='h-screen flex items-center justify-around mx-10'>
         <img className="w-80" src={Logo} />
         <div className='flex-col'>
-          <h1 className='mb-4 mt-4 text-4xl font-extrabold leading-none tracking-tight text-gray-800 md:text-5xl lg:text-6xl dark:text-white'>
+          <h1 className='mb-4 mt-4 text-4xl font-extrabold leading-none tracking-tight md:text-5xl lg:text-6xl text-white'>
             Login
           </h1>
           <form className='space-y-4'>
