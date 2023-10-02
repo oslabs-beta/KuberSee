@@ -7,6 +7,7 @@ import * as d3 from 'd3';
 import DropdownPods from '../../Components/Dropdown/DropdownPods';
 import { type Socket } from 'socket.io-client';
 import { type StatsData, type LogsData } from '../../types';
+import Logout from '../../Components/Logout/Logout';
 type HomePageProps = {
   socket: Socket;
 };
@@ -125,6 +126,7 @@ export default function HomePage({ socket }: HomePageProps) {
 
   return (
     <>
+      <Logout/>
       <Dashboard data={stats} />
       <DropdownMenu
         changeNamespace={setCurrentNamespace}
